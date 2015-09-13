@@ -13,7 +13,6 @@ DEFINE CLASS Ciudad AS CUSTOM
 
    * Objetos.
    PROTECTED oDepartamen
-   PROTECTED oMarca
 
    * ---------------------------------------------------------------------------- *
    PROTECTED FUNCTION Init

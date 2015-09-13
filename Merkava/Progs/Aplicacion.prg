@@ -144,4 +144,19 @@ DEFINE CLASS Aplicacion AS CUSTOM
    FUNCTION GetFechaUltimaModificacion
       RETURN THIS.dFechaUltimaModificacion
    ENDFUNC
+
+   */ -------------------------------------------------------------------------- */
+   FUNCTION GetRuta
+      RETURN THIS.oBaseDatos.GetRuta()
+   ENDFUNC
+
+   */ -------------------------------------------------------------------------- */
+   FUNCTION GetRUC
+      RETURN THIS.oBaseDatos.GetRUC()
+   ENDFUNC
+
+   */ -------------------------------------------------------------------------- */
+   FUNCTION GetSucursal
+      RETURN THIS.oBaseDatos.GetSucursal()
+   ENDFUNC
 ENDDEFINE

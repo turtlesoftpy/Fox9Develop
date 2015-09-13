@@ -2368,13 +2368,13 @@ DEFINE CLASS Articulo AS CUSTOM
          ENDIF
       ENDIF
 
-      * Presupuestos.
+      * Presupuestos de Órdenes de Trabajo.
       IF llRetorno THEN
          lcSQL = 'SELECT TOP 1 ' + THIS.cClaveForanea + ' FROM detamot2 ORDER BY ' + THIS.cClaveForanea + ' WHERE ' + THIS.cClaveForanea + ' = ' + ALLTRIM(STR(lnCodigo)) + ' INTO CURSOR ' + lcCursor
          &lcSQL
          IF _TALLY > 0 THEN
             WAIT CLEAR
-            MESSAGEBOX([El registro figura en el archivo de 'Presupuestos', imposible borrarlo.], 0+16, THIS.Name + '.Borrar()')
+            MESSAGEBOX([El registro figura en el archivo de 'Presupuestos de Órdenes de Trabajo', imposible borrarlo.], 0+16, THIS.Name + '.Borrar()')
             llRetorno = .F.
          ENDIF
       ENDIF

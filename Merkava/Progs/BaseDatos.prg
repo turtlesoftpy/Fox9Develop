@@ -2,11 +2,19 @@ DEFINE CLASS BaseDatos AS CUSTOM
    * Propiedades
    PROTECTED aTabla[1]
    PROTECTED cRuta
+   PROTECTED cRUC
+   PROTECTED cSucursal
+   PROTECTED cRutaCompleta
 
    */ -------------------------------------------------------------------------- */
    PROTECTED FUNCTION Init
+      * Obtiene la ubicación de los archivos de datos.
+      IF !THIS.GetUbicacionDatos() THEN
+         RETURN .F.
+      ENDIF
+
       WITH THIS
-         .cRuta = SYS(5) + ADDBS('\Merkava\Data')
+         .AgregarTabla('almacen')
          .AgregarTabla('barrios')
          .AgregarTabla('cabecob')
          .AgregarTabla('cabecomp')
@@ -18,6 +26,7 @@ DEFINE CLASS BaseDatos AS CUSTOM
          .AgregarTabla('ciudades')
          .AgregarTabla('clientes')
          .AgregarTabla('cobrador')
+         .AgregarTabla('control')
          .AgregarTabla('depar')
          .AgregarTabla('detacomp')
          .AgregarTabla('detamot')
@@ -28,6 +37,7 @@ DEFINE CLASS BaseDatos AS CUSTOM
          .AgregarTabla('detapusd')
          .AgregarTabla('detavent')
          .AgregarTabla('familias')
+         .AgregarTabla('locales')
          .AgregarTabla('maesprod')
          .AgregarTabla('maquinas')
          .AgregarTabla('marcas1')
@@ -90,12 +100,12 @@ DEFINE CLASS BaseDatos AS CUSTOM
       LOCAL lnContador, llRetorno
 
       FOR lnContador = 1 TO ALEN(THIS.aTabla, 1)
-         IF !FILE(THIS.cRuta + THIS.aTabla[lnContador] + '.dbf') THEN
+         IF !FILE(THIS.cRutaCompleta + THIS.aTabla[lnContador] + '.dbf') THEN
             MESSAGEBOX([El archivo de datos '] + LOWER(ALLTRIM(THIS.aTabla[lnContador]) + [.dbf]) + [' no existe.], 0+16, THIS.Name + '.AbrirTablas()')
             RETURN .F.
          ENDIF
 
-         IF !FILE(THIS.cRuta + THIS.aTabla[lnContador] + '.cdx') THEN
+         IF !FILE(THIS.cRutaCompleta + THIS.aTabla[lnContador] + '.cdx') THEN
             MESSAGEBOX([El archivo de índice '] + LOWER(ALLTRIM(THIS.aTabla[lnContador]) + [.cdx]) + [' no existe.], 0+16, THIS.Name + '.AbrirTablas()')
             RETURN .F.
          ENDIF
@@ -104,7 +114,7 @@ DEFINE CLASS BaseDatos AS CUSTOM
 
          IF !USED(THIS.aTabla[lnContador]) THEN
             TRY
-               USE (THIS.cRuta + THIS.aTabla[lnContador]) IN 0 AGAIN ORDER 0 SHARED
+               USE (THIS.cRutaCompleta + THIS.aTabla[lnContador]) IN 0 AGAIN ORDER 0 SHARED
             CATCH
                MESSAGEBOX([No se pudo acceder al archivo '] + LOWER(ALLTRIM(THIS.aTabla[lnContador]) + [.dbf]) + [', vuelva a intentarlo más tarde.], 0+16, THIS.Name + '.AbrirTablas()')
                llRetorno = .F.
@@ -127,5 +137,52 @@ DEFINE CLASS BaseDatos AS CUSTOM
             USE
          ENDIF
       ENDFOR
+   ENDFUNC
+
+   */ -------------------------------------------------------------------------- */
+   PROTECTED FUNCTION GetUbicacionDatos
+      IF !FILE('config' + '.dat') THEN
+         MESSAGEBOX([El archivo de datos 'config.dat' no existe.], 0+16, THIS.Name + '.GetUbicacionDatos()')
+         RETURN .F.
+      ENDIF
+
+      llRetorno = .T.
+
+      IF !USED('config') THEN
+         TRY
+            USE config.dat IN 0 AGAIN ORDER 0 SHARED
+
+            SELECT config
+            WITH THIS
+               .cRuta = ADDBS(ALLTRIM(ruta))
+               .cRUC = ALLTRIM(ruc)
+               .cSucursal = ALLTRIM(sucursal)
+               .cRutaCompleta = ADDBS(.cRuta + .cRUC + [\] + .cSucursal)
+            ENDWITH
+            USE
+         CATCH
+            MESSAGEBOX([No se pudo acceder al archivo 'config.dat', vuelva a intentarlo más tarde.], 0+16, THIS.Name + '.GetUbicacionDatos()')
+            llRetorno = .F.
+         ENDTRY
+
+         IF !llRetorno THEN
+            RETURN .F.
+         ENDIF
+      ENDIF
+   ENDFUNC
+
+   */ -------------------------------------------------------------------------- */
+   FUNCTION GetRuta
+      RETURN THIS.cRuta
+   ENDFUNC
+
+   */ -------------------------------------------------------------------------- */
+   FUNCTION GetRUC
+      RETURN THIS.cRUC
+   ENDFUNC
+
+   */ -------------------------------------------------------------------------- */
+   FUNCTION GetSucursal
+      RETURN THIS.cSucursal
    ENDFUNC
 ENDDEFINE

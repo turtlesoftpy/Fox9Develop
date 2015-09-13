@@ -7,6 +7,8 @@ ren FrmArticulo.sct FrmArticulo.sct
 ren FrmArticulo.scx FrmArticulo.scx
 ren FrmBarrio.sct FrmBarrio.sct
 ren FrmBarrio.scx FrmBarrio.scx
+ren FrmBuscarArticulo.sct FrmBuscarArticulo.sct
+ren FrmBuscarArticulo.scx FrmBuscarArticulo.scx
 ren FrmBuscarBarrio.sct FrmBuscarBarrio.sct
 ren FrmBuscarBarrio.scx FrmBuscarBarrio.scx
 ren FrmBuscarCiudad.sct FrmBuscarCiudad.sct
@@ -17,6 +19,8 @@ ren FrmBuscarCobrador.sct FrmBuscarCobrador.sct
 ren FrmBuscarCobrador.scx FrmBuscarCobrador.scx
 ren FrmBuscarDepar.sct FrmBuscarDepar.sct
 ren FrmBuscarDepar.scx FrmBuscarDepar.scx
+ren FrmBuscarDeposito.sct FrmBuscarDeposito.sct
+ren FrmBuscarDeposito.scx FrmBuscarDeposito.scx
 ren FrmBuscarFamilia.sct FrmBuscarFamilia.sct
 ren FrmBuscarFamilia.scx FrmBuscarFamilia.scx
 ren FrmBuscarMaquina.sct FrmBuscarMaquina.sct
@@ -43,6 +47,8 @@ ren FrmBuscarRuta.sct FrmBuscarRuta.sct
 ren FrmBuscarRuta.scx FrmBuscarRuta.scx
 ren FrmBuscarSubRubro.sct FrmBuscarSubRubro.sct
 ren FrmBuscarSubRubro.scx FrmBuscarSubRubro.scx
+ren FrmBuscarSucursal.sct FrmBuscarSucursal.sct
+ren FrmBuscarSucursal.scx FrmBuscarSucursal.scx
 ren FrmBuscarUnidadMedida.sct FrmBuscarUnidadMedida.sct
 ren FrmBuscarUnidadMedida.scx FrmBuscarUnidadMedida.scx
 ren FrmBuscarVendedor.sct FrmBuscarVendedor.sct
@@ -55,6 +61,10 @@ ren FrmCobrador.sct FrmCobrador.sct
 ren FrmCobrador.scx FrmCobrador.scx
 ren FrmDepar.sct FrmDepar.sct
 ren FrmDepar.scx FrmDepar.scx
+ren FrmDeposito.sct FrmDeposito.sct
+ren FrmDeposito.scx FrmDeposito.scx
+ren FrmEscritorio.sct FrmEscritorio.sct
+ren FrmEscritorio.scx FrmEscritorio.scx
 ren FrmFamilia.sct FrmFamilia.sct
 ren FrmFamilia.scx FrmFamilia.scx
 ren FrmLogin.sct FrmLogin.sct
@@ -83,6 +93,8 @@ ren FrmRuta.sct FrmRuta.sct
 ren FrmRuta.scx FrmRuta.scx
 ren FrmSubRubro.sct FrmSubRubro.sct
 ren FrmSubRubro.scx FrmSubRubro.scx
+ren FrmSucursal.sct FrmSucursal.sct
+ren FrmSucursal.scx FrmSucursal.scx
 ren FrmUnidadMedida.sct FrmUnidadMedida.sct
 ren FrmUnidadMedida.scx FrmUnidadMedida.scx
 ren FrmVendedor.sct FrmVendedor.sct
