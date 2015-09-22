@@ -37,6 +37,7 @@ ren Proveedor.prg Proveedor.prg
 ren Rubro.prg Rubro.prg
 ren Ruta.prg Ruta.prg
 ren SubRubro.prg SubRubro.prg
+ren Sucursal.prg Sucursal.prg
 ren UnidadMedida.prg UnidadMedida.prg
 ren ValidarFormatoCedula.prg ValidarFormatoCedula.prg
 ren ValidarFormatoRUC.prg ValidarFormatoRUC.prg
