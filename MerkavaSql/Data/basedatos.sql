@@ -280,3 +280,28 @@ ALTER TABLE sucursal
    DEFAULT CHARACTER SET = 'latin1'
    DEFAULT COLLATE = 'latin1_swedish_ci',
    ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE vendedor (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   documento VARCHAR(15),
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE vendedor
+   ADD CONSTRAINT pk_vendedor_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_vendedor_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT unq_vendedor_documento
+      UNIQUE (documento),
+   ADD CONSTRAINT chk_vendedor_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_vendedor_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_vendedor_documento
+      CHECK (documento IS NULL OR documento <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
