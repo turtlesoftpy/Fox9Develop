@@ -34,6 +34,94 @@ ALTER TABLE depar
    ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE ciudad (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   departamen SMALLINT(5) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE ciudad
+   ADD CONSTRAINT pk_ciudad_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_ciudad_departamen
+      FOREIGN KEY (departamen) REFERENCES depar (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_ciudad_departamen_nombre
+      UNIQUE (departamen, nombre),
+   ADD CONSTRAINT unq_ciudad_departamen_codigo
+      UNIQUE (departamen, codigo),
+   ADD CONSTRAINT chk_ciudad_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_ciudad_nombre
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE barrio (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   departamen SMALLINT(5) UNSIGNED NOT NULL,
+   ciudad SMALLINT(5) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE barrio
+   ADD CONSTRAINT pk_barrio_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_barrio_departamen
+      FOREIGN KEY (departamen) REFERENCES depar (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_barrio_ciudad
+      FOREIGN KEY (ciudad) REFERENCES ciudad (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_barrio_departamen_ciudad
+      FOREIGN KEY (departamen, ciudad) REFERENCES ciudad (departamen, codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_barrio_departamen_ciudad_nombre
+      UNIQUE (departamen, ciudad, nombre),
+   ADD CONSTRAINT unq_barrio_departamen_ciudad_codigo
+      UNIQUE (departamen, ciudad, codigo),
+   ADD CONSTRAINT chk_barrio_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_barrio_nombre
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE cobrador (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   documento VARCHAR(15),
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE cobrador
+   ADD CONSTRAINT pk_cobrador_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_cobrador_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT unq_cobrador_documento
+      UNIQUE (documento),
+   ADD CONSTRAINT chk_cobrador_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_cobrador_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_cobrador_documento
+      CHECK (documento IS NULL OR documento <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE maquina (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,

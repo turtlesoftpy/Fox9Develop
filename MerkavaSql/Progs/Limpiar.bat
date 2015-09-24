@@ -5,6 +5,7 @@ del *.bak
 
 ren _CDOW.prg _CDOW.prg
 ren _CMONTH.prg _CMONTH.prg
+ren _DATE.prg _DATE.prg
 ren Aplicacion.prg Aplicacion.prg
 ren Articulo.prg Articulo.prg
 ren Barrio.prg Barrio.prg

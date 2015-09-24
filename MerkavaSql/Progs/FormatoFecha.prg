@@ -18,7 +18,7 @@ ENDIF
 * fin { validación de parámetro }
 LOCAL lcRetorno, ldFecha
 lcRetorno = ''
-ldFecha = Fecha()
+ldFecha = _DATE()
 
 DO CASE
 CASE tnFormato = 1
@@ -26,5 +26,3 @@ CASE tnFormato = 1
 ENDCASE
 
 RETURN lcRetorno
-
-
