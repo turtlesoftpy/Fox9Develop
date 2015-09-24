@@ -182,6 +182,31 @@ ALTER TABLE marca_taller
    ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE mecanico (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   documento VARCHAR(15),
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE mecanico
+   ADD CONSTRAINT pk_mecanico_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_mecanico_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT unq_mecanico_documento
+      UNIQUE (documento),
+   ADD CONSTRAINT chk_mecanico_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_mecanico_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_mecanico_documento
+      CHECK (documento IS NULL OR documento <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE motivocl (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
