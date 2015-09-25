@@ -307,6 +307,32 @@ ALTER TABLE sucursal
    ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE deposito (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   sucursal SMALLINT(5) UNSIGNED NOT NULL,
+   venta TINYINT(1) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE deposito
+   ADD CONSTRAINT pk_deposito_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_deposito_sucursal
+      FOREIGN KEY (sucursal) REFERENCES sucursal (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_deposito_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT chk_deposito_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_deposito_nombre
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE vendedor (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
