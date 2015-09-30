@@ -122,6 +122,41 @@ ALTER TABLE cobrador
    ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE familia (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   p1 NUMERIC(6,2),
+   p2 NUMERIC(6,2),
+   p3 NUMERIC(6,2),
+   p4 NUMERIC(6,2),
+   p5 NUMERIC(6,2),
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE familia
+   ADD CONSTRAINT pk_familia_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_familia_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT chk_familia_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_familia_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_familia_p1
+      CHECK (p1 IS NULL OR p1 > 0),
+   ADD CONSTRAINT chk_familia_p2
+      CHECK (p2 IS NULL OR p2 > 0),
+   ADD CONSTRAINT chk_familia_p3
+      CHECK (p3 IS NULL OR p3 > 0),
+   ADD CONSTRAINT chk_familia_p4
+      CHECK (p4 IS NULL OR p4 > 0),
+   ADD CONSTRAINT chk_familia_p5
+      CHECK (p5 IS NULL OR p5 > 0),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE maquina (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
@@ -202,6 +237,36 @@ ALTER TABLE mecanico
       CHECK (nombre <> ''),
    ADD CONSTRAINT chk_mecanico_documento
       CHECK (documento IS NULL OR documento <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE modelo (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   maquina SMALLINT(5) UNSIGNED NOT NULL,
+   marca SMALLINT(5) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE modelo
+   ADD CONSTRAINT pk_modelo_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_modelo_maquina
+      FOREIGN KEY (maquina) REFERENCES maquina (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_modelo_marca
+      FOREIGN KEY (marca) REFERENCES marca_taller (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_modelo_maquina_marca_nombre
+      UNIQUE (maquina, marca, nombre),
+   ADD CONSTRAINT chk_modelo_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_modelo_nombre
+      CHECK (nombre <> ''),
    DEFAULT CHARACTER SET = 'latin1'
    DEFAULT COLLATE = 'latin1_swedish_ci',
    ENGINE=InnoDB;

@@ -12,7 +12,7 @@ IF VARTYPE(tdFecha) <> 'D' THEN
 ENDIF
 
 IF EMPTY(tdFecha) THEN
-   MESSAGEBOX([El parámetro 'tdFecha'  no debe estar vacío.], 0+16, '_CMONTH()')
+   MESSAGEBOX([El parámetro 'tdFecha' no debe estar vacío.], 0+16, '_CMONTH()')
    RETURN .F.
 ENDIF
 * fin { validación de parámetro }
