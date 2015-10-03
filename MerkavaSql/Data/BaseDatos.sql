@@ -398,6 +398,32 @@ ALTER TABLE deposito
    ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE unidad (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   simbolo VARCHAR(5) NOT NULL,
+   divisible TINYINT(1) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE unidad
+   ADD CONSTRAINT pk_unidad_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_unidad_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT unq_unidad_simbolo
+      UNIQUE (simbolo),
+   ADD CONSTRAINT chk_unidad_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_unidad_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_unidad_simbolo
+      CHECK (simbolo <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE vendedor (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
