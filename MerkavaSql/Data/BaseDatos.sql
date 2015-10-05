@@ -312,6 +312,67 @@ ALTER TABLE pais
    ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE proveedor (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   direc1 VARCHAR(60),
+   direc2 VARCHAR(60),
+   ciudad VARCHAR(25),
+   telefono VARCHAR(40),
+   fax VARCHAR(25),
+   e_mail VARCHAR(60),
+   ruc VARCHAR(15),
+   dv CHAR(1),
+   dias_plazo SMALLINT(3) UNSIGNED,
+   dueno VARCHAR(40),
+   teldueno VARCHAR(25),
+   gtegral VARCHAR(40),
+   telgg VARCHAR(25),
+   gteventas VARCHAR(40),
+   telgv VARCHAR(25),
+   gtemkg VARCHAR(40),
+   telgm VARCHAR(25),
+   stecnino VARCHAR(40),
+   stdirec1 VARCHAR(60),
+   stdirec2 VARCHAR(60),
+   sttel VARCHAR(25),
+   sthablar1 VARCHAR(60),
+   vendedor1 VARCHAR(40),
+   larti1 VARCHAR(25),
+   tvend1 VARCHAR(25),
+   vendedor2 VARCHAR(40),
+   larti2 VARCHAR(25),
+   tvend2 VARCHAR(25),
+   vendeodr3 VARCHAR(40),
+   larti3 VARCHAR(25),
+   tvend3 VARCHAR(25),
+   vendedor4 VARCHAR(40),
+   larti4 VARCHAR(25),
+   tvend4 VARCHAR(25),
+   vendedor5 VARCHAR(40),
+   larti5 VARCHAR(25),
+   tvend5 VARCHAR(25),
+   saldo_actu NUMERIC(12),
+   saldo_usd NUMERIC(12.2),
+   vigente VARCHAR(1) NOT NULL
+);
+
+ALTER TABLE proveedor
+   ADD CONSTRAINT pk_proveedor_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_proveedor_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT chk_proveedor_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_proveedor_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_proveedor_vigente
+      CHECK (vigente IN ('S', 'N')),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE rubro (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
