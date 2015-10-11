@@ -352,8 +352,8 @@ CREATE TABLE proveedor (
    vendedor5 VARCHAR(40),
    larti5 VARCHAR(25),
    tvend5 VARCHAR(25),
-   saldo_actu NUMERIC(12),
-   saldo_usd NUMERIC(12.2),
+   saldo_actu NUMERIC(12) NOT NULL,
+   saldo_usd NUMERIC(12.2) NOT NULL,
    vigente VARCHAR(1) NOT NULL
 );
 

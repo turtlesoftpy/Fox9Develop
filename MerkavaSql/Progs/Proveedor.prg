@@ -1293,7 +1293,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarDirec1()
-      IF LEN(tcDirec1) > 60 THEN
+      IF LEN(THIS.cDirec1) > 60 THEN
          MESSAGEBOX([La longitud del campo 'cDirec1' debe ser como máximo de 60 caracteres.], 0+16, THIS.Name + '.ValidarDirec1()')
          RETURN .F.
       ENDIF
@@ -1301,7 +1301,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarDirec2()
-      IF LEN(tcDirec2) > 60 THEN
+      IF LEN(THIS.cDirec2) > 60 THEN
          MESSAGEBOX([La longitud del campo 'cDirec2' debe ser como máximo de 60 caracteres.], 0+16, THIS.Name + '.ValidarDirec2()')
          RETURN .F.
       ENDIF
@@ -1309,7 +1309,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarCiudad()
-      IF LEN(tcCiudad) > 25 THEN
+      IF LEN(THIS.cCiudad) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cCiudad' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarCiudad()')
          RETURN .F.
       ENDIF
@@ -1317,7 +1317,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTelefono()
-      IF LEN(tcTelefono) > 40 THEN
+      IF LEN(THIS.cTelefono) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cTelefono' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarTelefono()')
          RETURN .F.
       ENDIF
@@ -1325,7 +1325,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarFax()
-      IF LEN(tcFax) > 25 THEN
+      IF LEN(THIS.cFax) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cFax' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarFax()')
          RETURN .F.
       ENDIF
@@ -1333,7 +1333,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarEMail()
-      IF LEN(tcEMail) > 60 THEN
+      IF LEN(THIS.cEMail) > 60 THEN
          MESSAGEBOX([La longitud del campo 'cEMail' debe ser como máximo de 60 caracteres.], 0+16, THIS.Name + '.ValidarEMail()')
          RETURN .F.
       ENDIF
@@ -1439,7 +1439,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarDueno()
-      IF LEN(tcDueno) > 40 THEN
+      IF LEN(THIS.cDueno) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cDueno' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarDueno()')
          RETURN .F.
       ENDIF
@@ -1447,7 +1447,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTelDueno()
-      IF LEN(tcTelDueno) > 25 THEN
+      IF LEN(THIS.cTelDueno) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cTelDueno' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarTelDueno()')
          RETURN .F.
       ENDIF
@@ -1455,7 +1455,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarGteGral()
-      IF LEN(tcGteGral) > 40 THEN
+      IF LEN(THIS.cGteGral) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cGteGral' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarGteGral()')
          RETURN .F.
       ENDIF
@@ -1463,7 +1463,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTelGG()
-      IF LEN(tcTelGG) > 25 THEN
+      IF LEN(THIS.cTelGG) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cTelGG' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarTelGG()')
          RETURN .F.
       ENDIF
@@ -1471,7 +1471,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarGteVentas()
-      IF LEN(tcGteVentas) > 40 THEN
+      IF LEN(THIS.cGteVentas) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cGteVentas' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarGteVentas()')
          RETURN .F.
       ENDIF
@@ -1479,7 +1479,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTelGV()
-      IF LEN(tcTelGV) > 25 THEN
+      IF LEN(THIS.cTelGV) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cTelGV' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarTelGV()')
          RETURN .F.
       ENDIF
@@ -1487,7 +1487,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarGteMkg()
-      IF LEN(tcGteMkg) > 40 THEN
+      IF LEN(THIS.cGteMkg) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cGteMkg' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarGteMkg()')
          RETURN .F.
       ENDIF
@@ -1495,7 +1495,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTelGM()
-      IF LEN(tcTelGM) > 25 THEN
+      IF LEN(THIS.cTelGM) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cTelGM' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarTelGM()')
          RETURN .F.
       ENDIF
@@ -1503,7 +1503,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarSTecnico()
-      IF LEN(tcSTecnico) > 40 THEN
+      IF LEN(THIS.cSTecnico) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cSTecnico' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarSTecnico()')
          RETURN .F.
       ENDIF
@@ -1511,7 +1511,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarSTDirec1()
-      IF LEN(tcSTDirec1) > 60 THEN
+      IF LEN(THIS.cSTDirec1) > 60 THEN
          MESSAGEBOX([La longitud del campo 'cSTDirec1' debe ser como máximo de 60 caracteres.], 0+16, THIS.Name + '.ValidarSTDirec1()')
          RETURN .F.
       ENDIF
@@ -1519,7 +1519,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarSTDirec2()
-      IF LEN(tcSTDirec2) > 60 THEN
+      IF LEN(THIS.cSTDirec2) > 60 THEN
          MESSAGEBOX([La longitud del campo 'cSTDirec2' debe ser como máximo de 60 caracteres.], 0+16, THIS.Name + '.ValidarSTDirec2()')
          RETURN .F.
       ENDIF
@@ -1527,7 +1527,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarSTTel()
-      IF LEN(tcSTTel) > 25 THEN
+      IF LEN(THIS.cSTTel) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cSTTel' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarSTTel()')
          RETURN .F.
       ENDIF
@@ -1535,7 +1535,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarSTHablar1()
-      IF LEN(tcSTHablar1) > 60 THEN
+      IF LEN(THIS.cSTHablar1) > 60 THEN
          MESSAGEBOX([La longitud del campo 'cSTHablar1' debe ser como máximo de 60 caracteres.], 0+16, THIS.Name + '.ValidarSTHablar1()')
          RETURN .F.
       ENDIF
@@ -1543,7 +1543,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarVendedor1()
-      IF LEN(tcVendedor1) > 40 THEN
+      IF LEN(THIS.cVendedor1) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cVendedor1' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarVendedor1()')
          RETURN .F.
       ENDIF
@@ -1551,7 +1551,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarLArti1()
-      IF LEN(tcLArti1) > 25 THEN
+      IF LEN(THIS.cLArti1) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cLArti1' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarLArti1()')
          RETURN .F.
       ENDIF
@@ -1559,7 +1559,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTVend1()
-      IF LEN(tcTVend1) > 25 THEN
+      IF LEN(THIS.cTVend1) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cTVend1' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarTVend1()')
          RETURN .F.
       ENDIF
@@ -1567,7 +1567,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarVendedor2()
-      IF LEN(tcVendedor2) > 40 THEN
+      IF LEN(THIS.cVendedor2) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cVendedor2' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarVendedor2()')
          RETURN .F.
       ENDIF
@@ -1575,7 +1575,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarLArti2()
-      IF LEN(tcLArti2) > 25 THEN
+      IF LEN(THIS.cLArti2) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cLArti2' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarLArti2()')
          RETURN .F.
       ENDIF
@@ -1583,7 +1583,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTVend2()
-      IF LEN(tcTVend2) > 25 THEN
+      IF LEN(THIS.cTVend2) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cTVend2' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarTVend2()')
          RETURN .F.
       ENDIF
@@ -1591,7 +1591,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarVendedor3()
-      IF LEN(tcVendedor3) > 40 THEN
+      IF LEN(THIS.cVendedor3) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cVendedor3' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarVendedor3()')
          RETURN .F.
       ENDIF
@@ -1599,7 +1599,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarLArti3()
-      IF LEN(tcLArti3) > 25 THEN
+      IF LEN(THIS.cLArti3) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cLArti3' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarLArti3()')
          RETURN .F.
       ENDIF
@@ -1607,7 +1607,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTVend3()
-      IF LEN(tcTVend3) > 25 THEN
+      IF LEN(THIS.cTVend3) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cTVend3' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarTVend3()')
          RETURN .F.
       ENDIF
@@ -1615,7 +1615,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarVendedor4()
-      IF LEN(tcVendedor4) > 40 THEN
+      IF LEN(THIS.cVendedor4) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cVendedor4' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarVendedor4()')
          RETURN .F.
       ENDIF
@@ -1623,7 +1623,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarLArti4()
-      IF LEN(tcLArti4) > 25 THEN
+      IF LEN(THIS.cLArti4) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cLArti4' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarLArti4()')
          RETURN .F.
       ENDIF
@@ -1631,7 +1631,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTVend4()
-      IF LEN(tcTVend4) > 25 THEN
+      IF LEN(THIS.cTVend4) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cTVend4' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarTVend4()')
          RETURN .F.
       ENDIF
@@ -1639,7 +1639,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarVendedor5()
-      IF LEN(tcVendedor5) > 40 THEN
+      IF LEN(THIS.cVendedor5) > 40 THEN
          MESSAGEBOX([La longitud del campo 'cVendedor5' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.ValidarVendedor5()')
          RETURN .F.
       ENDIF
@@ -1647,7 +1647,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarLArti5()
-      IF LEN(tcLArti5) > 25 THEN
+      IF LEN(THIS.cLArti5) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cLArti5' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarLArti5()')
          RETURN .F.
       ENDIF
@@ -1655,7 +1655,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarTVend5()
-      IF LEN(tcTVend5) > 25 THEN
+      IF LEN(THIS.cTVend5) > 25 THEN
          MESSAGEBOX([La longitud del campo 'cTVend5' debe ser como máximo de 25 caracteres.], 0+16, THIS.Name + '.ValidarTVend5()')
          RETURN .F.
       ENDIF
@@ -1663,7 +1663,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarVigente()
-      IF LEN(tcVigente) > 1 THEN
+      IF LEN(THIS.cVigente) > 1 THEN
          MESSAGEBOX([La longitud del parámetro 'tcVigente' debe ser como máximo de 1 caracter.], 0+16, THIS.Name + '.ValidarVigente()')
          RETURN .F.
       ENDIF
@@ -1679,43 +1679,43 @@ DEFINE CLASS Proveedor AS CUSTOM
       WITH THIS
          .nCodigo = codigo
          .cNombre = nombre
-         .cDirec1 = direc1
-         .cDirec2 = direc2
-         .cCiudad = ciudad
-         .cTelefono = telefono
-         .cFax = fax
-         .cEMail = e_mail
-         .cRUC = ruc
-         .cDV = dv
-         .nDiasPlazo = dias_plazo
-         .cDueno = dueno
-         .cTelDueno = teldueno
-         .cGteGral = gtegral
-         .cTelGG = telgg
-         .cGteVentas = gteventas
-         .cTelGV = telgv
-         .cGteMkg = gtemkg
-         .cTelGM = telgm
-         .cSTecnico = stecnico
-         .cSTDirec1 = stdirec1
-         .cSTDirec2 = stdirec2
-         .cSTTel = sttel
-         .cSTHablar1 = sthablar1
-         .cVendedor1 = vendedor1
-         .cLArti1 = larti1
-         .cTVend1 = tvend1
-         .cVendedor2 = vendedor2
-         .cLArti2 = larti2
-         .cTVend2 = tvend2
-         .cVendedor3 = vendedor3
-         .cLArti3 = larti3
-         .cTVend3 = tvend3
-         .cVendedor4 = vendedor4
-         .cLArti4 = larti4
-         .cTVend4 = tvend4
-         .cVendedor5 = vendedor5
-         .cLArti5 = larti5
-         .cTVend5 = tvend5
+         .cDirec1 = IIF(!ISNULL(direc1), direc1, '')
+         .cDirec2 = IIF(!ISNULL(direc2), direc2, '')
+         .cCiudad = IIF(!ISNULL(ciudad), ciudad, '')
+         .cTelefono = IIF(!ISNULL(telefono), telefono, '')
+         .cFax = IIF(!ISNULL(fax), fax, '')
+         .cEMail = IIF(!ISNULL(e_mail), e_mail, '')
+         .cRUC = IIF(!ISNULL(ruc), ruc, '')
+         .cDV = IIF(!ISNULL(dv), dv, '')
+         .nDiasPlazo = IIF(!ISNULL(dias_plazo), dias_plazo, 0)
+         .cDueno = IIF(!ISNULL(dueno), dueno, '')
+         .cTelDueno = IIF(!ISNULL(teldueno), teldueno, '')
+         .cGteGral = IIF(!ISNULL(gtegral), gtegral, '')
+         .cTelGG = IIF(!ISNULL(telgg), telgg, '')
+         .cGteVentas = IIF(!ISNULL(gteventas), gteventas, '')
+         .cTelGV = IIF(!ISNULL(telgv), telgv, '')
+         .cGteMkg = IIF(!ISNULL(gtemkg), gtemkg, '')
+         .cTelGM = IIF(!ISNULL(telgm), telgm, '')
+         .cSTecnico = IIF(!ISNULL(stecnico), stecnico, '')
+         .cSTDirec1 = IIF(!ISNULL(stdirec1), stdirec1, '')
+         .cSTDirec2 = IIF(!ISNULL(stdirec2), stdirec2, '')
+         .cSTTel = IIF(!ISNULL(sttel), sttel, '')
+         .cSTHablar1 = IIF(!ISNULL(sthablar1), sthablar1, '')
+         .cVendedor1 = IIF(!ISNULL(vendedor1), vendedor1, '')
+         .cLArti1 = IIF(!ISNULL(larti1), larti1, '')
+         .cTVend1 = IIF(!ISNULL(tvend1), tvend1, '')
+         .cVendedor2 = IIF(!ISNULL(vendedor2), vendedor2, '')
+         .cLArti2 = IIF(!ISNULL(larti2), larti2, '')
+         .cTVend2 = IIF(!ISNULL(tvend2), tvend2, '')
+         .cVendedor3 = IIF(!ISNULL(vendedor3), vendedor3, '')
+         .cLArti3 = IIF(!ISNULL(larti3), larti3, '')
+         .cTVend3 = IIF(!ISNULL(tvend3), tvend3, '')
+         .cVendedor4 = IIF(!ISNULL(vendedor4), vendedor4, '')
+         .cLArti4 = IIF(!ISNULL(larti4), larti4, '')
+         .cTVend4 = IIF(!ISNULL(tvend4), tvend4, '')
+         .cVendedor5 = IIF(!ISNULL(vendedor5), vendedor5, '')
+         .cLArti5 = IIF(!ISNULL(larti5), larti5, '')
+         .cTVend5 = IIF(!ISNULL(tvend5), tvend5, '')
          .nSaldoActu = saldo_actu
          .nSaldoUSD = saldo_usd
          .cVigente = vigente
@@ -1900,68 +1900,48 @@ DEFINE CLASS Proveedor AS CUSTOM
 
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
-         pcDirec1 = THIS.cDirec1
-         pcDirec2 = THIS.cDirec2
-         pcCiudad = THIS.cCiudad
-         pcTelefono = THIS.cTelefono
-         pcFax = THIS.cFax
-         pcEMail = THIS.cEMail
-         pcRUC = THIS.cRUC
-         pcDV = THIS.cDV
-         pnDiasPlazo = THIS.nDiasPlazo
-         pcDueno = THIS.cDueno
-         pcTelDueno = THIS.cTelDueno
-         pcGteGral = THIS.cGteGral
-         pcTelGG = THIS.cTelGG
-         pcGteVentas = THIS.cGteVentas
-         pcTelGV = THIS.cTelGV
-         pcGteMkg = THIS.cGteMkg
-         pcTelGM = THIS.cTelGM
-         pcSTecnico = THIS.cSTecnico
-         pcSTDirec1 = THIS.cSTDirec1
-         pcSTDirec2 = THIS.cSTDirec2
-         pcSTTel = THIS.cSTTel
-         pcSTHablar1 = THIS.cSTHablar1
-         pcVendedor1 = THIS.cVendedor1
-         pcLArti1 = THIS.cLArti1
-         pcTVend1 = THIS.cTVend1
-         pcVendedor2 = THIS.cVendedor2
-         pcLArti2 = THIS.cLArti2
-         pcTVend2 = THIS.cTVend2
-         pcVendedor3 = THIS.cVendedor3
-         pcLArti3 = THIS.cLArti3
-         pcTVend3 = THIS.cTVend3
-         pcVendedor4 = THIS.cVendedor4
-         pcLArti4 = THIS.cLArti4
-         pcTVend4 = THIS.cTVend4
-         pcVendedor5 = THIS.cVendedor5
-         pcLArti5 = THIS.cLArti5
-         pcTVend5 = THIS.cTVend5
+         pcDirec1 = IIF(!EMPTY(THIS.cDirec1), THIS.cDirec1, NULL)
+         pcDirec2 = IIF(!EMPTY(THIS.cDirec2), THIS.cDirec2, NULL)
+         pcCiudad = IIF(!EMPTY(THIS.cCiudad), THIS.cCiudad, NULL)
+         pcTelefono = IIF(!EMPTY(THIS.cTelefono), THIS.cTelefono, NULL)
+         pcFax = IIF(!EMPTY(THIS.cFax), THIS.cFax, NULL)
+         pcEMail = IIF(!EMPTY(THIS.cEMail), THIS.cEMail, NULL)
+         pcRUC = IIF(!EMPTY(THIS.cRUC), THIS.cRUC, NULL)
+         pcDV = IIF(!EMPTY(THIS.cDV), THIS.cDV, NULL)
+         pnDiasPlazo = IIF(THIS.nDiasPlazo > 0, THIS.nDiasPlazo, NULL)
+         pcDueno = IIF(!EMPTY(THIS.cDueno), THIS.cDueno, NULL)
+         pcTelDueno = IIF(!EMPTY(THIS.cTelDueno), THIS.cTelDueno, NULL)
+         pcGteGral = IIF(!EMPTY(THIS.cGteGral), THIS.cGteGral, NULL)
+         pcTelGG = IIF(!EMPTY(THIS.cTelGG), THIS.cTelGG, NULL)
+         pcGteVentas = IIF(!EMPTY(THIS.cGteVentas), THIS.cGteVentas, NULL)
+         pcTelGV = IIF(!EMPTY(THIS.cTelGV), THIS.cTelGV, NULL)
+         pcGteMkg = IIF(!EMPTY(THIS.cGteMkg), THIS.cGteMkg, NULL)
+         pcTelGM = IIF(!EMPTY(THIS.cTelGM), THIS.cTelGM, NULL)
+         pcSTecnico = IIF(!EMPTY(THIS.cSTecnico), THIS.cSTecnico, NULL)
+         pcSTDirec1 = IIF(!EMPTY(THIS.cSTDirec1), THIS.cSTDirec1, NULL)
+         pcSTDirec2 = IIF(!EMPTY(THIS.cSTDirec2), THIS.cSTDirec2, NULL)
+         pcSTTel = IIF(!EMPTY(THIS.cSTTel), THIS.cSTTel, NULL)
+         pcSTHablar1 = IIF(!EMPTY(THIS.cSTHablar1), THIS.cSTHablar1, NULL)
+         pcVendedor1 = IIF(!EMPTY(THIS.cVendedor1), THIS.cVendedor1, NULL)
+         pcLArti1 = IIF(!EMPTY(THIS.cLArti1), THIS.cLArti1, NULL)
+         pcTVend1 = IIF(!EMPTY(THIS.cTVend1), THIS.cTVend1, NULL)
+         pcVendedor2 = IIF(!EMPTY(THIS.cVendedor2), THIS.cVendedor2, NULL)
+         pcLArti2 = IIF(!EMPTY(THIS.cLArti2), THIS.cLArti2, NULL)
+         pcTVend2 = IIF(!EMPTY(THIS.cTVend2), THIS.cTVend2, NULL)
+         pcVendedor3 = IIF(!EMPTY(THIS.cVendedor3), THIS.cVendedor3, NULL)
+         pcLArti3 = IIF(!EMPTY(THIS.cLArti3), THIS.cLArti3, NULL)
+         pcTVend3 = IIF(!EMPTY(THIS.cTVend3), THIS.cTVend3, NULL)
+         pcVendedor4 = IIF(!EMPTY(THIS.cVendedor4), THIS.cVendedor4, NULL)
+         pcLArti4 = IIF(!EMPTY(THIS.cLArti4), THIS.cLArti4, NULL)
+         pcTVend4 = IIF(!EMPTY(THIS.cTVend4), THIS.cTVend4, NULL)
+         pcVendedor5 = IIF(!EMPTY(THIS.cVendedor5), THIS.cVendedor5, NULL)
+         pcLArti5 = IIF(!EMPTY(THIS.cLArti5), THIS.cLArti5, NULL)
+         pcTVend5 = IIF(!EMPTY(THIS.cTVend5), THIS.cTVend5, NULL)
          pnSaldoActu = THIS.nSaldoActu
          pnSaldoUSD = THIS.nSaldoUSD
          pcVigente = THIS.cVigente
 
-*!*	         TEXT TO pcSql NOSHOW
-*!*	            INSERT INTO proveedor (codigo, nombre, direc1, direc2, ciudad, telefono, fax, e_mail, ruc, dv, dias_plazo, dueno,
-*!*	                                   teldueno, gtegral, telgg, gteventas, telgv, gtemkg, telgm, stecnico, stdirec1, stdirec2,
-*!*	                                   sttel,  sthablar1, vendedor1, larti1, tvend1, vendedor2, larti2, tvend2, vendedor3,
-*!*	                                   larti3, tvend3, vendedor4, larti4, tvend4, vendedor5, larti5, tvend5, saldo_actu,
-*!*	                                   saldo_usd, vigente)
-*!*	               VALUES (?pnCodigo, ?pcNombre, ?pcDirec1, ?pcDirec2, ?pcCiudad, ?pcTelefono, ?pcFax, ?pcEMail, ?pcRUC, ?pcDV, ?pnDiasPlazo, ?pcDueno,
-*!*	                       ?pcTelDueno, ?pcGteGral, ?pcTelGG, ?pcGteVentas, ?pcTelGV, ?pcGteMkg, ?pcTelGM, ?pcSTecnico, ?pcSTDirec1, ?pcSTDirec2,
-*!*	                       ?pcSTTel, ?pcSTHablar1, ?pcVendedor1, ?pcLArti1, ?pcTVend1, ?pcVendedor2, ?pcLArti2, ?pcTVend2, ?pcVendedor3,
-*!*	                       ?pcLArti3, ?pcTVend3, ?pcVendedor4, ?pcLArti4, ?pcTVend4, ?pcVendedor5, ?pcLArti5, ?pcTVend5, ?pnSaldoActu,
-*!*	                       ?pnSaldoUSD, ?pcVigente)
-*!*	         ENDTEXT
-
-*!*	         IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
-*!*	                                        'codigo, nombre, vigente', ;
-*!*	                                        '?pnCodigo, ?pcNombre, ?plVigente')
-*!*	            WAIT 'Registro almacenado correctamente.' WINDOW NOWAIT
-*!*	         ENDIF
-
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
-                                        'codigo, nombre, vigente', ;
                                         'codigo, nombre, direc1, direc2, ciudad, telefono, fax, e_mail, ruc, dv, dias_plazo, dueno, ' + ;
                                         'teldueno, gtegral, telgg, gteventas, telgv, gtemkg, telgm, stecnico, stdirec1, stdirec2, ' + ;
                                         'sttel,  sthablar1, vendedor1, larti1, tvend1, vendedor2, larti2, tvend2, vendedor3, ' + ;
@@ -1995,43 +1975,45 @@ DEFINE CLASS Proveedor AS CUSTOM
 
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
-         pcDirec1 = THIS.cDirec1
-         pcDirec2 = THIS.cDirec2
-         pcCiudad = THIS.cCiudad
-         pcTelefono = THIS.cTelefono
-         pcFax = THIS.cFax
-         pcEMail = THIS.cEMail
-         pcRUC = THIS.cRUC
-         pcDV = THIS.cDV
-         pnDiasPlazo = THIS.nDiasPlazo
-         pcDueno = THIS.cDueno
-         pcTelDueno = THIS.cTelDueno
-         pcGteGral = THIS.cGteGral
-         pcTelGG = THIS.cTelGG
-         pcGteVentas = THIS.cGteVentas
-         pcTelGV = THIS.cTelGV
-         pcGteMkg = THIS.cGteMkg
-         pcTelGM = THIS.cTelGM
-         pcSTecnico = THIS.cSTecnico
-         pcSTDirec1 = THIS.cSTDirec1
-         pcSTDirec2 = THIS.cSTDirec2
-         pcSTTel = THIS.cSTTel
-         pcSTHablar1 = THIS.cSTHablar1
-         pcVendedor1 = THIS.cVendedor1
-         pcLArti1 = THIS.cLArti1
-         pcTVend1 = THIS.cTVend1
-         pcVendedor2 = THIS.cVendedor2
-         pcLArti2 = THIS.cLArti2
-         pcTVend2 = THIS.cTVend2
-         pcVendedor3 = THIS.cVendedor3
-         pcLArti3 = THIS.cLArti3
-         pcTVend3 = THIS.cTVend3
-         pcVendedor4 = THIS.cVendedor4
-         pcLArti4 = THIS.cLArti4
-         pcTVend4 = THIS.cTVend4
-         pcVendedor5 = THIS.cVendedor5
-         pcLArti5 = THIS.cLArti5
-         pcTVend5 = THIS.cTVend5
+         pcDirec1 = IIF(!EMPTY(THIS.cDirec1), THIS.cDirec1, NULL)
+         pcDirec2 = IIF(!EMPTY(THIS.cDirec2), THIS.cDirec2, NULL)
+         pcCiudad = IIF(!EMPTY(THIS.cCiudad), THIS.cCiudad, NULL)
+         pcTelefono = IIF(!EMPTY(THIS.cTelefono), THIS.cTelefono, NULL)
+         pcFax = IIF(!EMPTY(THIS.cFax), THIS.cFax, NULL)
+         pcEMail = IIF(!EMPTY(THIS.cEMail), THIS.cEMail, NULL)
+         pcRUC = IIF(!EMPTY(THIS.cRUC), THIS.cRUC, NULL)
+         pcDV = IIF(!EMPTY(THIS.cDV), THIS.cDV, NULL)
+         pnDiasPlazo = IIF(THIS.nDiasPlazo > 0, THIS.nDiasPlazo, NULL)
+         pcDueno = IIF(!EMPTY(THIS.cDueno), THIS.cDueno, NULL)
+         pcTelDueno = IIF(!EMPTY(THIS.cTelDueno), THIS.cTelDueno, NULL)
+         pcGteGral = IIF(!EMPTY(THIS.cGteGral), THIS.cGteGral, NULL)
+         pcTelGG = IIF(!EMPTY(THIS.cTelGG), THIS.cTelGG, NULL)
+         pcGteVentas = IIF(!EMPTY(THIS.cGteVentas), THIS.cGteVentas, NULL)
+         pcTelGV = IIF(!EMPTY(THIS.cTelGV), THIS.cTelGV, NULL)
+         pcGteMkg = IIF(!EMPTY(THIS.cGteMkg), THIS.cGteMkg, NULL)
+         pcTelGM = IIF(!EMPTY(THIS.cTelGM), THIS.cTelGM, NULL)
+         pcSTecnico = IIF(!EMPTY(THIS.cSTecnico), THIS.cSTecnico, NULL)
+         pcSTDirec1 = IIF(!EMPTY(THIS.cSTDirec1), THIS.cSTDirec1, NULL)
+         pcSTDirec2 = IIF(!EMPTY(THIS.cSTDirec2), THIS.cSTDirec2, NULL)
+         pcSTTel = IIF(!EMPTY(THIS.cSTTel), THIS.cSTTel, NULL)
+         pcSTHablar1 = IIF(!EMPTY(THIS.cSTHablar1), THIS.cSTHablar1, NULL)
+         pcVendedor1 = IIF(!EMPTY(THIS.cVendedor1), THIS.cVendedor1, NULL)
+         pcLArti1 = IIF(!EMPTY(THIS.cLArti1), THIS.cLArti1, NULL)
+         pcTVend1 = IIF(!EMPTY(THIS.cTVend1), THIS.cTVend1, NULL)
+         pcVendedor2 = IIF(!EMPTY(THIS.cVendedor2), THIS.cVendedor2, NULL)
+         pcLArti2 = IIF(!EMPTY(THIS.cLArti2), THIS.cLArti2, NULL)
+         pcTVend2 = IIF(!EMPTY(THIS.cTVend2), THIS.cTVend2, NULL)
+         pcVendedor3 = IIF(!EMPTY(THIS.cVendedor3), THIS.cVendedor3, NULL)
+         pcLArti3 = IIF(!EMPTY(THIS.cLArti3), THIS.cLArti3, NULL)
+         pcTVend3 = IIF(!EMPTY(THIS.cTVend3), THIS.cTVend3, NULL)
+         pcVendedor4 = IIF(!EMPTY(THIS.cVendedor4), THIS.cVendedor4, NULL)
+         pcLArti4 = IIF(!EMPTY(THIS.cLArti4), THIS.cLArti4, NULL)
+         pcTVend4 = IIF(!EMPTY(THIS.cTVend4), THIS.cTVend4, NULL)
+         pcVendedor5 = IIF(!EMPTY(THIS.cVendedor5), THIS.cVendedor5, NULL)
+         pcLArti5 = IIF(!EMPTY(THIS.cLArti5), THIS.cLArti5, NULL)
+         pcTVend5 = IIF(!EMPTY(THIS.cTVend5), THIS.cTVend5, NULL)
+         pnSaldoActu = THIS.nSaldoActu
+         pnSaldoUSD = THIS.nSaldoUSD
          pcVigente = THIS.cVigente
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
