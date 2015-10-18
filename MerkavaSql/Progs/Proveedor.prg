@@ -1356,6 +1356,14 @@ DEFINE CLASS Proveedor AS CUSTOM
          RETURN .F.
       ENDIF
 
+      **/
+      *   RUC genérico habilitado para el libro compras:
+      *      Proveedores del Exterior – RUC 99999901 DV 0: Para compras efectuadas de personas físicas o jurídicas residentes en el exterior.
+      */
+      IF THIS.cRUC = '99999901' THEN
+         RETURN .T.
+      ENDIF
+
       LOCAL llRetorno, loModelo, llExiste
       llRetorno = .T.
       loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
@@ -1406,6 +1414,14 @@ DEFINE CLASS Proveedor AS CUSTOM
       IF STR(calcular_dv_11_a(THIS.cRUC, 11), 1) <> THIS.cDV THEN
          MESSAGEBOX('El Dígito Verificador no corresponde.', 0+16, THIS.Name + '.ValidarDV()')
          RETURN .F.
+      ENDIF
+
+      **/
+      *   RUC genérico habilitado para el libro compras:
+      *      Proveedores del Exterior – RUC 99999901 DV 0: Para compras efectuadas de personas físicas o jurídicas residentes en el exterior.
+      */
+      IF THIS.cRUC = '99999901' AND THIS.cDV = '0' THEN
+         RETURN .T.
       ENDIF
 
       LOCAL llRetorno, loModelo, llExiste

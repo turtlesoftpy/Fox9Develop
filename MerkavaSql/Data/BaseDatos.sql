@@ -312,6 +312,38 @@ ALTER TABLE pais
    ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE plazo (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   num_vtos SMALLINT(5) UNSIGNED NOT NULL,
+   separacion CHAR(1) NOT NULL,
+   primero SMALLINT(5) UNSIGNED NOT NULL,
+   resto SMALLINT(5) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE plazo
+   ADD CONSTRAINT pk_plazo_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_plazo_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT chk_plazo_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_plazo_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_plazo_num_vtos
+      CHECK (num_vtos >= 0),
+   ADD CONSTRAINT chk_plazo_separacion
+      CHECK (separacion IN ('D', 'M')),
+   ADD CONSTRAINT chk_plazo_primero
+      CHECK (primero >= 0),
+   ADD CONSTRAINT chk_plazo_resto
+      CHECK (resto >= 0),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE proveedor (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
@@ -354,7 +386,7 @@ CREATE TABLE proveedor (
    tvend5 VARCHAR(25),
    saldo_actu NUMERIC(12) NOT NULL,
    saldo_usd NUMERIC(12.2) NOT NULL,
-   vigente VARCHAR(1) NOT NULL
+   vigente CHAR(1) NOT NULL
 );
 
 ALTER TABLE proveedor
