@@ -14,6 +14,163 @@ USE merkava_80004234_001;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE articulo (
+   codigo INTEGER UNSIGNED NOT NULL,
+   nombre VARCHAR(100) NOT NULL,
+   cod_articulo VARCHAR(20) NOT NULL,
+   cod_barra VARCHAR(20),
+   cod_original VARCHAR(20),
+   cod_alternativo VARCHAR(20),
+   aplicacion VARCHAR(480),
+   familia SMALLINT(5) UNSIGNED NOT NULL,
+   rubro SMALLINT(5) UNSIGNED NOT NULL,
+   subrubro SMALLINT(5) UNSIGNED NOT NULL,
+   marca SMALLINT(5) UNSIGNED NOT NULL,
+   unidad SMALLINT(5) UNSIGNED NOT NULL,
+   proveedor SMALLINT(5) UNSIGNED NOT NULL,
+   pais SMALLINT(5) UNSIGNED NOT NULL,
+   ubicacion VARCHAR(20),
+   vigente TINYINT(1) UNSIGNED NOT NULL,
+   lprecio TINYINT(1) UNSIGNED NOT NULL,
+   gravado TINYINT(1) UNSIGNED NOT NULL,
+   porc_iva NUMERIC(19,6),
+   pcostog NUMERIC(19,6),
+   pcostod NUMERIC(19,6),
+   pventag1 NUMERIC(19,6),
+   pventag2 NUMERIC(19,6),
+   pventag3 NUMERIC(19,6),
+   pventag4 NUMERIC(19,6),
+   pventag5 NUMERIC(19,6),
+   pventad1 NUMERIC(19,6),
+   pventad2 NUMERIC(19,6),
+   pventad3 NUMERIC(19,6),
+   pventad4 NUMERIC(19,6),
+   pventad5 NUMERIC(19,6),
+   stock_min NUMERIC(19,6),
+   stock_max NUMERIC(19,6),
+   polinvsmin TINYINT(1) UNSIGNED NOT NULL,
+   polinvsmax TINYINT(1) UNSIGNED NOT NULL,
+   caracter1 VARCHAR(60),
+   caracter2 VARCHAR(60),
+   caracter3 VARCHAR(60),
+   otros1 VARCHAR(60),
+   otros2 VARCHAR(60),
+   fecucompra DATE,
+   fecuventa DATE,
+   stock_actual NUMERIC(19,6),
+   stock_ot NUMERIC(19,6),
+   stock_comprometido NUMERIC(19,6),
+   stock_solicitado NUMERIC(19,6)
+);
+
+ALTER TABLE articulo
+   ADD CONSTRAINT pk_ciudad_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_articulo_familia
+      FOREIGN KEY (familia) REFERENCES familia (cod_articulo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_articulo_rubro
+      FOREIGN KEY (rubro) REFERENCES rubro (cod_articulo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_articulo_subrubro
+      FOREIGN KEY (subrubro) REFERENCES subrubro (cod_articulo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_articulo_marca
+      FOREIGN KEY (marca) REFERENCES marca (cod_articulo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_articulo_unidad
+      FOREIGN KEY (unidad) REFERENCES unidad (cod_articulo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_articulo_proveedor
+      FOREIGN KEY (proveedor) REFERENCES proveedor (cod_articulo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_articulo_pais
+      FOREIGN KEY (pais) REFERENCES pais (cod_articulo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_articulo_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT unq_articulo_cod_articulo
+      UNIQUE (cod_articulo),
+   ADD CONSTRAINT unq_articulo_cod_barra
+      UNIQUE (cod_barra),
+   ADD CONSTRAINT unq_articulo_cod_original
+      UNIQUE (cod_original),
+   ADD CONSTRAINT unq_articulo_cod_alternativo
+      UNIQUE (cod_alternativo),
+   ADD CONSTRAINT chk_articulo_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_articulo_cod_articulo
+      CHECK (cod_articulo <> ''),
+   ADD CONSTRAINT chk_articulo_cod_barra
+      CHECK (cod_barra IS NULL OR cod_barra <> ''),
+   ADD CONSTRAINT chk_articulo_cod_original
+      CHECK (cod_original IS NULL OR cod_original <> ''),
+   ADD CONSTRAINT chk_articulo_cod_alternativo
+      CHECK (cod_alternativo IS NULL OR cod_alternativo <> ''),
+   ADD CONSTRAINT chk_articulo_aplicacion
+      CHECK (aplicacion IS NULL OR aplicacion <> ''),
+   ADD CONSTRAINT chk_articulo_ubicacion
+      CHECK (ubicacion IS NULL OR ubicacion <> ''),
+   ADD CONSTRAINT chk_articulo_porc_iva
+      CHECK (porc_iva IS NULL OR porc_iva > 0),
+   ADD CONSTRAINT chk_articulo_pcostog
+      CHECK (pcostog IS NULL OR pcostog > 0),
+   ADD CONSTRAINT chk_articulo_pcostod
+      CHECK (pcostod IS NULL OR pcostod > 0),
+   ADD CONSTRAINT chk_articulo_pventag1
+      CHECK (pventag1 IS NULL OR pventag1 > 0),
+   ADD CONSTRAINT chk_articulo_pventag2
+      CHECK (pventag2 IS NULL OR pventag2 > 0),
+   ADD CONSTRAINT chk_articulo_pventag3
+      CHECK (pventag3 IS NULL OR pventag3 > 0),
+   ADD CONSTRAINT chk_articulo_pventag4
+      CHECK (pventag4 IS NULL OR pventag4 > 0),
+   ADD CONSTRAINT chk_articulo_pventag5
+      CHECK (pventag5 IS NULL OR pventag5 > 0),
+   ADD CONSTRAINT chk_articulo_pventad1
+      CHECK (pventad1 IS NULL OR pventad1 > 0),
+   ADD CONSTRAINT chk_articulo_pventad2
+      CHECK (pventad2 IS NULL OR pventad2 > 0),
+   ADD CONSTRAINT chk_articulo_pventad3
+      CHECK (pventad3 IS NULL OR pventad3 > 0),
+   ADD CONSTRAINT chk_articulo_pventad4
+      CHECK (pventad4 IS NULL OR pventad4 > 0),
+   ADD CONSTRAINT chk_articulo_pventad5
+      CHECK (pventad5 IS NULL OR pventad5 > 0),
+   ADD CONSTRAINT chk_articulo_stock_min
+      CHECK (stock_min IS NULL OR stock_min > 0),
+   ADD CONSTRAINT chk_articulo_stock_max
+      CHECK (stock_max IS NULL OR stock_max > 0),
+   ADD CONSTRAINT chk_articulo_caracter1
+      CHECK (caracter1 IS NULL OR caracter1 <> ''),
+   ADD CONSTRAINT chk_articulo_caracter2
+      CHECK (caracter2 IS NULL OR caracter2 <> ''),
+   ADD CONSTRAINT chk_articulo_caracter3
+      CHECK (caracter3 IS NULL OR caracter3 <> ''),
+   ADD CONSTRAINT chk_articulo_otros1
+      CHECK (otros1 IS NULL OR otros1 <> ''),
+   ADD CONSTRAINT chk_articulo_otros2
+      CHECK (otros2 IS NULL OR otros2 <> ''),
+   ADD CONSTRAINT chk_articulo_stock_actual
+      CHECK (stock_actual IS NULL OR stock_actual > 0),
+   ADD CONSTRAINT chk_articulo_stock_ot
+      CHECK (stock_ot IS NULL OR stock_ot > 0),
+   ADD CONSTRAINT chk_articulo_stock_comprometido
+      CHECK (stock_comprometido IS NULL OR stock_comprometido > 0),
+   ADD CONSTRAINT chk_articulo_stock_solicitado
+      CHECK (stock_solicitado IS NULL OR stock_solicitado > 0),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE depar (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
@@ -125,11 +282,11 @@ ALTER TABLE cobrador
 CREATE TABLE familia (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   p1 NUMERIC(6,2),
-   p2 NUMERIC(6,2),
-   p3 NUMERIC(6,2),
-   p4 NUMERIC(6,2),
-   p5 NUMERIC(6,2),
+   p1 NUMERIC(19,6),
+   p2 NUMERIC(19,6),
+   p3 NUMERIC(19,6),
+   p4 NUMERIC(19,6),
+   p5 NUMERIC(19,6),
    vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
@@ -384,8 +541,8 @@ CREATE TABLE proveedor (
    vendedor5 VARCHAR(40),
    larti5 VARCHAR(25),
    tvend5 VARCHAR(25),
-   saldo_actu NUMERIC(12) NOT NULL,
-   saldo_usd NUMERIC(12.2) NOT NULL,
+   saldo_actu NUMERIC(19,6) NOT NULL,
+   saldo_usd NUMERIC(19,6) NOT NULL,
    vigente CHAR(1) NOT NULL
 );
 
@@ -419,6 +576,26 @@ ALTER TABLE rubro
    ADD CONSTRAINT chk_rubro_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_rubro_nombre
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE ruta (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE ruta
+   ADD CONSTRAINT pk_ruta_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_ruta_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT chk_ruta_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_ruta_nombre
       CHECK (nombre <> ''),
    DEFAULT CHARACTER SET = 'latin1'
    DEFAULT COLLATE = 'latin1_swedish_ci',
