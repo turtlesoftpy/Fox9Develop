@@ -159,13 +159,13 @@ ALTER TABLE articulo
    ADD CONSTRAINT chk_articulo_otros2
       CHECK (otros2 IS NULL OR otros2 <> ''),
    ADD CONSTRAINT chk_articulo_stock_actual
-      CHECK (stock_actual IS NULL OR stock_actual > 0),
+      CHECK (stock_actual >= 0),
    ADD CONSTRAINT chk_articulo_stock_ot
-      CHECK (stock_ot IS NULL OR stock_ot > 0),
+      CHECK (stock_ot >= 0),
    ADD CONSTRAINT chk_articulo_stock_comprometido
-      CHECK (stock_comprometido IS NULL OR stock_comprometido > 0),
+      CHECK (stock_comprometido >= 0),
    ADD CONSTRAINT chk_articulo_stock_solicitado
-      CHECK (stock_solicitado IS NULL OR stock_solicitado > 0),
+      CHECK (stock_solicitado >= 0),
    DEFAULT CHARACTER SET = 'latin1'
    DEFAULT COLLATE = 'latin1_swedish_ci',
    ENGINE=InnoDB;
@@ -555,6 +555,10 @@ ALTER TABLE proveedor
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_proveedor_nombre
       CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_proveedor_saldo_actu
+      CHECK (saldo_actu >= 0),
+   ADD CONSTRAINT chk_proveedor_saldo_usd
+      CHECK (saldo_usd >= 0),
    ADD CONSTRAINT chk_proveedor_vigente
       CHECK (vigente IN ('S', 'N')),
    DEFAULT CHARACTER SET = 'latin1'
@@ -821,6 +825,10 @@ ALTER TABLE cliente
       CHECK (contacto <> ''),
    ADD CONSTRAINT chk_cliente_estado
       CHECK (estado IN ('A', 'I')),
+   ADD CONSTRAINT chk_cliente_saldo_actu
+      CHECK (saldo_actu >= 0),
+   ADD CONSTRAINT chk_cliente_saldo_usd
+      CHECK (saldo_usd >= 0),
    DEFAULT CHARACTER SET = 'latin1'
    DEFAULT COLLATE = 'latin1_swedish_ci',
    ENGINE=InnoDB;
