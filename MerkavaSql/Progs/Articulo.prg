@@ -1570,8 +1570,8 @@ DEFINE CLASS Articulo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarCodigo()
-      IF !BETWEEN(THIS.nCodigo, 1, 4294967295) THEN
-         MESSAGEBOX([El código debe ser un valor entre 1 y 4294967295.], 0+16, THIS.Name + '.ValidarCodigo()')
+      IF !BETWEEN(THIS.nCodigo, 1, 16777215) THEN
+         MESSAGEBOX([El código debe ser un valor entre 1 y 16777215.], 0+16, THIS.Name + '.ValidarCodigo()')
          RETURN .F.
       ENDIF
 
@@ -1620,7 +1620,7 @@ DEFINE CLASS Articulo AS CUSTOM
             llRetorno = .F.
          ENDIF
       CASE THIS.nBandera = 2   && Modificar.
-         IF llExiste AND loModelo.GetCodArticulo() <> THIS.nCodArticulo THEN
+         IF llExiste AND loModelo.GetCodigo() <> THIS.nCodigo THEN
             MESSAGEBOX('El nombre ya existe.', 0+16, THIS.Name + '.ValidarNombre()')
             llRetorno = .F.
          ENDIF
@@ -1653,7 +1653,7 @@ DEFINE CLASS Articulo AS CUSTOM
             llRetorno = .F.
          ENDIF
       CASE THIS.nBandera = 2   && Modificar.
-         IF llExiste AND loModelo.GetCodArticulo() <> THIS.nCodArticulo THEN
+         IF llExiste AND loModelo.GetCodigo() <> THIS.nCodigo THEN
             MESSAGEBOX('El código de artículo ya existe.', 0+16, THIS.Name + '.ValidarCodArticulo()')
             llRetorno = .F.
          ENDIF
@@ -1685,7 +1685,7 @@ DEFINE CLASS Articulo AS CUSTOM
             llRetorno = .F.
          ENDIF
       CASE THIS.nBandera = 2   && Modificar.
-         IF llExiste AND loModelo.GetCodBarra() <> THIS.nCodBarra THEN
+         IF llExiste AND loModelo.GetCodigo() <> THIS.nCodigo THEN
             MESSAGEBOX('El código de barras ya existe.', 0+16, THIS.Name + '.ValidarCodBarra()')
             llRetorno = .F.
          ENDIF
@@ -1717,7 +1717,7 @@ DEFINE CLASS Articulo AS CUSTOM
             llRetorno = .F.
          ENDIF
       CASE THIS.nBandera = 2   && Modificar.
-         IF llExiste AND loModelo.GetCodOriginal() <> THIS.nCodOriginal THEN
+         IF llExiste AND loModelo.GetCodigo() <> THIS.nCodigo THEN
             MESSAGEBOX('El código original ya existe.', 0+16, THIS.Name + '.ValidarCodOriginal()')
             llRetorno = .F.
          ENDIF
@@ -1749,7 +1749,7 @@ DEFINE CLASS Articulo AS CUSTOM
             llRetorno = .F.
          ENDIF
       CASE THIS.nBandera = 2   && Modificar.
-         IF llExiste AND loModelo.GetCodAlternativo() <> THIS.nCodAlternativo THEN
+         IF llExiste AND loModelo.GetCodigo() <> THIS.nCodigo THEN
             MESSAGEBOX('El código alternativo ya existe.', 0+16, THIS.Name + '.ValidarCodAlternativo()')
             llRetorno = .F.
          ENDIF
@@ -1921,11 +1921,6 @@ DEFINE CLASS Articulo AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF !INLIST(THIS.nPorcIVA, 0, 5, 10) THEN
-         MESSAGEBOX('El porcentaje del IVA debe ser uno de los siguientes valores: 0, 5 ó 10.', 0+16, THIS.Name + '.ValidarPorcIVA()')
-         RETURN .F.
-      ENDIF
-
       IF !THIS.lGravado AND THIS.nPorcIVA <> 0 THEN
          MESSAGEBOX('El artículo debe ser gravado para que el porcentaje del IVA sea mayor que cero.', 0+16, THIS.Name + '.ValidarPorcIVA()')
          RETURN .F.
@@ -1933,6 +1928,11 @@ DEFINE CLASS Articulo AS CUSTOM
 
       IF THIS.lGravado AND THIS.nPorcIVA = 0 THEN
          MESSAGEBOX('El artículo debe ser exento para que el porcentaje del IVA sea igual a cero.', 0+16, THIS.Name + '.ValidarPorcIVA()')
+         RETURN .F.
+      ENDIF
+
+      IF THIS.lGravado AND !INLIST(THIS.nPorcIVA, 5, 10) THEN
+         MESSAGEBOX('El porcentaje del IVA debe ser uno de los siguientes valores: 5 ó 10.', 0+16, THIS.Name + '.ValidarPorcIVA()')
          RETURN .F.
       ENDIF
    ENDFUNC
@@ -2347,10 +2347,10 @@ DEFINE CLASS Articulo AS CUSTOM
          .cOtros2 = IIF(!ISNULL(otros2), otros2, '')
          .dFecUCompra = IIF(!ISNULL(fecucompra), fecucompra, {})
          .dFecUVenta = IIF(!ISNULL(fecuventa), fecuventa, {})
-         .nStockActual = IIF(!ISNULL(stock_actual), stock_actual, 0)
-         .nStockOt = IIF(!ISNULL(stock_ot), stock_ot, 0)
-         .nStockComprometido = IIF(!ISNULL(stock_comprometido), stock_comprometido, 0)
-         .nStockSolicitado = IIF(!ISNULL(stock_solicitado), stock_solicitado, 0)
+         .nStockActual = stock_actual
+         .nStockOt = stock_ot
+         .nStockComprometido = stock_comprometido
+         .nStockSolicitado = stock_solicitado
       ENDWITH
    ENDFUNC
 
@@ -2410,10 +2410,10 @@ DEFINE CLASS Articulo AS CUSTOM
          pcOtros2 = IIF(!EMPTY(THIS.cOtros2), THIS.cOtros2, NULL)
          pdFecUCompra = IIF(!EMPTY(THIS.dFecUCompra), THIS.dFecUCompra, NULL)
          pdFecUVenta = IIF(!EMPTY(THIS.dFecUVenta), THIS.dFecUVenta, NULL)
-         pnStockActual = IIF(THIS.nStockActual > 0, THIS.nStockActual, NULL)
-         pnStockOt = IIF(THIS.nStockOt > 0, THIS.nStockOt, NULL)
-         pnStockComprometido = IIF(THIS.nStockComprometido > 0, THIS.nStockComprometido, NULL)
-         pnStockSolicitado = IIF(THIS.nStockSolicitado > 0, THIS.nStockSolicitado, NULL)
+         pnStockActual = THIS.nStockActual
+         pnStockOt = THIS.nStockOt
+         pnStockComprometido = THIS.nStockComprometido
+         pnStockSolicitado = THIS.nStockSolicitado
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, cod_articulo, cod_barra, cod_original, cod_alternativo, aplicacion, ' + ;
@@ -2493,10 +2493,11 @@ DEFINE CLASS Articulo AS CUSTOM
          pcOtros2 = IIF(!EMPTY(THIS.cOtros2), THIS.cOtros2, NULL)
          pdFecUCompra = IIF(!EMPTY(THIS.dFecUCompra), THIS.dFecUCompra, NULL)
          pdFecUVenta = IIF(!EMPTY(THIS.dFecUVenta), THIS.dFecUVenta, NULL)
-         pnStockActual = IIF(THIS.nStockActual > 0, THIS.nStockActual, NULL)
-         pnStockOt = IIF(THIS.nStockOt > 0, THIS.nStockOt, NULL)
-         pnStockComprometido = IIF(THIS.nStockComprometido > 0, THIS.nStockComprometido, NULL)
-         pnStockSolicitado = IIF(THIS.nStockSolicitado > 0, THIS.nStockSolicitado, NULL)
+         pnStockActual = THIS.nStockActual
+         pnStockOt = THIS.nStockOt
+         pnStockComprometido = THIS.nStockComprometido
+         pnStockSolicitado = THIS.nStockSolicitado
+
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, cod_articulo = ?pcCodArticulo, cod_barra = ?pcCodBarra, ' + ;

@@ -15,7 +15,7 @@ USE merkava_80004234_001;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE articulo (
-   codigo INTEGER UNSIGNED NOT NULL,
+   codigo MEDIUMINT UNSIGNED NOT NULL,
    nombre VARCHAR(100) NOT NULL,
    cod_articulo VARCHAR(20) NOT NULL,
    cod_barra VARCHAR(20),
@@ -57,10 +57,10 @@ CREATE TABLE articulo (
    otros2 VARCHAR(60),
    fecucompra DATE,
    fecuventa DATE,
-   stock_actual NUMERIC(19,6),
-   stock_ot NUMERIC(19,6),
-   stock_comprometido NUMERIC(19,6),
-   stock_solicitado NUMERIC(19,6)
+   stock_actual NUMERIC(19,6) NOT NULL,
+   stock_ot NUMERIC(19,6) NOT NULL,
+   stock_comprometido NUMERIC(19,6) NOT NULL,
+   stock_solicitado NUMERIC(19,6) NOT NULL
 );
 
 ALTER TABLE articulo
@@ -714,6 +714,113 @@ ALTER TABLE vendedor
       CHECK (nombre <> ''),
    ADD CONSTRAINT chk_vendedor_documento
       CHECK (documento IS NULL OR documento <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE cliente (
+   codigo MEDIUMINT UNSIGNED NOT NULL,
+   nombre VARCHAR(100) NOT NULL,
+   direc1 VARCHAR(60),
+   direc2 VARCHAR(60),
+   direc3 VARCHAR(60),
+   direc4 VARCHAR(60),
+   direc5 VARCHAR(60),
+   direc6 VARCHAR(60),
+   direc7 VARCHAR(60),
+   direc8 VARCHAR(60),
+   direc9 VARCHAR(60),
+   departamen SMALLINT(5) UNSIGNED,
+   ciudad SMALLINT(5) UNSIGNED,
+   barrio SMALLINT(5) UNSIGNED,
+   ruta SMALLINT(5) UNSIGNED NOT NULL,
+   telefono VARCHAR(30),
+   fax VARCHAR(30),
+   e_mail VARCHAR(40),
+   contacto VARCHAR(30),
+   fechanac DATE,
+   documento VARCHAR(15) NOT NULL,
+   ruc VARCHAR(15),
+   dv CHAR(1),
+   estado CHAR(1) NOT NULL,
+   plazo SMALLINT(5) UNSIGNED,
+   vendedor SMALLINT(5) UNSIGNED,
+   lista SMALLINT(5) UNSIGNED NOT NULL,
+   limite_cre NUMERIC(19,6) NOT NULL,
+   saldo_actu NUMERIC(19,6) NOT NULL,
+   saldo_usd NUMERIC(19,6) NOT NULL,
+   facturar TINYINT(1) UNSIGNED NOT NULL,
+   fec_ioper DATE,
+   motivoclie SMALLINT(5) UNSIGNED NOT NULL,
+   odatosclie VARCHAR(40),
+   obs1 VARCHAR(72),
+   obs2 VARCHAR(72),
+   obs3 VARCHAR(72),
+   obs4 VARCHAR(72),
+   obs5 VARCHAR(72),
+   obs6 VARCHAR(72),
+   obs7 VARCHAR(72),
+   obs8 VARCHAR(72),
+   obs9 VARCHAR(72),
+   obs10 VARCHAR(72),
+   ref1 VARCHAR(72),
+   ref2 VARCHAR(72),
+   ref3 VARCHAR(72),
+   ref4 VARCHAR(72),
+   ref5 VARCHAR(72),
+   cuenta VARCHAR(18)
+);
+
+ALTER TABLE cliente
+   ADD CONSTRAINT pk_cliente_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_cliente_departamen
+      FOREIGN KEY (departamen) REFERENCES depar (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cliente_ciudad
+      FOREIGN KEY (ciudad) REFERENCES ciudad (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cliente_departamen_ciudad
+      FOREIGN KEY (departamen, ciudad) REFERENCES ciudad (departamen, codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cliente_barrio
+      FOREIGN KEY (barrio) REFERENCES barrio (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cliente_departamen_ciudad_barrio
+      FOREIGN KEY (departamen, ciudad, barrio) REFERENCES barrio (departamen, ciudad, codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cliente_ruta
+      FOREIGN KEY (ruta) REFERENCES ruta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cliente_plazo
+      FOREIGN KEY (plazo) REFERENCES plazo (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cliente_vendedor
+      FOREIGN KEY (vendedor) REFERENCES vendedor (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cliente_motivoclie
+      FOREIGN KEY (motivoclie) REFERENCES motivocl (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_cliente_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT chk_cliente_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_cliente_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_cliente_contacto
+      CHECK (contacto <> ''),
+   ADD CONSTRAINT chk_cliente_estado
+      CHECK (estado IN ('A', 'I')),
    DEFAULT CHARACTER SET = 'latin1'
    DEFAULT COLLATE = 'latin1_swedish_ci',
    ENGINE=InnoDB;
