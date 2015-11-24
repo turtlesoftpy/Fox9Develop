@@ -1,5 +1,4 @@
 DEFINE CLASS Aplicacion AS CUSTOM
-   PROTECTED oBaseDatos
    PROTECTED cVersion
    PROTECTED cCompilacion
    PROTECTED dFechaUltimaModificacion
@@ -8,23 +7,6 @@ DEFINE CLASS Aplicacion AS CUSTOM
    PROTECTED FUNCTION Init
       * Establece el entorno de trabajo.
       THIS.SetEntorno()
-
-      * Abre los arhivos de datos e índices.
-      THIS.oBaseDatos = NEWOBJECT('BaseDatos', 'BaseDatos.prg')
-      IF VARTYPE(THIS.oBaseDatos) <> 'O' THEN
-         RETURN .F.
-      ENDIF
-
-*!*	      THIS.oBaseDatos = NEWOBJECT('CapaDatosSql', 'CapaDatosSql.prg', NULL, ;
-*!*	                                  'MySQL ODBC 5.2w Driver', ;
-*!*	                                  'localhost', ;
-*!*	                                  '3306', ;
-*!*	                                  'Merkava.80004234.001', ;
-*!*	                                  'root', ;
-*!*	                                  'masterkey')
-*!*	      IF VARTYPE(THIS.oBaseDatos) <> 'O' THEN
-*!*	         RETURN .F.
-*!*	      ENDIF
 
       * Obtiene la versión del archivo ejecutable y su compilación.
       AGETFILEVERSION(aVersionPuntoEXE, 'Merkava.exe')
@@ -154,20 +136,5 @@ DEFINE CLASS Aplicacion AS CUSTOM
    */ -------------------------------------------------------------------------- */
    FUNCTION GetFechaUltimaModificacion
       RETURN THIS.dFechaUltimaModificacion
-   ENDFUNC
-
-   */ -------------------------------------------------------------------------- */
-   FUNCTION GetRuta
-      RETURN THIS.oBaseDatos.GetRuta()
-   ENDFUNC
-
-   */ -------------------------------------------------------------------------- */
-   FUNCTION GetRUC
-      RETURN THIS.oBaseDatos.GetRUC()
-   ENDFUNC
-
-   */ -------------------------------------------------------------------------- */
-   FUNCTION GetSucursal
-      RETURN THIS.oBaseDatos.GetSucursal()
    ENDFUNC
 ENDDEFINE

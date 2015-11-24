@@ -1773,16 +1773,14 @@ DEFINE CLASS Articulo AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF THIS.nFamilia <> 0 THEN
-         IF EMPTY(THIS.oFamilia.GetNombre()) THEN
-            MESSAGEBOX('La familia no existe.', 0+16, THIS.Name + '.ValidarFamilia()')
-            RETURN .F.
-         ENDIF
+      IF EMPTY(THIS.oFamilia.GetNombre()) THEN
+         MESSAGEBOX('La familia no existe.', 0+16, THIS.Name + '.ValidarFamilia()')
+         RETURN .F.
+      ENDIF
 
-         IF !THIS.oFamilia.GetVigente() THEN
-            MESSAGEBOX('La familia no está vigente.', 0+16, THIS.Name + '.ValidarFamilia()')
-            RETURN .F.
-         ENDIF
+      IF !THIS.oFamilia.GetVigente() THEN
+         MESSAGEBOX('La familia no está vigente.', 0+16, THIS.Name + '.ValidarFamilia()')
+         RETURN .F.
       ENDIF
    ENDFUNC
 
@@ -1793,16 +1791,14 @@ DEFINE CLASS Articulo AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF THIS.nRubro <> 0 THEN
-         IF EMPTY(THIS.oRubro.GetNombre()) THEN
-            MESSAGEBOX('El rubro no existe.', 0+16, THIS.Name + '.ValidarRubro()')
-            RETURN .F.
-         ENDIF
+      IF EMPTY(THIS.oRubro.GetNombre()) THEN
+         MESSAGEBOX('El rubro no existe.', 0+16, THIS.Name + '.ValidarRubro()')
+         RETURN .F.
+      ENDIF
 
-         IF !THIS.oRubro.GetVigente() THEN
-            MESSAGEBOX('El rubro no está vigente.', 0+16, THIS.Name + '.ValidarRubro()')
-            RETURN .F.
-         ENDIF
+      IF !THIS.oRubro.GetVigente() THEN
+         MESSAGEBOX('El rubro no está vigente.', 0+16, THIS.Name + '.ValidarRubro()')
+         RETURN .F.
       ENDIF
    ENDFUNC
 
@@ -1813,16 +1809,14 @@ DEFINE CLASS Articulo AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF THIS.nSubRubro <> 0 THEN
-         IF EMPTY(THIS.oSubRubro.GetNombre()) THEN
-            MESSAGEBOX('El sub-rubro no existe.', 0+16, THIS.Name + '.ValidarSubRubro()')
-            RETURN .F.
-         ENDIF
+      IF EMPTY(THIS.oSubRubro.GetNombre()) THEN
+         MESSAGEBOX('El sub-rubro no existe.', 0+16, THIS.Name + '.ValidarSubRubro()')
+         RETURN .F.
+      ENDIF
 
-         IF !THIS.oSubRubro.GetVigente() THEN
-            MESSAGEBOX('El sub-rubro no está vigente.', 0+16, THIS.Name + '.ValidarSubRubro()')
-            RETURN .F.
-         ENDIF
+      IF !THIS.oSubRubro.GetVigente() THEN
+         MESSAGEBOX('El sub-rubro no está vigente.', 0+16, THIS.Name + '.ValidarSubRubro()')
+         RETURN .F.
       ENDIF
    ENDFUNC
 
@@ -1833,16 +1827,14 @@ DEFINE CLASS Articulo AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF THIS.nMarca <> 0 THEN
-         IF EMPTY(THIS.oMarca.GetNombre()) THEN
-            MESSAGEBOX('La marca no existe.', 0+16, THIS.Name + '.ValidarMarca()')
-            RETURN .F.
-         ENDIF
+      IF EMPTY(THIS.oMarca.GetNombre()) THEN
+         MESSAGEBOX('La marca no existe.', 0+16, THIS.Name + '.ValidarMarca()')
+         RETURN .F.
+      ENDIF
 
-         IF !THIS.oMarca.GetVigente() THEN
-            MESSAGEBOX('La marca no está vigente.', 0+16, THIS.Name + '.ValidarMarca()')
-            RETURN .F.
-         ENDIF
+      IF !THIS.oMarca.GetVigente() THEN
+         MESSAGEBOX('La marca no está vigente.', 0+16, THIS.Name + '.ValidarMarca()')
+         RETURN .F.
       ENDIF
    ENDFUNC
 
@@ -1853,16 +1845,14 @@ DEFINE CLASS Articulo AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF THIS.nUnidadMedida <> 0 THEN
-         IF EMPTY(THIS.oUnidadMedida.GetNombre()) THEN
-            MESSAGEBOX('La unidad de medida no existe.', 0+16, THIS.Name + '.ValidarUnidadMedida()')
-            RETURN .F.
-         ENDIF
+      IF EMPTY(THIS.oUnidadMedida.GetNombre()) THEN
+         MESSAGEBOX('La unidad de medida no existe.', 0+16, THIS.Name + '.ValidarUnidadMedida()')
+         RETURN .F.
+      ENDIF
 
-         IF !THIS.oUnidadMedida.GetVigente() THEN
-            MESSAGEBOX('La unidad de medida no está vigente.', 0+16, THIS.Name + '.ValidarUnidadMedida()')
-            RETURN .F.
-         ENDIF
+      IF !THIS.oUnidadMedida.GetVigente() THEN
+         MESSAGEBOX('La unidad de medida no está vigente.', 0+16, THIS.Name + '.ValidarUnidadMedida()')
+         RETURN .F.
       ENDIF
    ENDFUNC
 
@@ -1873,16 +1863,14 @@ DEFINE CLASS Articulo AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF THIS.nProveedor <> 0 THEN
-         IF EMPTY(THIS.oProveedor.GetNombre()) THEN
-            MESSAGEBOX('El proveedor no existe.', 0+16, THIS.Name + '.ValidarProveedor()')
-            RETURN .F.
-         ENDIF
+      IF EMPTY(THIS.oProveedor.GetNombre()) THEN
+         MESSAGEBOX('El proveedor no existe.', 0+16, THIS.Name + '.ValidarProveedor()')
+         RETURN .F.
+      ENDIF
 
-         IF THIS.oProveedor.GetVigente() <> 'S' THEN
-            MESSAGEBOX('El proveedor no está vigente.', 0+16, THIS.Name + '.ValidarProveedor()')
-            RETURN .F.
-         ENDIF
+      IF THIS.oProveedor.GetVigente() <> 'S' THEN
+         MESSAGEBOX('El proveedor no está vigente.', 0+16, THIS.Name + '.ValidarProveedor()')
+         RETURN .F.
       ENDIF
    ENDFUNC
 
@@ -1893,16 +1881,14 @@ DEFINE CLASS Articulo AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF THIS.nPais <> 0 THEN
-         IF EMPTY(THIS.oPais.GetNombre()) THEN
-            MESSAGEBOX('El país no existe.', 0+16, THIS.Name + '.ValidarPais()')
-            RETURN .F.
-         ENDIF
+      IF EMPTY(THIS.oPais.GetNombre()) THEN
+         MESSAGEBOX('El país no existe.', 0+16, THIS.Name + '.ValidarPais()')
+         RETURN .F.
+      ENDIF
 
-         IF !THIS.oPais.GetVigente() THEN
-            MESSAGEBOX('El país no está vigente.', 0+16, THIS.Name + '.ValidarPais()')
-            RETURN .F.
-         ENDIF
+      IF !THIS.oPais.GetVigente() THEN
+         MESSAGEBOX('El país no está vigente.', 0+16, THIS.Name + '.ValidarPais()')
+         RETURN .F.
       ENDIF
    ENDFUNC
 

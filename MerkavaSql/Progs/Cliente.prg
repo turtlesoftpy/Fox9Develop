@@ -495,17 +495,12 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcDocumento' debe ser de tipo texto.], 0+16, THIS.Name + '.SetDocumento()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcDocumento) > 15 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcDocumento' debe ser como máximo de 15 caracteres.], 0+16, THIS.Name + '.SetDocumento()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cDocumento = ALLTRIM(tcDocumento)
    ENDFUNC
 
-   * ---------------------------------------------------------------------------- *
+  * ---------------------------------------------------------------------------- *
    FUNCTION SetRUC
       LPARAMETER tcRUC
 
@@ -514,28 +509,18 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcRUC' debe ser de tipo texto.], 0+16, THIS.Name + '.SetRUC()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcRUC) > 15 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcRUC' debe ser como máximo de 15 caracteres.], 0+16, THIS.Name + '.SetRUC()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cRUC = ALLTRIM(tcRUC)
    ENDFUNC
 
-   * ---------------------------------------------------------------------------- *
+  * ---------------------------------------------------------------------------- *
    FUNCTION SetDV
       LPARAMETER tcDV
 
       * inicio { validación de parámetro }
       IF VARTYPE(tcDV) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcDV' debe ser de tipo texto.], 0+16, THIS.Name + '.SetDV()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcDV) > 1 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcDV' debe ser como máximo de 1 caracter.], 0+16, THIS.Name + '.SetDV()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -2004,6 +1989,11 @@ DEFINE CLASS Cliente AS CUSTOM
          RETURN .F.
       ENDIF
 
+      IF LEN(THIS.cDocumento) > 15 THEN
+         MESSAGEBOX([La longitud del campo 'cDocumento' debe ser como máximo de 15 caracteres.], 0+16, THIS.Name + '.ValidarDocumento()')
+         RETURN .F.
+      ENDIF
+
       IF !ValidarFormatoCedula(THIS.cDocumento) THEN
          MESSAGEBOX('El documento digitado es incorrecto, debe ser numérico, solo se permite una letra cuando se trata de cédula de identidad.', 0+16, THIS.Name + '.ValidarDocumento()')
          RETURN .F.
@@ -2042,6 +2032,11 @@ DEFINE CLASS Cliente AS CUSTOM
    FUNCTION ValidarRUC()
       IF EMPTY(THIS.cRUC) THEN
          RETURN .T.
+      ENDIF
+
+      IF LEN(THIS.cRUC) > 15 THEN
+         MESSAGEBOX([La longitud del campo 'cRUC' debe ser como máximo de 15 caracteres.], 0+16, THIS.Name + '.ValidarRUC()')
+         RETURN .F.
       ENDIF
 
       IF !ValidarFormatoRUC(THIS.cRUC) THEN
@@ -2091,6 +2086,11 @@ DEFINE CLASS Cliente AS CUSTOM
                RETURN .F.
             ENDIF
          ENDIF
+      ENDIF
+
+      IF LEN(THIS.cDV) > 1 THEN
+         MESSAGEBOX([La longitud del campo 'cDV' debe ser como máximo de 1 caracter.], 0+16, THIS.Name + '.ValidarDV()')
+         RETURN .F.
       ENDIF
 
       IF !ValidarFormatoRUC(THIS.cRUC) THEN

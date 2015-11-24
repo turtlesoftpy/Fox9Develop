@@ -645,6 +645,19 @@ ALTER TABLE sucursal
    DEFAULT COLLATE = 'latin1_swedish_ci',
    ENGINE=InnoDB;
 
+INSERT INTO sucursal (codigo, nombre, vigente)
+   VALUES (1, 'CASA CENTRAL [001]', 1);
+INSERT INTO sucursal (codigo, nombre, vigente)
+   VALUES (2, 'SUCURSAL [002]', 0);
+INSERT INTO sucursal (codigo, nombre, vigente)
+   VALUES (3, 'SUCURSAL [003]', 0);
+INSERT INTO sucursal (codigo, nombre, vigente)
+   VALUES (4, 'DEPOSITO [004]', 1);
+INSERT INTO sucursal (codigo, nombre, vigente)
+   VALUES (5, 'SAN BERNARDINO [005]', 0);
+INSERT INTO sucursal (codigo, nombre, vigente)
+   VALUES (6, 'AVDA. EUSEBIO AYALA [006]', 1);
+
 /* -------------------------------------------------------------------------- */
 CREATE TABLE deposito (
    codigo SMALLINT(5) UNSIGNED NOT NULL,
@@ -670,6 +683,82 @@ ALTER TABLE deposito
    DEFAULT CHARACTER SET = 'latin1'
    DEFAULT COLLATE = 'latin1_swedish_ci',
    ENGINE=InnoDB;
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE ejercicio (
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   periodo SMALLINT(4) UNSIGNED NOT NULL,
+   fecha_inicio DATE NOT NULL,
+   fecha_fin DATE NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
+);
+
+ALTER TABLE ejercicio
+   ADD CONSTRAINT pk_ejercicio_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_ejercicio_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT chk_ejercicio_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_ejercicio_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_ejercicio_periodo
+      CHECK (periodo >= 2000 AND periodo <= 2038),
+   ADD CONSTRAINT chk_ejercicio_fecha_inicio
+      CHECK (fecha_inicio <= fecha_fin),
+   ADD CONSTRAINT chk_ejercicio_fecha_fin
+      CHECK (fecha_fin >= fecha_inicio),
+   ADD CONSTRAINT chk_ejercicio_fecha
+      CHECK (DATEDIFF(fecha_fin, fecha_inicio) <= 365),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+INSERT INTO ejercicio (codigo, nombre, periodo, fecha_inicio, fecha_fin, vigente)
+   VALUES (2015, 'EJERCICIO 2015', 2015, '2015-01-01', '2015-12-31', 1);
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE empresa (
+   nombre VARCHAR(100) NOT NULL,
+   razon_social VARCHAR(100),
+   ruc VARCHAR(15) NOT NULL,
+   dv CHAR(1) NOT NULL,
+   sitio_web VARCHAR(100),
+   e_mail VARCHAR(100),
+   sucursal SMALLINT(5) UNSIGNED NOT NULL,
+   ejercicio SMALLINT(5) UNSIGNED NOT NULL
+);
+
+ALTER TABLE empresa
+   ADD CONSTRAINT pk_empresa_ruc_dv
+      PRIMARY KEY (ruc, dv),
+   ADD CONSTRAINT fk_empresa_sucursal
+      FOREIGN KEY (sucursal) REFERENCES sucursal (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_empresa_ejercicio
+      FOREIGN KEY (ejercicio) REFERENCES ejercicio (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT chk_empresa_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_empresa_razon_social
+      CHECK (razon_social IS NULL OR razon_social <> ''),
+   ADD CONSTRAINT chk_empresa_ruc
+      CHECK (ruc <> ''),
+   ADD CONSTRAINT chk_empresa_dv
+      CHECK (dv <> ''),
+   ADD CONSTRAINT chk_empresa_sitio_web
+      CHECK (sitio_web IS NULL OR sitio_web <> ''),
+   ADD CONSTRAINT chk_empresa_e_mail
+      CHECK (e_mail IS NULL OR e_mail <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
+
+INSERT INTO empresa (nombre, razon_social, ruc, dv, sitio_web, e_mail, sucursal, ejercicio)
+   VALUES ('A & A IMPORTACIONES S.R.L.', 'A & A IMPORTACIONES S.R.L.', '80004234', '4', 'www.ayaimportaciones.com.py', 'ayaimportaciones@gmail.com', 1, 2015);
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE unidad (

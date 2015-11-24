@@ -20,11 +20,13 @@ ren CrearBaseDatos.prg CrearBaseDatos.prg
 ren CreaTemp.prg CreaTemp.prg
 ren Depar.prg Depar.prg
 ren Deposito.prg Deposito.prg
+ren Ejercicio.prg Ejercicio.prg
 ren Empresa.prg Empresa.prg
 ren Familia.prg Familia.prg
 ren Fecha.prg Fecha.prg
 ren FormatoFecha.prg FormatoFecha.prg
 ren Inicio.prg Inicio.prg
+ren InicioDev.prg InicioDev.prg
 ren Maquina.prg Maquina.prg
 ren Marca.prg Marca.prg
 ren MarcaTaller.prg MarcaTaller.prg
