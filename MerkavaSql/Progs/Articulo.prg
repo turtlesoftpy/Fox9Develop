@@ -369,7 +369,7 @@ DEFINE CLASS Articulo AS CUSTOM
       IF !THIS.oProveedor.BuscarPorCodigo(THIS.nProveedor) THEN   && El registro no existe.
          WITH THIS.oProveedor
             .SetNombre('')
-            .SetVigente('')
+            .SetVigente(.F.)
          ENDWITH
       ENDIF
    ENDFUNC
@@ -2306,9 +2306,9 @@ DEFINE CLASS Articulo AS CUSTOM
          .nProveedor = proveedor
          .nPais = pais
          .cUbicacion = IIF(!ISNULL(ubicacion), ubicacion, '')
-         .lVigente = IIF(vigente = 0, .F., .T.)
-         .lLPrecio = IIF(lprecio = 0, .F., .T.)
-         .lGravado = IIF(gravado = 0, .F., .T.)
+         .lVigente = IIF(vigente = '0', .F., .T.)
+         .lLPrecio = IIF(lprecio = '0', .F., .T.)
+         .lGravado = IIF(gravado = '0', .F., .T.)
          .nPorcIVA = IIF(!ISNULL(porc_iva), porc_iva, 0)
          .nPCostoG = IIF(!ISNULL(pcostog), pcostog, 0)
          .nPCostoD = IIF(!ISNULL(pcostod), pcostod, 0)
@@ -2369,9 +2369,9 @@ DEFINE CLASS Articulo AS CUSTOM
          pnProveedor = THIS.nProveedor
          pnPais = THIS.nPais
          pcUbicacion = IIF(!EMPTY(THIS.cUbicacion), THIS.cUbicacion, NULL)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
-         plLPrecio = IIF(!THIS.lLPrecio, 0, 1)
-         plGravado = IIF(!THIS.lGravado, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
+         plLPrecio = IIF(!THIS.lLPrecio, '0', '1')
+         plGravado = IIF(!THIS.lGravado, '0', '1')
          pnPorcIVA = IIF(THIS.nPorcIVA > 0, THIS.nPorcIVA, NULL)
          pnPCostoG = IIF(THIS.nPCostoG > 0, THIS.nPCostoG, NULL)
          pnPCostoD = IIF(THIS.nPCostoD > 0, THIS.nPCostoD, NULL)
@@ -2452,9 +2452,9 @@ DEFINE CLASS Articulo AS CUSTOM
          pnProveedor = THIS.nProveedor
          pnPais = THIS.nPais
          pcUbicacion = IIF(!EMPTY(THIS.cUbicacion), THIS.cUbicacion, NULL)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
-         plLPrecio = IIF(!THIS.lLPrecio, 0, 1)
-         plGravado = IIF(!THIS.lGravado, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
+         plLPrecio = IIF(!THIS.lLPrecio, '0', '1')
+         plGravado = IIF(!THIS.lGravado, '0', '1')
          pnPorcIVA = IIF(THIS.nPorcIVA > 0, THIS.nPorcIVA, NULL)
          pnPCostoG = IIF(THIS.nPCostoG > 0, THIS.nPCostoG, NULL)
          pnPCostoD = IIF(THIS.nPCostoD > 0, THIS.nPCostoD, NULL)

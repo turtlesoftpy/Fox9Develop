@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 24/11/2015         MENUPRINCIPAL.MPR          18:42:42  
+*       * 29/11/2015         MENUPRINCIPAL.MPR          19:14:48  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -49,28 +49,28 @@ ENDWITH
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _4i1143sxu OF _MSYSMENU PROMPT "\<Facturación" COLOR SCHEME 3 ;
+DEFINE PAD _4i61593er OF _MSYSMENU PROMPT "\<Facturación" COLOR SCHEME 3 ;
 	KEY ALT+F, ""
-DEFINE PAD _4i1143sxv OF _MSYSMENU PROMPT "\<Stock" COLOR SCHEME 3 ;
+DEFINE PAD _4i61593es OF _MSYSMENU PROMPT "\<Stock" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _4i1143sxw OF _MSYSMENU PROMPT "\<Cuenta Corriente" COLOR SCHEME 3 ;
+DEFINE PAD _4i61593et OF _MSYSMENU PROMPT "\<Cuenta Corriente" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _4i1143sxx OF _MSYSMENU PROMPT "C\<ontabilidad" COLOR SCHEME 3 ;
+DEFINE PAD _4i61593eu OF _MSYSMENU PROMPT "C\<ontabilidad" COLOR SCHEME 3 ;
 	KEY ALT+O, ""
-DEFINE PAD _4i1143sxy OF _MSYSMENU PROMPT "\<Utilitarios" COLOR SCHEME 3 ;
+DEFINE PAD _4i61593ev OF _MSYSMENU PROMPT "\<Utilitarios" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-DEFINE PAD _4i1143sxz OF _MSYSMENU PROMPT "A\<yuda" COLOR SCHEME 3 ;
-	KEY ALT+Y, ""
-DEFINE PAD _4i1143sy0 OF _MSYSMENU PROMPT "\<Salir" COLOR SCHEME 3 ;
+DEFINE PAD _4i61593ew OF _MSYSMENU PROMPT "\<Ayuda" COLOR SCHEME 3 ;
+	KEY ALT+A, ""
+DEFINE PAD _4i61593ex OF _MSYSMENU PROMPT "Sa\<lir" COLOR SCHEME 3 ;
 	KEY CTRL+Q, "CTRL+Q"
-ON PAD _4i1143sxu OF _MSYSMENU ACTIVATE POPUP facturació
-ON PAD _4i1143sxv OF _MSYSMENU ACTIVATE POPUP stock
-ON PAD _4i1143sxw OF _MSYSMENU ACTIVATE POPUP cuentacorr
-ON PAD _4i1143sxx OF _MSYSMENU ACTIVATE POPUP contabilid
-ON PAD _4i1143sxy OF _MSYSMENU ACTIVATE POPUP utilitario
-ON PAD _4i1143sxz OF _MSYSMENU ACTIVATE POPUP ayuda
-ON SELECTION PAD _4i1143sy0 OF _MSYSMENU ;
-	DO _4i1143sy1 ;
+ON PAD _4i61593er OF _MSYSMENU ACTIVATE POPUP facturació
+ON PAD _4i61593es OF _MSYSMENU ACTIVATE POPUP stock
+ON PAD _4i61593et OF _MSYSMENU ACTIVATE POPUP cuentacorr
+ON PAD _4i61593eu OF _MSYSMENU ACTIVATE POPUP contabilid
+ON PAD _4i61593ev OF _MSYSMENU ACTIVATE POPUP utilitario
+ON PAD _4i61593ew OF _MSYSMENU ACTIVATE POPUP ayuda
+ON SELECTION PAD _4i61593ex OF _MSYSMENU ;
+	DO _4i61593ey ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 DEFINE POPUP facturació MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -107,10 +107,11 @@ ON BAR 2 OF cuentacorr ACTIVATE POPUP _4d40ncx6w
 ON BAR 3 OF cuentacorr ACTIVATE POPUP depositode
 
 DEFINE POPUP _4d40ncx6v MARGIN RELATIVE SHADOW COLOR SCHEME 4
-DEFINE BAR 1 OF _4d40ncx6v PROMPT "\<Proveedores"
+DEFINE BAR 1 OF _4d40ncx6v PROMPT "\<Proveedores" ;
+	SKIP FOR WEXIST('FrmBuscarProveedor')
 DEFINE BAR 2 OF _4d40ncx6v PROMPT "\<Pagos"
 ON SELECTION BAR 1 OF _4d40ncx6v ;
-	DO _4i1143sy2 ;
+	DO _4i61593ez ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 DEFINE POPUP _4d40ncx6w MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -118,7 +119,7 @@ DEFINE BAR 1 OF _4d40ncx6w PROMPT "\<Clientes" ;
 	SKIP FOR WEXIST('FrmBuscarCliente')
 DEFINE BAR 2 OF _4d40ncx6w PROMPT "\<Cobros"
 ON SELECTION BAR 1 OF _4d40ncx6w ;
-	DO _4i1143sy4 ;
+	DO _4i61593f1 ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 DEFINE POPUP depositode MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -164,27 +165,28 @@ DEFINE BAR 5 OF artículos PROMPT "\<Marcas" ;
 	SKIP FOR WEXIST('FrmBuscarMarca')
 DEFINE BAR 6 OF artículos PROMPT "\<Unidades de Medidas" ;
 	SKIP FOR WEXIST('FrmBuscarUnidadMedida')
-DEFINE BAR 7 OF artículos PROMPT "\<Depósitos"
+DEFINE BAR 7 OF artículos PROMPT "\<Depósitos" ;
+	SKIP FOR WEXIST('FrmBuscarDeposito')
 ON SELECTION BAR 1 OF artículos ;
-	DO _4i1143sy9 ;
+	DO _4i61593f9 ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 2 OF artículos ;
-	DO _4i1143sya ;
+	DO _4i61593fb ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 3 OF artículos ;
-	DO _4i1143sye ;
+	DO _4i61593fc ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 4 OF artículos ;
-	DO _4i1143syf ;
+	DO _4i61593fe ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 5 OF artículos ;
-	DO _4i1143syg ;
+	DO _4i61593fg ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 6 OF artículos ;
-	DO _4i1143syj ;
+	DO _4i61593fh ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 7 OF artículos ;
-	DO _4i1143syk ;
+	DO _4i61593fj ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 DEFINE POPUP contables MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -194,7 +196,7 @@ DEFINE BAR 3 OF contables PROMPT "\<Centro de Costos"
 DEFINE BAR 4 OF contables PROMPT "C\<onceptos Contables"
 DEFINE BAR 5 OF contables PROMPT "\<Periodos Fiscales"
 ON SELECTION BAR 1 OF contables ;
-	DO _4i1143syo ;
+	DO _4i61593fm ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 DEFINE POPUP vendedores MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -203,7 +205,7 @@ DEFINE BAR 1 OF vendedores PROMPT "\<Vendedores" ;
 DEFINE BAR 2 OF vendedores PROMPT "\<Comisión por Vendedor"
 DEFINE BAR 3 OF vendedores PROMPT "C\<ajeros"
 ON SELECTION BAR 1 OF vendedores ;
-	DO _4i1143syp ;
+	DO _4i61593fp ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 DEFINE POPUP remisiones MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -227,25 +229,25 @@ DEFINE BAR 6 OF clientes PROMPT "\<Motivos de Ser Cliente" ;
 DEFINE BAR 7 OF clientes PROMPT "P\<lazos" ;
 	SKIP FOR WEXIST('FrmBuscarPlazo')
 ON SELECTION BAR 1 OF clientes ;
-	DO _4i1143syt ;
+	DO _4i61593ft ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 2 OF clientes ;
-	DO _4i1143syu ;
+	DO _4i61593fu ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 3 OF clientes ;
-	DO _4i1143syv ;
+	DO _4i61593fw ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 4 OF clientes ;
-	DO _4i1143syy ;
+	DO _4i61593fy ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 5 OF clientes ;
-	DO _4i1143syz ;
+	DO _4i61593g0 ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 6 OF clientes ;
-	DO _4i1143sz0 ;
+	DO _4i61593g1 ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 7 OF clientes ;
-	DO _4i1143sz3 ;
+	DO _4i61593g3 ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 DEFINE POPUP cobradores MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -254,7 +256,7 @@ DEFINE BAR 1 OF cobradores PROMPT "C\<obradores" ;
 DEFINE BAR 2 OF cobradores PROMPT "\<Bancos de Plaza"
 DEFINE BAR 3 OF cobradores PROMPT "\<Emisoras de Tarjetas"
 ON SELECTION BAR 1 OF cobradores ;
-	DO _4i1143sz4 ;
+	DO _4i61593g6 ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 DEFINE POPUP servicioté MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -267,22 +269,22 @@ DEFINE BAR 3 OF servicioté PROMPT "M\<odelos" ;
 DEFINE BAR 4 OF servicioté PROMPT "M\<ecánicos" ;
 	SKIP FOR WEXIST('FrmBuscarMecanico')
 ON SELECTION BAR 1 OF servicioté ;
-	DO _4i1143sz8 ;
+	DO _4i61593g8 ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 2 OF servicioté ;
-	DO _4i1143sz9 ;
+	DO _4i61593ga ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 3 OF servicioté ;
-	DO _4i1143sza ;
+	DO _4i61593gc ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 ON SELECTION BAR 4 OF servicioté ;
-	DO _4i1143szd ;
+	DO _4i61593gd ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 DEFINE POPUP ayuda MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF ayuda PROMPT "\<Acerca de Merkava®..."
 ON SELECTION BAR 1 OF ayuda ;
-	DO _4i1143sze ;
+	DO _4i61593gg ;
 	IN LOCFILE("MENUS\MENUPRINCIPAL" ,"MPX;MPR|FXP;PRG" ,"WHERE is MENUPRINCIPAL?")
 
 
@@ -297,7 +299,7 @@ READ EVENTS
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SY1  ON SELECTION PAD                            
+*       * _4I61593EY  ON SELECTION PAD                            
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -308,7 +310,7 @@ READ EVENTS
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sy1
+PROCEDURE _4i61593ey
 IF MESSAGEBOX('¿Desea salir de la aplicación?', 4 + 32 + 256, 'Salir...') = 6 THEN
    CLEAR EVENTS
 ENDIF
@@ -316,7 +318,7 @@ ENDIF
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SY2  ON SELECTION BAR 1 OF POPUP _4d40ncx6v      
+*       * _4I61593EZ  ON SELECTION BAR 1 OF POPUP _4d40ncx6v      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -327,13 +329,13 @@ ENDIF
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sy2
+PROCEDURE _4i61593ez
 DO FORM FrmBuscarProveedor WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SY4  ON SELECTION BAR 1 OF POPUP _4d40ncx6w      
+*       * _4I61593F1  ON SELECTION BAR 1 OF POPUP _4d40ncx6w      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -344,13 +346,13 @@ DO FORM FrmBuscarProveedor WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sy4
+PROCEDURE _4i61593f1
 DO FORM FrmBuscarCliente WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SY9  ON SELECTION BAR 1 OF POPUP artículos       
+*       * _4I61593F9  ON SELECTION BAR 1 OF POPUP artículos       
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -361,13 +363,13 @@ DO FORM FrmBuscarCliente WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sy9
+PROCEDURE _4i61593f9
 DO FORM FrmBuscarArticulo WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYA  ON SELECTION BAR 2 OF POPUP artículos       
+*       * _4I61593FB  ON SELECTION BAR 2 OF POPUP artículos       
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -378,13 +380,13 @@ DO FORM FrmBuscarArticulo WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sya
+PROCEDURE _4i61593fb
 DO FORM FrmBuscarFamilia WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYE  ON SELECTION BAR 3 OF POPUP artículos       
+*       * _4I61593FC  ON SELECTION BAR 3 OF POPUP artículos       
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -395,13 +397,13 @@ DO FORM FrmBuscarFamilia WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sye
+PROCEDURE _4i61593fc
 DO FORM FrmBuscarRubro WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYF  ON SELECTION BAR 4 OF POPUP artículos       
+*       * _4I61593FE  ON SELECTION BAR 4 OF POPUP artículos       
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -412,13 +414,13 @@ DO FORM FrmBuscarRubro WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syf
+PROCEDURE _4i61593fe
 DO FORM FrmBuscarSubRubro WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYG  ON SELECTION BAR 5 OF POPUP artículos       
+*       * _4I61593FG  ON SELECTION BAR 5 OF POPUP artículos       
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -429,13 +431,13 @@ DO FORM FrmBuscarSubRubro WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syg
+PROCEDURE _4i61593fg
 DO FORM FrmBuscarMarca WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYJ  ON SELECTION BAR 6 OF POPUP artículos       
+*       * _4I61593FH  ON SELECTION BAR 6 OF POPUP artículos       
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -446,13 +448,13 @@ DO FORM FrmBuscarMarca WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syj
+PROCEDURE _4i61593fh
 DO FORM FrmBuscarUnidadMedida WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYK  ON SELECTION BAR 7 OF POPUP artículos       
+*       * _4I61593FJ  ON SELECTION BAR 7 OF POPUP artículos       
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -463,13 +465,13 @@ DO FORM FrmBuscarUnidadMedida WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syk
+PROCEDURE _4i61593fj
 DO FORM FrmBuscarDeposito WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYO  ON SELECTION BAR 1 OF POPUP contables       
+*       * _4I61593FM  ON SELECTION BAR 1 OF POPUP contables       
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -480,13 +482,13 @@ DO FORM FrmBuscarDeposito WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syo
+PROCEDURE _4i61593fm
 DO FORM FrmBuscarSucursal WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYP  ON SELECTION BAR 1 OF POPUP vendedores      
+*       * _4I61593FP  ON SELECTION BAR 1 OF POPUP vendedores      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -497,13 +499,13 @@ DO FORM FrmBuscarSucursal WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syp
+PROCEDURE _4i61593fp
 DO FORM FrmBuscarVendedor WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYT  ON SELECTION BAR 1 OF POPUP clientes        
+*       * _4I61593FT  ON SELECTION BAR 1 OF POPUP clientes        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -514,13 +516,13 @@ DO FORM FrmBuscarVendedor WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syt
+PROCEDURE _4i61593ft
 DO FORM FrmBuscarPais WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYU  ON SELECTION BAR 2 OF POPUP clientes        
+*       * _4I61593FU  ON SELECTION BAR 2 OF POPUP clientes        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -531,13 +533,13 @@ DO FORM FrmBuscarPais WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syu
+PROCEDURE _4i61593fu
 DO FORM FrmBuscarDepar WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYV  ON SELECTION BAR 3 OF POPUP clientes        
+*       * _4I61593FW  ON SELECTION BAR 3 OF POPUP clientes        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -548,13 +550,13 @@ DO FORM FrmBuscarDepar WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syv
+PROCEDURE _4i61593fw
 DO FORM FrmBuscarCiudad WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYY  ON SELECTION BAR 4 OF POPUP clientes        
+*       * _4I61593FY  ON SELECTION BAR 4 OF POPUP clientes        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -565,13 +567,13 @@ DO FORM FrmBuscarCiudad WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syy
+PROCEDURE _4i61593fy
 DO FORM FrmBuscarBarrio WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SYZ  ON SELECTION BAR 5 OF POPUP clientes        
+*       * _4I61593G0  ON SELECTION BAR 5 OF POPUP clientes        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -582,13 +584,13 @@ DO FORM FrmBuscarBarrio WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143syz
+PROCEDURE _4i61593g0
 DO FORM FrmBuscarRuta WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SZ0  ON SELECTION BAR 6 OF POPUP clientes        
+*       * _4I61593G1  ON SELECTION BAR 6 OF POPUP clientes        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -599,13 +601,13 @@ DO FORM FrmBuscarRuta WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sz0
+PROCEDURE _4i61593g1
 DO FORM FrmBuscarMotivoCliente WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SZ3  ON SELECTION BAR 7 OF POPUP clientes        
+*       * _4I61593G3  ON SELECTION BAR 7 OF POPUP clientes        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -616,13 +618,13 @@ DO FORM FrmBuscarMotivoCliente WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sz3
+PROCEDURE _4i61593g3
 DO FORM FrmBuscarPlazo WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SZ4  ON SELECTION BAR 1 OF POPUP cobradores      
+*       * _4I61593G6  ON SELECTION BAR 1 OF POPUP cobradores      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -633,13 +635,13 @@ DO FORM FrmBuscarPlazo WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sz4
+PROCEDURE _4i61593g6
 DO FORM FrmBuscarCobrador WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SZ8  ON SELECTION BAR 1 OF POPUP servicioté      
+*       * _4I61593G8  ON SELECTION BAR 1 OF POPUP servicioté      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -650,13 +652,13 @@ DO FORM FrmBuscarCobrador WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sz8
+PROCEDURE _4i61593g8
 DO FORM FrmBuscarMaquina WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SZ9  ON SELECTION BAR 2 OF POPUP servicioté      
+*       * _4I61593GA  ON SELECTION BAR 2 OF POPUP servicioté      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -667,13 +669,13 @@ DO FORM FrmBuscarMaquina WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sz9
+PROCEDURE _4i61593ga
 DO FORM FrmBuscarMarcaTaller WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SZA  ON SELECTION BAR 3 OF POPUP servicioté      
+*       * _4I61593GC  ON SELECTION BAR 3 OF POPUP servicioté      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -684,13 +686,13 @@ DO FORM FrmBuscarMarcaTaller WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sza
+PROCEDURE _4i61593gc
 DO FORM FrmBuscarModelo WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SZD  ON SELECTION BAR 4 OF POPUP servicioté      
+*       * _4I61593GD  ON SELECTION BAR 4 OF POPUP servicioté      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -701,13 +703,13 @@ DO FORM FrmBuscarModelo WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143szd
+PROCEDURE _4i61593gd
 DO FORM FrmBuscarMecanico WITH .F., .T.
 
 
 *       *********************************************************
 *       *                                                         
-*       * _4I1143SZE  ON SELECTION BAR 1 OF POPUP ayuda           
+*       * _4I61593GG  ON SELECTION BAR 1 OF POPUP ayuda           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -718,7 +720,7 @@ DO FORM FrmBuscarMecanico WITH .F., .T.
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _4i1143sze
+PROCEDURE _4i61593gg
 * Obtiene la fecha de última modificación del archivo ejecutable.
 LOCAL lcFechaUltimaModificacion
 lcFechaUltimaModificacion = ''

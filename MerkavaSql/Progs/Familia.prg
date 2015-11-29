@@ -311,7 +311,7 @@ DEFINE CLASS Familia AS CUSTOM
             .nP3 = IIF(!ISNULL(p3), p3, 0)
             .nP4 = IIF(!ISNULL(p4), p4, 0)
             .nP5 = IIF(!ISNULL(p5), p5, 0)
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -388,7 +388,7 @@ DEFINE CLASS Familia AS CUSTOM
             .nP3 = IIF(!ISNULL(p3), p3, 0)
             .nP4 = IIF(!ISNULL(p4), p4, 0)
             .nP5 = IIF(!ISNULL(p5), p5, 0)
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -568,7 +568,7 @@ DEFINE CLASS Familia AS CUSTOM
          pnP3 = IIF(THIS.nP3 > 0, THIS.nP3, NULL)
          pnP4 = IIF(THIS.nP4 > 0, THIS.nP4, NULL)
          pnP5 = IIF(THIS.nP5 > 0, THIS.nP5, NULL)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, p1, p2, p3, p4, p5, vigente', ;
@@ -597,7 +597,7 @@ DEFINE CLASS Familia AS CUSTOM
          pnP3 = IIF(THIS.nP3 > 0, THIS.nP3, NULL)
          pnP4 = IIF(THIS.nP4 > 0, THIS.nP4, NULL)
          pnP5 = IIF(THIS.nP5 > 0, THIS.nP5, NULL)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, p1 = ?pnP1, p2 = ?pnP2, p3 = ?pnP3, p4 = ?pnP4, p5 = ?pnP5, vigente = ?plVigente', ;

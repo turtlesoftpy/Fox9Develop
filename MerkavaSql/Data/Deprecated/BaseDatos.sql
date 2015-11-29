@@ -1,71 +1,13 @@
-﻿/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
  *                          BASE DE DATOS (DATABASE)                          *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-CREATE DATABASE merkava_80004234_001
-   WITH OWNER = postgres
-        ENCODING = 'UTF8'
-        TABLESPACE = pg_default
-        LC_COLLATE = 'Spanish_Spain.1252'
-        LC_CTYPE = 'Spanish_Spain.1252'
-        CONNECTION LIMIT = -1;
+DROP DATABASE merkava_80004234_001;
 
-/* -------------------------------------------------------------------------- */
-/* Determina si la cadena de caracteres especificada está compuesta solo por  */
-/* los dígitos del 0 al 9.                                                    */
-/* -------------------------------------------------------------------------- */
-CREATE OR REPLACE FUNCTION pa_es_digito (TEXT) RETURNS BOOLEAN
-   AS 'SELECT $1 ~ ''^(-)?[0-9]+$'' AS resultado;'
-   LANGUAGE SQL;
+CREATE DATABASE IF NOT EXISTS merkava_80004234_001
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci';
 
-/* -------------------------------------------------------------------------- */
-/* PA para calcular el dígito verificador numérico con entrada alfanumérica   */
-/* y basemax 11.                                                              */
-/* -------------------------------------------------------------------------- */
-CREATE OR REPLACE FUNCTION pa_calcular_dv_11_a (p_numero IN VARCHAR, p_basemax IN NUMERIC DEFAULT 11) RETURNS NUMERIC AS $$
-DECLARE
-   v_total      NUMERIC(6);
-   v_resto      NUMERIC(2);
-   k            NUMERIC(2);
-   v_numero_aux NUMERIC(1);
-   v_numero_al  VARCHAR(255) DEFAULT '';
-   v_caracter   VARCHAR(1);
-   v_digit      NUMERIC;
-BEGIN
-   -- Cambia la última letra por ASCII en caso que la cédula termine en letra.
-   FOR i IN 1..LENGTH(p_numero) LOOP
-      v_caracter := UPPER(SUBSTR(p_numero, i, 1));
-      IF ASCII(v_caracter) NOT BETWEEN 48 AND 57 THEN   -- de 0 a 9.
-         v_numero_al := v_numero_al || ASCII(v_caracter);
-      ELSE
-         v_numero_al := v_numero_al || v_caracter;
-      END IF;
-   END LOOP;
-
-   -- Calcula el DV.
-   k       := 2;
-   v_total := 0;
-
-   FOR i IN REVERSE LENGTH(v_numero_al)..1 LOOP
-      IF k > p_basemax THEN
-         k := 2;
-      END IF;
-
-      v_numero_aux := TO_NUMBER(SUBSTR(v_numero_al, i, 1), '99G999D9S');
-      v_total      := v_total + (v_numero_aux * k);
-      k            := k + 1;
-   END LOOP;
-
-   v_resto := MOD(v_total,11);
-
-   IF v_resto > 1 THEN
-      v_digit := 11 - v_resto;
-   ELSE
-      v_digit := 0;
-   END IF;
-
-   RETURN v_digit;
-END;
-$$ LANGUAGE plpgsql;
+USE merkava_80004234_001;
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
  *                                TABLA (TABLE)                               *
@@ -73,9 +15,9 @@ $$ LANGUAGE plpgsql;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE depar (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE depar
@@ -86,14 +28,17 @@ ALTER TABLE depar
    ADD CONSTRAINT chk_depar_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_depar_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE ciudad (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   departamen SMALLINT NOT NULL,
-   vigente BOOLEAN NOT NULL
+   departamen SMALLINT(5) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE ciudad
@@ -110,15 +55,18 @@ ALTER TABLE ciudad
    ADD CONSTRAINT chk_ciudad_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_ciudad_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE barrio (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   departamen SMALLINT NOT NULL,
-   ciudad SMALLINT NOT NULL,
-   vigente BOOLEAN NOT NULL
+   departamen SMALLINT(5) UNSIGNED NOT NULL,
+   ciudad SMALLINT(5) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE barrio
@@ -143,14 +91,17 @@ ALTER TABLE barrio
    ADD CONSTRAINT chk_barrio_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_barrio_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE cobrador (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
    documento VARCHAR(15),
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE cobrador
@@ -165,18 +116,21 @@ ALTER TABLE cobrador
    ADD CONSTRAINT chk_cobrador_nombre
       CHECK (nombre <> ''),
    ADD CONSTRAINT chk_cobrador_documento
-      CHECK (documento IS NULL OR documento <> '');
+      CHECK (documento IS NULL OR documento <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE familia (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
    p1 NUMERIC(19,6),
    p2 NUMERIC(19,6),
    p3 NUMERIC(19,6),
    p4 NUMERIC(19,6),
    p5 NUMERIC(19,6),
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE familia
@@ -197,13 +151,16 @@ ALTER TABLE familia
    ADD CONSTRAINT chk_familia_p4
       CHECK (p4 IS NULL OR p4 > 0),
    ADD CONSTRAINT chk_familia_p5
-      CHECK (p5 IS NULL OR p5 > 0);
+      CHECK (p5 IS NULL OR p5 > 0),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE maquina (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE maquina
@@ -214,42 +171,45 @@ ALTER TABLE maquina
    ADD CONSTRAINT chk_maquina_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_maquina_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (1, 'MOTOSIERRA', '1');
+   VALUES (1, 'MOTOSIERRA', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (2, 'DESMALEZADORA', '1');
+   VALUES (2, 'DESMALEZADORA', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (3, 'BORDEADORA', '1');
+   VALUES (3, 'BORDEADORA', 1);
+   INSERT INTO maquina (codigo, nombre, vigente)
+   VALUES (4, 'CORTACESPED', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (4, 'CORTACESPED', '1');
+   VALUES (5, 'FUMIGADORA', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (5, 'FUMIGADORA', '1');
+   VALUES (6, 'SOPLADORA', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (6, 'SOPLADORA', '1');
+   VALUES (7, 'CORTASETOS', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (7, 'CORTASETOS', '1');
+   VALUES (8, 'TRACTOR CORTACESPED', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (8, 'TRACTOR CORTACESPED', '1');
+   VALUES (9, 'PODADORA DE ALTURA', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (9, 'PODADORA DE ALTURA', '1');
+   VALUES (10, 'FORRAJERA', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (10, 'FORRAJERA', '1');
+   VALUES (11, 'TALADRO', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (11, 'TALADRO', '1');
+   VALUES (12, 'MOTOBOMBA', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (12, 'MOTOBOMBA', '1');
+   VALUES (13, 'HIDROLAVADORA', 1);
 INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (13, 'HIDROLAVADORA', '1');
-INSERT INTO maquina (codigo, nombre, vigente)
-   VALUES (14, 'BOMBA SUMERGIBLE', '1');
+   VALUES (14, 'BOMBA SUMERGIBLE', 1);
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE marca (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE marca
@@ -260,13 +220,16 @@ ALTER TABLE marca
    ADD CONSTRAINT chk_marca_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_marca_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE marca_taller (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE marca_taller
@@ -277,23 +240,26 @@ ALTER TABLE marca_taller
    ADD CONSTRAINT chk_marca_taller_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_marca_taller_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 INSERT INTO marca_taller (codigo, nombre, vigente)
-   VALUES (1, 'HUSQVARNA', '1');
+   VALUES (1, 'HUSQVARNA', 1);
 INSERT INTO marca_taller (codigo, nombre, vigente)
-   VALUES (2, 'STIHL', '1');
+   VALUES (2, 'STIHL', 1);
 INSERT INTO marca_taller (codigo, nombre, vigente)
-   VALUES (3, 'TRAPP', '1');
+   VALUES (3, 'TRAPP', 1);
 INSERT INTO marca_taller (codigo, nombre, vigente)
-   VALUES (4, 'KAWASHIMA', '1');
+   VALUES (4, 'KAWASHIMA', 1);
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE mecanico (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
    documento VARCHAR(15),
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE mecanico
@@ -308,15 +274,18 @@ ALTER TABLE mecanico
    ADD CONSTRAINT chk_mecanico_nombre
       CHECK (nombre <> ''),
    ADD CONSTRAINT chk_mecanico_documento
-      CHECK (documento IS NULL OR documento <> '');
+      CHECK (documento IS NULL OR documento <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE modelo (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   maquina SMALLINT NOT NULL,
-   marca SMALLINT NOT NULL,
-   vigente BOOLEAN NOT NULL
+   maquina SMALLINT(5) UNSIGNED NOT NULL,
+   marca SMALLINT(5) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE modelo
@@ -335,80 +304,83 @@ ALTER TABLE modelo
    ADD CONSTRAINT chk_modelo_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_modelo_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (1, '359', 1, 1, '1');
+   VALUES (1, '359', 1, 1, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (2, '365', 1, 1, '1');
+   VALUES (2, '365', 1, 1, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (3, '372 XP', 1, 1, '1');
+   VALUES (3, '372 XP', 1, 1, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (4, '61', 1, 1, '1');
+   VALUES (4, '61', 1, 1, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (5, 'MS 180', 1, 2, '1');
+   VALUES (5, 'MS 180', 1, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (6, 'MS 250', 1, 2, '1');
+   VALUES (6, 'MS 250', 1, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (7, 'MS 361', 1, 2, '1');
+   VALUES (7, 'MS 361', 1, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (8, 'MS 381', 1, 2, '1');
+   VALUES (8, 'MS 381', 1, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (9, 'MS 660', 1, 2, '1');
+   VALUES (9, 'MS 660', 1, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (10, '143RII', 2, 1, '1');
+   VALUES (10, '143RII', 2, 1, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (11, '226R', 2, 1, '1');
+   VALUES (11, '226R', 2, 1, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (12, '236R', 2, 1, '1');
+   VALUES (12, '236R', 2, 1, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (13, 'FS 160', 2, 2, '1');
+   VALUES (13, 'FS 160', 2, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (14, 'FS 220', 2, 2, '1');
+   VALUES (14, 'FS 220', 2, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (15, 'FS 250', 2, 2, '1');
+   VALUES (15, 'FS 250', 2, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (16, 'FS 280', 2, 2, '1');
+   VALUES (16, 'FS 280', 2, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (17, 'YCM-200 TU43', 2, 4, '1');
+   VALUES (17, 'YCM-200 TU43', 2, 4, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (18, 'FSE 31', 3, 2, '1');
+   VALUES (18, 'FSE 31', 3, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (19, 'FSE 41', 3, 2, '1');
+   VALUES (19, 'FSE 41', 3, 2, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (20, 'MASTER 500L', 3, 3, '1');
+   VALUES (20, 'MASTER 500L', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (21, 'MASTER 700L', 3, 3, '1');
+   VALUES (21, 'MASTER 700L', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (22, 'MASTER 800', 3, 3, '1');
+   VALUES (22, 'MASTER 800', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (23, 'MASTER 1000L', 3, 3, '1');
+   VALUES (23, 'MASTER 1000L', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (24, 'MASTER 800 PLUS', 3, 3, '1');
+   VALUES (24, 'MASTER 800 PLUS', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (25, 'MASTER 1000 PLUS', 3, 3, '1');
+   VALUES (25, 'MASTER 1000 PLUS', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (26, 'SUPER 500', 3, 3, '1');
+   VALUES (26, 'SUPER 500', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (27, 'SUPER 700', 3, 3, '1');
+   VALUES (27, 'SUPER 700', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (28, 'SUPER 800', 3, 3, '1');
+   VALUES (28, 'SUPER 800', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (29, 'SUPER 1000', 3, 3, '1');
+   VALUES (29, 'SUPER 1000', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (30, 'SUPER 800 PLUS', 3, 3, '1');
+   VALUES (30, 'SUPER 800 PLUS', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (31, 'SUPER 1000 PLUS', 3, 3, '1');
+   VALUES (31, 'SUPER 1000 PLUS', 3, 3, 1);
 INSERT INTO modelo (codigo, nombre, maquina, marca, vigente)
-   VALUES (32, 'SUPER TURBO 1000', 3, 3, '1');
+   VALUES (32, 'SUPER TURBO 1000', 3, 3, 1);
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE moneda (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
    simbolo VARCHAR(5) NOT NULL,
-   decimales BOOLEAN NOT NULL,
-   vigente BOOLEAN NOT NULL
+   decimales TINYINT(1) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE moneda
@@ -423,16 +395,17 @@ ALTER TABLE moneda
    ADD CONSTRAINT chk_moneda_nombre
       CHECK (nombre <> ''),
    ADD CONSTRAINT chk_moneda_simbolo
-      CHECK (simbolo <> '');
+      CHECK (simbolo <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
-INSERT INTO moneda (codigo, nombre, simbolo, decimales, vigente)
-   VALUES (1, 'GUARANI', 'PYG', '0', '1');
-INSERT INTO moneda (codigo, nombre, simbolo, decimales, vigente)
-   VALUES (2, 'DOLAR ESTADOUNIDENSE', 'USD', '1', '1');
+INSERT INTO moneda VALUES (1, 'GUARANI', 'PYG', 0, 1);
+INSERT INTO moneda VALUES (2, 'DOLAR ESTADOUNIDENSE', 'USD', 1, 1);
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE cotizacion (
-   moneda SMALLINT NOT NULL,
+   moneda SMALLINT(5) UNSIGNED NOT NULL,
    fecha DATE NOT NULL,
    compra NUMERIC(19,6) NOT NULL,
    venta NUMERIC(19,6) NOT NULL
@@ -445,16 +418,17 @@ ALTER TABLE cotizacion
       FOREIGN KEY (moneda) REFERENCES moneda (codigo)
          ON DELETE NO ACTION
          ON UPDATE NO ACTION,
-   ADD CONSTRAINT chk_cotizacion_fecha
-      CHECK (fecha <= CURRENT_DATE),
    ADD CONSTRAINT chk_cotizacion_compra
       CHECK (compra > 0),
    ADD CONSTRAINT chk_cotizacion_venta
-      CHECK (venta > 0);
+      CHECK (venta > 0),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE cotizacion_set (
-   moneda SMALLINT NOT NULL,
+   moneda SMALLINT(5) UNSIGNED NOT NULL,
    fecha DATE NOT NULL,
    compra NUMERIC(19,6) NOT NULL,
    venta NUMERIC(19,6) NOT NULL
@@ -467,18 +441,19 @@ ALTER TABLE cotizacion_set
       FOREIGN KEY (moneda) REFERENCES moneda (codigo)
          ON DELETE NO ACTION
          ON UPDATE NO ACTION,
-   ADD CONSTRAINT chk_cotizacion_set_fecha
-      CHECK (fecha <= CURRENT_DATE),
    ADD CONSTRAINT chk_cotizacion_set_compra
       CHECK (compra > 0),
    ADD CONSTRAINT chk_cotizacion_set_venta
-      CHECK (venta > 0);
+      CHECK (venta > 0),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE motivocl (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE motivocl
@@ -489,13 +464,16 @@ ALTER TABLE motivocl
    ADD CONSTRAINT chk_motivocl_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_motivocl_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE pais (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE pais
@@ -506,17 +484,20 @@ ALTER TABLE pais
    ADD CONSTRAINT chk_pais_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_pais_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE plazo (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   num_vtos SMALLINT NOT NULL,
-   separacion CHARACTER(1) NOT NULL,
-   primero SMALLINT NOT NULL,
-   resto SMALLINT NOT NULL,
-   vigente BOOLEAN NOT NULL
+   num_vtos SMALLINT(5) UNSIGNED NOT NULL,
+   separacion CHAR(1) NOT NULL,
+   primero SMALLINT(5) UNSIGNED NOT NULL,
+   resto SMALLINT(5) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE plazo
@@ -535,11 +516,14 @@ ALTER TABLE plazo
    ADD CONSTRAINT chk_plazo_primero
       CHECK (primero >= 0),
    ADD CONSTRAINT chk_plazo_resto
-      CHECK (resto >= 0);
+      CHECK (resto >= 0),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE proveedor (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
    direc1 VARCHAR(60),
    direc2 VARCHAR(60),
@@ -548,8 +532,8 @@ CREATE TABLE proveedor (
    fax VARCHAR(25),
    e_mail VARCHAR(60),
    ruc VARCHAR(15),
-   dv CHARACTER(1),
-   dias_plazo SMALLINT,
+   dv CHAR(1),
+   dias_plazo SMALLINT(3) UNSIGNED,
    dueno VARCHAR(40),
    teldueno VARCHAR(25),
    gtegral VARCHAR(40),
@@ -580,7 +564,7 @@ CREATE TABLE proveedor (
    tvend5 VARCHAR(25),
    saldo_actu NUMERIC(19,6) NOT NULL,
    saldo_usd NUMERIC(19,6) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente CHAR(1) NOT NULL
 );
 
 ALTER TABLE proveedor
@@ -592,90 +576,21 @@ ALTER TABLE proveedor
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_proveedor_nombre
       CHECK (nombre <> ''),
-   ADD CONSTRAINT chk_proveedor_direc1
-      CHECK (direc1 IS NULL OR direc1 <> ''),
-   ADD CONSTRAINT chk_proveedor_direc2
-      CHECK (direc2 IS NULL OR direc2 <> ''),
-   ADD CONSTRAINT chk_proveedor_ciudad
-      CHECK (ciudad IS NULL OR ciudad <> ''),
-   ADD CONSTRAINT chk_proveedor_telefono
-      CHECK (telefono IS NULL OR telefono <> ''),
-   ADD CONSTRAINT chk_proveedor_fax
-      CHECK (fax IS NULL OR fax <> ''),
-   ADD CONSTRAINT chk_proveedor_e_mail
-      CHECK (e_mail IS NULL OR e_mail <> ''),
-   ADD CONSTRAINT chk_proveedor_ruc
-      CHECK (ruc IS NULL OR ruc <> ''),
-   ADD CONSTRAINT chk_proveedor_dv
-      CHECK (dv IS NULL OR dv <> ''),
-   ADD CONSTRAINT chk_proveedor_dias_plazo
-      CHECK (dias_plazo IS NULL OR dias_plazo > 0),
-   ADD CONSTRAINT chk_proveedor_dueno
-      CHECK (dueno IS NULL OR dueno <> ''),
-   ADD CONSTRAINT chk_proveedor_teldueno
-      CHECK (teldueno IS NULL OR teldueno <> ''),
-   ADD CONSTRAINT chk_proveedor_gtegral
-      CHECK (gtegral IS NULL OR gtegral <> ''),
-   ADD CONSTRAINT chk_proveedor_telgg
-      CHECK (telgg IS NULL OR telgg <> ''),
-   ADD CONSTRAINT chk_proveedor_gteventas
-      CHECK (gteventas IS NULL OR gteventas <> ''),
-   ADD CONSTRAINT chk_proveedor_telgv
-      CHECK (telgv IS NULL OR telgv <> ''),
-   ADD CONSTRAINT chk_proveedor_gtemkg
-      CHECK (gtemkg IS NULL OR gtemkg <> ''),
-   ADD CONSTRAINT chk_proveedor_telgm
-      CHECK (telgm IS NULL OR telgm <> ''),
-   ADD CONSTRAINT chk_proveedor_stecnico
-      CHECK (stecnico IS NULL OR stecnico <> ''),
-   ADD CONSTRAINT chk_proveedor_stdirec1
-      CHECK (stdirec1 IS NULL OR stdirec1 <> ''),
-   ADD CONSTRAINT chk_proveedor_stdirec2
-      CHECK (stdirec2 IS NULL OR stdirec2 <> ''),
-   ADD CONSTRAINT chk_proveedor_sttel
-      CHECK (sttel IS NULL OR sttel <> ''),
-   ADD CONSTRAINT chk_proveedor_sthablar1
-      CHECK (sthablar1 IS NULL OR sthablar1 <> ''),
-   ADD CONSTRAINT chk_proveedor_vendedor1
-      CHECK (vendedor1 IS NULL OR vendedor1 <> ''),
-   ADD CONSTRAINT chk_proveedor_larti1
-      CHECK (larti1 IS NULL OR larti1 <> ''),
-   ADD CONSTRAINT chk_proveedor_tvend1
-      CHECK (tvend1 IS NULL OR tvend1 <> ''),
-   ADD CONSTRAINT chk_proveedor_vendedor2
-      CHECK (vendedor2 IS NULL OR vendedor2 <> ''),
-   ADD CONSTRAINT chk_proveedor_larti2
-      CHECK (larti2 IS NULL OR larti2 <> ''),
-   ADD CONSTRAINT chk_proveedor_tvend2
-      CHECK (tvend2 IS NULL OR tvend2 <> ''),
-   ADD CONSTRAINT chk_proveedor_vendedor3
-      CHECK (vendedor3 IS NULL OR vendedor3 <> ''),
-   ADD CONSTRAINT chk_proveedor_larti3
-      CHECK (larti3 IS NULL OR larti3 <> ''),
-   ADD CONSTRAINT chk_proveedor_tvend3
-      CHECK (tvend3 IS NULL OR tvend3 <> ''),
-   ADD CONSTRAINT chk_proveedor_vendedor4
-      CHECK (vendedor4 IS NULL OR vendedor4 <> ''),
-   ADD CONSTRAINT chk_proveedor_larti4
-      CHECK (larti4 IS NULL OR larti4 <> ''),
-   ADD CONSTRAINT chk_proveedor_tvend4
-      CHECK (tvend4 IS NULL OR tvend4 <> ''),
-   ADD CONSTRAINT chk_proveedor_vendedor5
-      CHECK (vendedor5 IS NULL OR vendedor5 <> ''),
-   ADD CONSTRAINT chk_proveedor_larti5
-      CHECK (larti5 IS NULL OR larti5 <> ''),
-   ADD CONSTRAINT chk_proveedor_tvend5
-      CHECK (tvend5 IS NULL OR tvend5 <> ''),
    ADD CONSTRAINT chk_proveedor_saldo_actu
       CHECK (saldo_actu >= 0),
    ADD CONSTRAINT chk_proveedor_saldo_usd
-      CHECK (saldo_usd >= 0);
+      CHECK (saldo_usd >= 0),
+   ADD CONSTRAINT chk_proveedor_vigente
+      CHECK (vigente IN ('S', 'N')),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE rubro (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE rubro
@@ -686,13 +601,16 @@ ALTER TABLE rubro
    ADD CONSTRAINT chk_rubro_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_rubro_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE ruta (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE ruta
@@ -703,13 +621,16 @@ ALTER TABLE ruta
    ADD CONSTRAINT chk_ruta_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_ruta_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE subrubro (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE subrubro
@@ -720,25 +641,28 @@ ALTER TABLE subrubro
    ADD CONSTRAINT chk_subrubro_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_subrubro_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE sucursal (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
    direccion VARCHAR(100),
-   departamen SMALLINT,
-   ciudad SMALLINT,
-   barrio SMALLINT,
-   moneda SMALLINT NOT NULL,
-   venta SMALLINT,
-   devolucion_venta SMALLINT,
-   compra SMALLINT,
-   devolucion_compra SMALLINT,
-   ot_terminado SMALLINT,
-   ot_en_reparacion SMALLINT,
-   ot_devolucion SMALLINT,
-   vigente BOOLEAN NOT NULL
+   departamen SMALLINT(5) UNSIGNED,
+   ciudad SMALLINT(5) UNSIGNED,
+   barrio SMALLINT(5) UNSIGNED,
+   moneda SMALLINT(5) UNSIGNED NOT NULL,
+   venta SMALLINT(5) UNSIGNED,
+   devolucion_venta SMALLINT(5) UNSIGNED,
+   compra SMALLINT(5) UNSIGNED,
+   devolucion_compra SMALLINT(5) UNSIGNED,
+   ot_terminado SMALLINT(5) UNSIGNED,
+   ot_en_reparacion SMALLINT(5) UNSIGNED,
+   ot_devolucion SMALLINT(5) UNSIGNED,
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE sucursal
@@ -774,29 +698,30 @@ ALTER TABLE sucursal
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_sucursal_nombre
       CHECK (nombre <> ''),
-   ADD CONSTRAINT chk_sucursal_direccion
-      CHECK (direccion IS NULL OR direccion <> '');
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 INSERT INTO sucursal (codigo, nombre, direccion, departamen, ciudad, barrio, moneda, venta, devolucion_venta, compra, devolucion_compra, ot_terminado, ot_en_reparacion, ot_devolucion, vigente)
-   VALUES (1, 'CASA CENTRAL [001]', 'MECANICOS DE AVIACION Nº 1610 ESQ. DR. FELIX PAIVA', NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, '1');
+   VALUES (1, 'CASA CENTRAL [001]', 'MECANICOS DE AVIACION Nº 1610 ESQ. DR. FELIX PAIVA', NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1);
 INSERT INTO sucursal (codigo, nombre, direccion, departamen, ciudad, barrio, moneda, venta, devolucion_venta, compra, devolucion_compra, ot_terminado, ot_en_reparacion, ot_devolucion, vigente)
-   VALUES (2, 'PAKSA [002]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0');
+   VALUES (2, 'SUCURSAL [002]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO sucursal (codigo, nombre, direccion, departamen, ciudad, barrio, moneda, venta, devolucion_venta, compra, devolucion_compra, ot_terminado, ot_en_reparacion, ot_devolucion, vigente)
-   VALUES (3, 'AVDA. EUSEBIO AYALA [003]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0');
+   VALUES (3, 'SUCURSAL [003]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO sucursal (codigo, nombre, direccion, departamen, ciudad, barrio, moneda, venta, devolucion_venta, compra, devolucion_compra, ot_terminado, ot_en_reparacion, ot_devolucion, vigente)
-   VALUES (4, 'DEPOSITO DR. FELIX PAIVA [004]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1');
+   VALUES (4, 'DEPOSITO [004]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
 INSERT INTO sucursal (codigo, nombre, direccion, departamen, ciudad, barrio, moneda, venta, devolucion_venta, compra, devolucion_compra, ot_terminado, ot_en_reparacion, ot_devolucion, vigente)
-   VALUES (5, 'SAN BERNARDINO [005]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0');
+   VALUES (5, 'SAN BERNARDINO [005]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO sucursal (codigo, nombre, direccion, departamen, ciudad, barrio, moneda, venta, devolucion_venta, compra, devolucion_compra, ot_terminado, ot_en_reparacion, ot_devolucion, vigente)
-   VALUES (6, 'AVDA. EUSEBIO AYALA [006]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1');
+   VALUES (6, 'AVDA. EUSEBIO AYALA [006]', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE deposito (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   sucursal SMALLINT NOT NULL,
-   venta BOOLEAN NOT NULL,
-   vigente BOOLEAN NOT NULL
+   sucursal SMALLINT(5) UNSIGNED NOT NULL,
+   venta TINYINT(1) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE deposito
@@ -811,39 +736,42 @@ ALTER TABLE deposito
    ADD CONSTRAINT chk_deposito_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_deposito_nombre
-      CHECK (nombre <> '');
+      CHECK (nombre <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (1, 'PRINCIPAL [001]', 1, '1', '1');
+   VALUES (1, 'PRINCIPAL [001]', 1, 1, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (2, 'DEVOLUCION VENTA [001]', 1, '0', '1');
+   VALUES (2, 'DEVOLUCION VENTA [001]', 1, 0, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (3, 'COMPRA [001]', 1, '0', '1');
+   VALUES (3, 'COMPRA [001]', 1, 0, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (4, 'DEVOLUCION COMPRA [001]', 1, '0', '1');
+   VALUES (4, 'DEVOLUCION COMPRA [001]', 1, 0, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (5, 'OT - TERMINADO [001]', 1, '0', '1');
+   VALUES (5, 'OT - TERMINADO [001]', 1, 0, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (6, 'OT - EN REPARACION [001]', 1, '0', '1');
+   VALUES (6, 'OT - EN REPARACION [001]', 1, 0, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (7, 'OT - DEVOLUCION [001]', 1, '0', '1');
+   VALUES (7, 'OT - DEVOLUCION [001]', 1, 0, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (8, 'PRINCIPAL [006]', 6, '1', '1');
+   VALUES (8, 'PRINCIPAL [006]', 6, 1, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (9, 'DEVOLUCION VENTA [006]', 6, '0', '1');
+   VALUES (9, 'DEVOLUCION VENTA [006]', 6, 0, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (10, 'EN TRANSITO [001] -> [006]', 1, '0', '1');
+   VALUES (10, 'EN TRANSITO [001] -> [006]', 1, 0, 1);
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (11, 'EN TRANSITO [006] -> [001]', 6, '0', '1');
+   VALUES (11, 'EN TRANSITO [006] -> [001]', 6, 0, 1);
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE ejercicio (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
-   periodo SMALLINT NOT NULL,
+   periodo SMALLINT(4) UNSIGNED NOT NULL,
    fecha_inicio DATE NOT NULL,
    fecha_fin DATE NOT NULL,
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE ejercicio
@@ -862,23 +790,24 @@ ALTER TABLE ejercicio
    ADD CONSTRAINT chk_ejercicio_fecha_fin
       CHECK (fecha_fin >= fecha_inicio),
    ADD CONSTRAINT chk_ejercicio_fecha
-      CHECK ((fecha_fin - fecha_inicio) <= 365),
-   ADD CONSTRAINT chk_ejercicio_fecha_inicio_periodo
-      CHECK (EXTRACT(ISOYEAR FROM fecha_inicio) = periodo);
+      CHECK (DATEDIFF(fecha_fin, fecha_inicio) <= 365),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 INSERT INTO ejercicio (codigo, nombre, periodo, fecha_inicio, fecha_fin, vigente)
-   VALUES (2015, 'EJERCICIO 2015', 2015, '2015-01-01', '2015-12-31', '1');
+   VALUES (2015, 'EJERCICIO 2015', 2015, '2015-01-01', '2015-12-31', 1);
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE empresa (
    nombre VARCHAR(100) NOT NULL,
    razon_social VARCHAR(100),
    ruc VARCHAR(15) NOT NULL,
-   dv CHARACTER(1) NOT NULL,
+   dv CHAR(1) NOT NULL,
    sitio_web VARCHAR(100),
    e_mail VARCHAR(100),
-   sucursal SMALLINT NOT NULL,
-   ejercicio SMALLINT NOT NULL
+   sucursal SMALLINT(5) UNSIGNED NOT NULL,
+   ejercicio SMALLINT(5) UNSIGNED NOT NULL
 );
 
 ALTER TABLE empresa
@@ -903,18 +832,21 @@ ALTER TABLE empresa
    ADD CONSTRAINT chk_empresa_sitio_web
       CHECK (sitio_web IS NULL OR sitio_web <> ''),
    ADD CONSTRAINT chk_empresa_e_mail
-      CHECK (e_mail IS NULL OR e_mail <> '');
+      CHECK (e_mail IS NULL OR e_mail <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 INSERT INTO empresa (nombre, razon_social, ruc, dv, sitio_web, e_mail, sucursal, ejercicio)
    VALUES ('A & A IMPORTACIONES S.R.L.', 'A & A IMPORTACIONES S.R.L.', '80004234', '4', 'www.ayaimportaciones.com.py', 'ayaimportaciones@gmail.com', 1, 2015);
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE unidad (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
    simbolo VARCHAR(5) NOT NULL,
-   divisible BOOLEAN NOT NULL,
-   vigente BOOLEAN NOT NULL
+   divisible TINYINT(1) UNSIGNED NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE unidad
@@ -929,28 +861,31 @@ ALTER TABLE unidad
    ADD CONSTRAINT chk_unidad_nombre
       CHECK (nombre <> ''),
    ADD CONSTRAINT chk_unidad_simbolo
-      CHECK (simbolo <> '');
+      CHECK (simbolo <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE articulo (
-   codigo INTEGER NOT NULL,
+   codigo MEDIUMINT UNSIGNED NOT NULL,
    nombre VARCHAR(100) NOT NULL,
    cod_articulo VARCHAR(20) NOT NULL,
    cod_barra VARCHAR(20),
    cod_original VARCHAR(20),
    cod_alternativo VARCHAR(20),
    aplicacion VARCHAR(480),
-   familia SMALLINT NOT NULL,
-   rubro SMALLINT NOT NULL,
-   subrubro SMALLINT NOT NULL,
-   marca SMALLINT NOT NULL,
-   unidad SMALLINT NOT NULL,
-   proveedor SMALLINT NOT NULL,
-   pais SMALLINT NOT NULL,
+   familia SMALLINT(5) UNSIGNED NOT NULL,
+   rubro SMALLINT(5) UNSIGNED NOT NULL,
+   subrubro SMALLINT(5) UNSIGNED NOT NULL,
+   marca SMALLINT(5) UNSIGNED NOT NULL,
+   unidad SMALLINT(5) UNSIGNED NOT NULL,
+   proveedor SMALLINT(5) UNSIGNED NOT NULL,
+   pais SMALLINT(5) UNSIGNED NOT NULL,
    ubicacion VARCHAR(20),
-   vigente BOOLEAN NOT NULL,
-   lprecio BOOLEAN NOT NULL,
-   gravado BOOLEAN NOT NULL,
+   vigente TINYINT(1) UNSIGNED NOT NULL,
+   lprecio TINYINT(1) UNSIGNED NOT NULL,
+   gravado TINYINT(1) UNSIGNED NOT NULL,
    porc_iva NUMERIC(19,6),
    pcostog NUMERIC(19,6),
    pcostod NUMERIC(19,6),
@@ -966,8 +901,8 @@ CREATE TABLE articulo (
    pventad5 NUMERIC(19,6),
    stock_min NUMERIC(19,6),
    stock_max NUMERIC(19,6),
-   polinvsmin BOOLEAN NOT NULL,
-   polinvsmax BOOLEAN NOT NULL,
+   polinvsmin TINYINT(1) UNSIGNED NOT NULL,
+   polinvsmax TINYINT(1) UNSIGNED NOT NULL,
    caracter1 VARCHAR(60),
    caracter2 VARCHAR(60),
    caracter3 VARCHAR(60),
@@ -982,7 +917,7 @@ CREATE TABLE articulo (
 );
 
 ALTER TABLE articulo
-   ADD CONSTRAINT pk_articulo_codigo
+   ADD CONSTRAINT pk_ciudad_codigo
       PRIMARY KEY (codigo),
    ADD CONSTRAINT fk_articulo_familia
       FOREIGN KEY (familia) REFERENCES familia (codigo)
@@ -1022,8 +957,6 @@ ALTER TABLE articulo
       UNIQUE (cod_original),
    ADD CONSTRAINT unq_articulo_cod_alternativo
       UNIQUE (cod_alternativo),
-   ADD CONSTRAINT chk_articulo_codigo
-      CHECK (codigo > 0),
    ADD CONSTRAINT chk_articulo_nombre
       CHECK (nombre <> ''),
    ADD CONSTRAINT chk_articulo_cod_articulo
@@ -1039,7 +972,7 @@ ALTER TABLE articulo
    ADD CONSTRAINT chk_articulo_ubicacion
       CHECK (ubicacion IS NULL OR ubicacion <> ''),
    ADD CONSTRAINT chk_articulo_porc_iva
-      CHECK (porc_iva IS NULL OR porc_iva IN (5, 10)),
+      CHECK (porc_iva IS NULL OR porc_iva > 0),
    ADD CONSTRAINT chk_articulo_pcostog
       CHECK (pcostog IS NULL OR pcostog > 0),
    ADD CONSTRAINT chk_articulo_pcostod
@@ -1078,10 +1011,6 @@ ALTER TABLE articulo
       CHECK (otros1 IS NULL OR otros1 <> ''),
    ADD CONSTRAINT chk_articulo_otros2
       CHECK (otros2 IS NULL OR otros2 <> ''),
-   ADD CONSTRAINT chk_articulo_fecucompra
-      CHECK (fecucompra IS NULL OR fecucompra <= CURRENT_DATE),
-   ADD CONSTRAINT chk_articulo_fecuventa
-      CHECK (fecuventa IS NULL OR fecuventa <= CURRENT_DATE),
    ADD CONSTRAINT chk_articulo_stock_actual
       CHECK (stock_actual >= 0),
    ADD CONSTRAINT chk_articulo_stock_ot
@@ -1089,14 +1018,17 @@ ALTER TABLE articulo
    ADD CONSTRAINT chk_articulo_stock_comprometido
       CHECK (stock_comprometido >= 0),
    ADD CONSTRAINT chk_articulo_stock_solicitado
-      CHECK (stock_solicitado >= 0);
+      CHECK (stock_solicitado >= 0),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE vendedor (
-   codigo SMALLINT NOT NULL,
+   codigo SMALLINT(5) UNSIGNED NOT NULL,
    nombre VARCHAR(50) NOT NULL,
    documento VARCHAR(15),
-   vigente BOOLEAN NOT NULL
+   vigente TINYINT(1) UNSIGNED NOT NULL
 );
 
 ALTER TABLE vendedor
@@ -1111,11 +1043,14 @@ ALTER TABLE vendedor
    ADD CONSTRAINT chk_vendedor_nombre
       CHECK (nombre <> ''),
    ADD CONSTRAINT chk_vendedor_documento
-      CHECK (documento IS NULL OR documento <> '');
+      CHECK (documento IS NULL OR documento <> ''),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE cliente (
-   codigo INTEGER NOT NULL,
+   codigo MEDIUMINT UNSIGNED NOT NULL,
    nombre VARCHAR(100) NOT NULL,
    direc1 VARCHAR(60),
    direc2 VARCHAR(60),
@@ -1126,10 +1061,10 @@ CREATE TABLE cliente (
    direc7 VARCHAR(60),
    direc8 VARCHAR(60),
    direc9 VARCHAR(60),
-   departamen SMALLINT,
-   ciudad SMALLINT,
-   barrio SMALLINT,
-   ruta SMALLINT NOT NULL,
+   departamen SMALLINT(5) UNSIGNED,
+   ciudad SMALLINT(5) UNSIGNED,
+   barrio SMALLINT(5) UNSIGNED,
+   ruta SMALLINT(5) UNSIGNED NOT NULL,
    telefono VARCHAR(30),
    fax VARCHAR(30),
    e_mail VARCHAR(40),
@@ -1137,16 +1072,17 @@ CREATE TABLE cliente (
    fechanac DATE,
    documento VARCHAR(15) NOT NULL,
    ruc VARCHAR(15),
-   dv CHARACTER(1),
-   plazo SMALLINT,
-   vendedor SMALLINT,
-   lista SMALLINT NOT NULL,
+   dv CHAR(1),
+   estado CHAR(1) NOT NULL,
+   plazo SMALLINT(5) UNSIGNED,
+   vendedor SMALLINT(5) UNSIGNED,
+   lista SMALLINT(5) UNSIGNED NOT NULL,
    limite_cre NUMERIC(19,6) NOT NULL,
    saldo_actu NUMERIC(19,6) NOT NULL,
    saldo_usd NUMERIC(19,6) NOT NULL,
-   facturar BOOLEAN NOT NULL,
+   facturar TINYINT(1) UNSIGNED NOT NULL,
    fec_ioper DATE,
-   motivoclie SMALLINT NOT NULL,
+   motivoclie SMALLINT(5) UNSIGNED NOT NULL,
    odatosclie VARCHAR(40),
    obs1 VARCHAR(72),
    obs2 VARCHAR(72),
@@ -1163,8 +1099,7 @@ CREATE TABLE cliente (
    ref3 VARCHAR(72),
    ref4 VARCHAR(72),
    ref5 VARCHAR(72),
-   cuenta VARCHAR(18),
-   vigente BOOLEAN NOT NULL
+   cuenta VARCHAR(18)
 );
 
 ALTER TABLE cliente
@@ -1212,82 +1147,17 @@ ALTER TABLE cliente
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_cliente_nombre
       CHECK (nombre <> ''),
-   ADD CONSTRAINT chk_cliente_direc1
-      CHECK (direc1 IS NULL OR direc1 <> ''),
-   ADD CONSTRAINT chk_cliente_direc2
-      CHECK (direc2 IS NULL OR direc2 <> ''),
-   ADD CONSTRAINT chk_cliente_direc3
-      CHECK (direc3 IS NULL OR direc3 <> ''),
-   ADD CONSTRAINT chk_cliente_direc4
-      CHECK (direc4 IS NULL OR direc4 <> ''),
-   ADD CONSTRAINT chk_cliente_direc5
-      CHECK (direc5 IS NULL OR direc5 <> ''),
-   ADD CONSTRAINT chk_cliente_direc6
-      CHECK (direc6 IS NULL OR direc6 <> ''),
-   ADD CONSTRAINT chk_cliente_direc7
-      CHECK (direc7 IS NULL OR direc7 <> ''),
-   ADD CONSTRAINT chk_cliente_direc8
-      CHECK (direc8 IS NULL OR direc8 <> ''),
-   ADD CONSTRAINT chk_cliente_direc9
-      CHECK (direc9 IS NULL OR direc9 <> ''),
-   ADD CONSTRAINT chk_cliente_telefono
-      CHECK (telefono IS NULL OR telefono <> ''),
-   ADD CONSTRAINT chk_cliente_fax
-      CHECK (fax IS NULL OR fax <> ''),
-   ADD CONSTRAINT chk_cliente_e_mail
-      CHECK (e_mail IS NULL OR e_mail <> ''),
    ADD CONSTRAINT chk_cliente_contacto
-      CHECK (contacto IS NULL OR contacto <> ''),
-   ADD CONSTRAINT chk_cliente_fechanac
-      CHECK (fechanac IS NULL OR fechanac <= CURRENT_DATE),
-   ADD CONSTRAINT chk_cliente_documento
-      CHECK (documento <> ''),
-   ADD CONSTRAINT chk_cliente_ruc
-      CHECK (ruc IS NULL OR ruc <> ''),
-   ADD CONSTRAINT chk_cliente_dv
-      CHECK (dv IS NULL OR dv <> ''),
-   ADD CONSTRAINT chk_cliente_lista
-      CHECK (lista BETWEEN 1 AND 5),
-   ADD CONSTRAINT chk_cliente_limite_cre
-      CHECK (limite_cre >= 0),
+      CHECK (contacto <> ''),
+   ADD CONSTRAINT chk_cliente_estado
+      CHECK (estado IN ('A', 'I')),
    ADD CONSTRAINT chk_cliente_saldo_actu
       CHECK (saldo_actu >= 0),
-   ADD CONSTRAINT chk_cliente_fec_ioper
-      CHECK (fec_ioper IS NULL OR fec_ioper <= CURRENT_DATE),
-   ADD CONSTRAINT chk_cliente_odatosclie
-      CHECK (odatosclie IS NULL OR odatosclie <> ''),
-   ADD CONSTRAINT chk_cliente_obs1
-      CHECK (obs1 IS NULL OR obs1 <> ''),
-   ADD CONSTRAINT chk_cliente_obs2
-      CHECK (obs2 IS NULL OR obs2 <> ''),
-   ADD CONSTRAINT chk_cliente_obs3
-      CHECK (obs3 IS NULL OR obs3 <> ''),
-   ADD CONSTRAINT chk_cliente_obs4
-      CHECK (obs4 IS NULL OR obs4 <> ''),
-   ADD CONSTRAINT chk_cliente_obs5
-      CHECK (obs5 IS NULL OR obs5 <> ''),
-   ADD CONSTRAINT chk_cliente_obs6
-      CHECK (obs6 IS NULL OR obs6 <> ''),
-   ADD CONSTRAINT chk_cliente_obs7
-      CHECK (obs7 IS NULL OR obs7 <> ''),
-   ADD CONSTRAINT chk_cliente_obs8
-      CHECK (obs8 IS NULL OR obs8 <> ''),
-   ADD CONSTRAINT chk_cliente_obs9
-      CHECK (obs9 IS NULL OR obs9 <> ''),
-   ADD CONSTRAINT chk_cliente_obs10
-      CHECK (obs10 IS NULL OR obs10 <> ''),
-   ADD CONSTRAINT chk_cliente_ref1
-      CHECK (ref1 IS NULL OR ref1 <> ''),
-   ADD CONSTRAINT chk_cliente_ref2
-      CHECK (ref2 IS NULL OR ref2 <> ''),
-   ADD CONSTRAINT chk_cliente_ref3
-      CHECK (ref3 IS NULL OR ref3 <> ''),
-   ADD CONSTRAINT chk_cliente_ref4
-      CHECK (ref4 IS NULL OR ref4 <> ''),
-   ADD CONSTRAINT chk_cliente_ref5
-      CHECK (ref5 IS NULL OR ref5 <> ''),
-   ADD CONSTRAINT chk_cliente_cuenta
-      CHECK (cuenta IS NULL OR cuenta <> '');
+   ADD CONSTRAINT chk_cliente_saldo_usd
+      CHECK (saldo_usd >= 0),
+   DEFAULT CHARACTER SET = 'latin1'
+   DEFAULT COLLATE = 'latin1_swedish_ci',
+   ENGINE=InnoDB;
 
 /* -------------------------------------------------------------------------- */
 ALTER TABLE sucursal

@@ -28,7 +28,7 @@ DEFINE CLASS Modelo AS CUSTOM
          .cSql = 'SELECT ' + ;
                     'a.codigo, ' + ;
                     'a.nombre, ' + ;
-                    [CONCAT(RTRIM(LTRIM(b.nombre)), ' ', RTRIM(LTRIM(c.nombre)), ' ', RTRIM(LTRIM(a.nombre))) AS nombre2, ] + ;
+                    [CAST(CONCAT(RTRIM(LTRIM(b.nombre)), ' ', RTRIM(LTRIM(c.nombre)), ' ', RTRIM(LTRIM(a.nombre))) AS VARCHAR(150)) AS nombre2, ] + ;
                     'a.maquina, ' + ;
                     'a.marca, ' + ;
                     'a.vigente ' + ;
@@ -320,7 +320,7 @@ DEFINE CLASS Modelo AS CUSTOM
             .cNombre2 = nombre2
             .nMaquina = maquina
             .nMarca = marca
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -399,7 +399,7 @@ DEFINE CLASS Modelo AS CUSTOM
             .cNombre2 = nombre2
             .nMaquina = maquina
             .nMarca = marca
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -478,7 +478,7 @@ DEFINE CLASS Modelo AS CUSTOM
             .cNombre2 = nombre2
             .nMaquina = maquina
             .nMarca = marca
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -679,7 +679,7 @@ DEFINE CLASS Modelo AS CUSTOM
          pcNombre = THIS.cNombre
          pnMaquina = THIS.nMaquina
          pnMarca = THIS.nMarca
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, maquina, marca, vigente', ;
@@ -705,7 +705,7 @@ DEFINE CLASS Modelo AS CUSTOM
          pcNombre = THIS.cNombre
          pnMaquina = THIS.nMaquina
          pnMarca = THIS.nMarca
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, maquina = ?pnMaquina, marca = ?pnMarca, vigente = ?plVigente', ;

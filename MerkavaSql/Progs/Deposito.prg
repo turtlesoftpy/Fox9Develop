@@ -271,8 +271,8 @@ DEFINE CLASS Deposito AS CUSTOM
             .nCodigo = codigo
             .cNombre = nombre
             .nSucursal = sucursal
-            .lVenta = IIF(venta = 0, .F., .T.)
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVenta = IIF(venta = '0', .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -345,8 +345,8 @@ DEFINE CLASS Deposito AS CUSTOM
             .nCodigo = codigo
             .cNombre = nombre
             .nSucursal = sucursal
-            .lVenta = IIF(venta = 0, .F., .T.)
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVenta = IIF(venta = '0', .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -509,8 +509,8 @@ DEFINE CLASS Deposito AS CUSTOM
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
          pnSucursal = THIS.nSucursal
-         plVenta = IIF(!THIS.lVenta, 0, 1)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVenta = IIF(!THIS.lVenta, '0', '1')
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, sucursal, venta, vigente', ;
@@ -535,8 +535,8 @@ DEFINE CLASS Deposito AS CUSTOM
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
          pnSucursal = THIS.nSucursal
-         plVenta = IIF(!THIS.lVenta, 0, 1)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVenta = IIF(!THIS.lVenta, '0', '1')
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, sucursal = ?pnSucursal, venta = ?plVenta, vigente = ?plVigente', ;

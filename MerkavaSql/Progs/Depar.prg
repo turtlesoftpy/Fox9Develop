@@ -201,7 +201,7 @@ DEFINE CLASS Depar AS CUSTOM
          WITH THIS
             .nCodigo = codigo
             .cNombre = nombre
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -273,7 +273,7 @@ DEFINE CLASS Depar AS CUSTOM
          WITH THIS
             .nCodigo = codigo
             .cNombre = nombre
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -388,7 +388,7 @@ DEFINE CLASS Depar AS CUSTOM
          PRIVATE pnCodigo, pcNombre, plVigente
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, vigente', ;
@@ -412,7 +412,7 @@ DEFINE CLASS Depar AS CUSTOM
          PRIVATE pnCodigo, pcNombre, plVigente
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, vigente = ?plVigente', ;

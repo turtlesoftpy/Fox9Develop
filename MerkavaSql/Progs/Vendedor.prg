@@ -223,7 +223,7 @@ DEFINE CLASS Vendedor AS CUSTOM
             .nCodigo = codigo
             .cNombre = nombre
             .cDocumento = documento
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -296,7 +296,7 @@ DEFINE CLASS Vendedor AS CUSTOM
             .nCodigo = codigo
             .cNombre = nombre
             .cDocumento = documento
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -369,7 +369,7 @@ DEFINE CLASS Vendedor AS CUSTOM
             .nCodigo = codigo
             .cNombre = nombre
             .cDocumento = documento
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -521,7 +521,7 @@ DEFINE CLASS Vendedor AS CUSTOM
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
          pcDocumento = IIF(!EMPTY(THIS.cDocumento), THIS.cDocumento, NULL)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, documento, vigente', ;
@@ -546,7 +546,7 @@ DEFINE CLASS Vendedor AS CUSTOM
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
          pcDocumento = IIF(!EMPTY(THIS.cDocumento), THIS.cDocumento, NULL)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, documento = ?pcDocumento, vigente = ?plVigente', ;

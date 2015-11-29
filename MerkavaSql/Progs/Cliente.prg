@@ -29,7 +29,6 @@ DEFINE CLASS Cliente AS CUSTOM
    PROTECTED cDocumento
    PROTECTED cRUC
    PROTECTED cDV
-   PROTECTED cEstado
    PROTECTED nPlazo
    PROTECTED nVendedor
    PROTECTED nLista
@@ -56,6 +55,9 @@ DEFINE CLASS Cliente AS CUSTOM
    PROTECTED cRef4
    PROTECTED cRef5
    PROTECTED cCuenta
+   PROTECTED lVigente
+
+   PROTECTED cVigente
 
    * Objetos.
    PROTECTED oDepartamen
@@ -97,7 +99,6 @@ DEFINE CLASS Cliente AS CUSTOM
          .cDocumento = ''
          .cRUC = ''
          .cDV = ''
-         .cEstado = ''
          .nPlazo = 0
          .nVendedor = 0
          .nLista = 0
@@ -124,6 +125,9 @@ DEFINE CLASS Cliente AS CUSTOM
          .cRef4 = ''
          .cRef5 = ''
          .cCuenta = ''
+         .lVigente = .F.
+
+         .cVigente = ''
 
          .oDepartamen = NEWOBJECT('Depar', 'Depar.prg')
          .oCiudad = NEWOBJECT('Ciudad', 'Ciudad.prg')
@@ -526,25 +530,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * fin { validación de parámetro }
 
       THIS.cDV = tcDV
-   ENDFUNC
-
-   * ---------------------------------------------------------------------------- *
-   FUNCTION SetEstado
-      LPARAMETER tcEstado
-
-      * inicio { validación de parámetro }
-      IF VARTYPE(tcEstado) <> 'C' THEN
-         MESSAGEBOX([El parámetro 'tcEstado' debe ser de tipo texto.], 0+16, THIS.Name + '.SetEstado()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcEstado) > 1 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcEstado' debe ser como máximo de 1 caracter.], 0+16, THIS.Name + '.SetEstado()')
-         RETURN .F.
-      ENDIF
-      * fin { validación de parámetro }
-
-      THIS.cEstado = tcEstado
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
@@ -971,6 +956,34 @@ DEFINE CLASS Cliente AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
+   FUNCTION SetVigente
+      LPARAMETER tlVigente
+
+      * inicio { validación de parámetro }
+      IF VARTYPE(tlVigente) <> 'L' THEN
+         MESSAGEBOX([El parámetro 'tlVigente' debe ser de tipo lógico.], 0+16, THIS.Name + '.SetVigente()')
+         RETURN .F.
+      ENDIF
+      * fin { validación de parámetro }
+
+      THIS.lVigente = tlVigente
+   ENDFUNC
+
+  * ---------------------------------------------------------------------------- *
+   FUNCTION SetVigente2
+      LPARAMETER tcVigente
+
+      * inicio { validación de parámetro }
+      IF VARTYPE(tcVigente) <> 'C' THEN
+         MESSAGEBOX([El parámetro 'tcVigente' debe ser de tipo texto.], 0+16, THIS.Name + '.SetVigente()')
+         RETURN .F.
+      ENDIF
+      * fin { validación de parámetro }
+
+      THIS.cVigente = tcVigente
+   ENDFUNC
+
+   * ---------------------------------------------------------------------------- *
    FUNCTION GetCodigo
       RETURN THIS.nCodigo
    ENDFUNC
@@ -1126,26 +1139,6 @@ DEFINE CLASS Cliente AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
-   FUNCTION GetEstado
-      RETURN THIS.cEstado
-   ENDFUNC
-
-   * ---------------------------------------------------------------------------- *
-   FUNCTION GetEstadoNombre
-      LOCAL lcRetorno
-      lcRetorno = ''
-
-      DO CASE
-      CASE THIS.cEstado = 'A'
-         lcRetorno = 'ACTIVO'
-      CASE THIS.cEstado = 'I'
-         lcRetorno = 'INACTIVO'
-      ENDCASE
-
-      RETURN lcRetorno
-   ENDFUNC
-
-   * ---------------------------------------------------------------------------- *
    FUNCTION GetPlazo
       RETURN THIS.nPlazo
    ENDFUNC
@@ -1298,6 +1291,24 @@ DEFINE CLASS Cliente AS CUSTOM
    * ---------------------------------------------------------------------------- *
    FUNCTION GetRef5
       RETURN THIS.cRef5
+   ENDFUNC
+
+   * ---------------------------------------------------------------------------- *
+   FUNCTION GetVigente
+      RETURN THIS.lVigente
+   ENDFUNC
+
+   * ---------------------------------------------------------------------------- *
+   FUNCTION GetVigenteNombre
+      LOCAL lcRetorno
+
+      IF THIS.lVigente THEN
+         lcRetorno = 'ACTIVO'
+      ELSE
+         lcRetorno = 'INACTIVO'
+      ENDIF
+
+      RETURN lcRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
@@ -2125,14 +2136,6 @@ DEFINE CLASS Cliente AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
-   FUNCTION ValidarEstado()
-      IF !INLIST(THIS.cEstado, 'A', 'I') THEN
-         MESSAGEBOX([El estado puede ser 'A' para activo o 'I' para inactivo.], 0+16, THIS.Name + '.ValidarEstado()')
-         RETURN .F.
-      ENDIF
-   ENDFUNC
-
-   * ---------------------------------------------------------------------------- *
    FUNCTION ValidarPlazo()
       IF !BETWEEN(THIS.nPlazo, 0, 65535) THEN
          MESSAGEBOX([El plazo debe ser un valor entre 0 y 65535.], 0+16, THIS.Name + '.ValidarPlazo()')
@@ -2350,6 +2353,14 @@ DEFINE CLASS Cliente AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
+   FUNCTION ValidarVigente()
+      IF !INLIST(THIS.cVigente, 'A', 'I') THEN
+         MESSAGEBOX([El estado puede ser 'A' para activo o 'I' para inactivo.], 0+16, THIS.Name + '.ValidarEstado()')
+         RETURN .F.
+      ENDIF
+   ENDFUNC
+
+   * ---------------------------------------------------------------------------- *
    PROTECTED FUNCTION CiudadPerteneceDepartamen
       loModelo = NEWOBJECT('Ciudad', 'Ciudad.prg')
       RETURN loModelo.BuscarPorCodigo(THIS.nCiudad, 'departamen = ' + ALLTRIM(STR(THIS.nDepartamen)))
@@ -2387,14 +2398,13 @@ DEFINE CLASS Cliente AS CUSTOM
          .cDocumento = documento
          .cRUC = IIF(!ISNULL(ruc), ruc, '')
          .cDV = IIF(!ISNULL(dv), dv, '')
-         .cEstado = estado
          .nPlazo = IIF(!ISNULL(plazo), plazo, 0)
          .nVendedor = IIF(!ISNULL(vendedor), vendedor, 0)
          .nLista = lista
          .nLimiteCre = limite_cre
          .nSaldoActu = saldo_actu
          .nSaldoUSD = saldo_usd
-         .lFacturar = IIF(facturar = 0, .F., .T.)
+         .lFacturar = IIF(facturar = '0', .F., .T.)
          .dFecIOper = IIF(!ISNULL(fec_ioper), fec_ioper, {})
          .nMotivoClie = motivoclie
          .cODatosClie = IIF(!ISNULL(odatosclie), odatosclie, '')
@@ -2414,6 +2424,7 @@ DEFINE CLASS Cliente AS CUSTOM
          .cRef4 = IIF(!ISNULL(ref4), ref4, '')
          .cRef5 = IIF(!ISNULL(ref5), ref5, '')
          .cCuenta = IIF(!ISNULL(cuenta), cuenta, '')
+         .lVigente = IIF(vigente = '0', .F., .T.)
       ENDWITH
    ENDFUNC
 
@@ -2511,10 +2522,6 @@ DEFINE CLASS Cliente AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF !THIS.ValidarEstado() THEN
-         RETURN .F.
-      ENDIF
-
       IF !THIS.ValidarPlazo() THEN
          RETURN .F.
       ENDIF
@@ -2598,6 +2605,10 @@ DEFINE CLASS Cliente AS CUSTOM
       IF !THIS.ValidarRef4() THEN
          RETURN .F.
       ENDIF
+
+      IF !THIS.ValidarVigente() THEN
+         RETURN .F.
+      ENDIF
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
@@ -2609,7 +2620,7 @@ DEFINE CLASS Cliente AS CUSTOM
       IF THIS.Validar() THEN
          PRIVATE pnCodigo, pcNombre, pcDirec1, pcDirec2, pcDirec3, pcDirec4, pcDirec5, pcDirec6, pcDirec7, pcDirec8, pcDirec9, ;
                  pnDepartamen, pnCiudad, pnBarrio, pnRuta, pcTelefono, pcFax, pcEMail, pcContacto, pdFechaNac, pcDocumento, ;
-                 pcRUC, pcDV, pcEstado, pnPlazo, pnVendedor, pnLista, pnLimiteCre, pnSaldoActu, pnSaldoUSD, plFacturar, pdFecIOper, ;
+                 pcRUC, pcDV, plVigente, pnPlazo, pnVendedor, pnLista, pnLimiteCre, pnSaldoActu, pnSaldoUSD, plFacturar, pdFecIOper, ;
                  pnMotivoClie, pcODatosClie, pcObs1, pcObs2, pcObs3, pcObs4, pcObs5, pcObs6, pcObs7, pcObs8, pcObs9, pcObs10, ;
                  pcRef1, pcRef2, pcRef3, pcRef4, pcRef5, pcCuenta
 
@@ -2636,14 +2647,13 @@ DEFINE CLASS Cliente AS CUSTOM
          pcDocumento = THIS.cDocumento
          pcRUC = IIF(!EMPTY(THIS.cRUC), THIS.cRUC, NULL)
          pcDV = IIF(!EMPTY(THIS.cDV), THIS.cDV, NULL)
-         pcEstado = THIS.cEstado
          pnPlazo = IIF(!EMPTY(THIS.nPlazo), THIS.nPlazo, NULL)
          pnVendedor = IIF(!EMPTY(THIS.nVendedor), THIS.nVendedor, NULL)
          pnLista = THIS.nLista
          pnLimiteCre = THIS.nLimiteCre
          pnSaldoActu = THIS.nSaldoActu
          pnSaldoUSD = THIS.nSaldoUSD
-         plFacturar = IIF(!THIS.lFacturar, 0, 1)
+         plFacturar = IIF(!THIS.lFacturar, '0', '1')
          pdFecIOper = IIF(!EMPTY(THIS.dFecIOper), THIS.dFecIOper, NULL)
          pnMotivoClie = THIS.nMotivoClie
          pcODatosClie = IIF(!EMPTY(THIS.cODatosClie), THIS.cODatosClie, NULL)
@@ -2663,18 +2673,19 @@ DEFINE CLASS Cliente AS CUSTOM
          pcRef4 = IIF(!EMPTY(THIS.cRef4), THIS.cRef4, NULL)
          pcRef5 = IIF(!EMPTY(THIS.cRef5), THIS.cRef5, NULL)
          pcCuenta = IIF(!EMPTY(THIS.cCuenta), THIS.cCuenta, NULL)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, direc1, direc2, direc3, direc4, direc5, direc6, direc7, direc8, direc9, ' + ;
                                         'departamen, ciudad, barrio, ruta, telefono, fax, e_mail, contacto, fechanac, documento, ' + ;
-                                        'ruc, dv, estado, plazo, vendedor, lista, limite_cre, saldo_actu, saldo_usd, facturar, ' + ;
+                                        'ruc, dv, plazo, vendedor, lista, limite_cre, saldo_actu, saldo_usd, facturar, ' + ;
                                         'fec_ioper, motivoclie, odatosclie, obs1, obs2, obs3, obs4, obs5, obs6, obs7, obs8, obs9, ' + ;
-                                        'obs10, ref1, ref2, ref3, ref4, ref5, cuenta', ;
+                                        'obs10, ref1, ref2, ref3, ref4, ref5, cuenta, vigente', ;
                                         '?pnCodigo, ?pcNombre, ?pcDirec1, ?pcDirec2, ?pcDirec3, ?pcDirec4, ?pcDirec5, ?pcDirec6, ?pcDirec7, ?pcDirec8, ?pcDirec9, ' + ;
                                         '?pnDepartamen, ?pnCiudad, ?pnBarrio, ?pnRuta, ?pcTelefono, ?pcFax, ?pcEMail, ?pcContacto, ?pdFechaNac, ?pcDocumento, ' + ;
-                                        '?pcRUC, ?pcDV, ?pcEstado, ?pnPlazo, ?pnVendedor, ?pnLista, ?pnLimiteCre, ?pnSaldoActu, ?pnSaldoUSD, ?plFacturar, ' + ;
+                                        '?pcRUC, ?pcDV, ?pnPlazo, ?pnVendedor, ?pnLista, ?pnLimiteCre, ?pnSaldoActu, ?pnSaldoUSD, ?plFacturar, ' + ;
                                         '?pdFecIOper, ?pnMotivoClie, ?pcODatosClie, ?pcObs1, ?pcObs2, ?pcObs3, ?pcObs4, ?pcObs5, ?pcObs6, ?pcObs7, ?pcObs8, ?pcObs9, ' + ;
-                                        '?pcObs10, ?pcRef1, ?pcRef2, ?pcRef3, ?pcRef4, ?pcRef5, ?pcCuenta')
+                                        '?pcObs10, ?pcRef1, ?pcRef2, ?pcRef3, ?pcRef4, ?pcRef5, ?pcCuenta, ?plVigente')
             WAIT 'Registro almacenado correctamente.' WINDOW NOWAIT
          ENDIF
       ELSE
@@ -2693,9 +2704,9 @@ DEFINE CLASS Cliente AS CUSTOM
       IF THIS.Validar() THEN
          PRIVATE pnCodigo, pcNombre, pcDirec1, pcDirec2, pcDirec3, pcDirec4, pcDirec5, pcDirec6, pcDirec7, pcDirec8, pcDirec9, ;
                  pnDepartamen, pnCiudad, pnBarrio, pnRuta, pcTelefono, pcFax, pcEMail, pcContacto, pdFechaNac, pcDocumento, ;
-                 pcRUC, pcDV, pcEstado, pnPlazo, pnVendedor, pnLista, pnLimiteCre, pnSaldoActu, pnSaldoUSD, plFacturar, pdFecIOper, ;
+                 pcRUC, pcDV, pnPlazo, pnVendedor, pnLista, pnLimiteCre, pnSaldoActu, pnSaldoUSD, plFacturar, pdFecIOper, ;
                  pnMotivoClie, pcODatosClie, pcObs1, pcObs2, pcObs3, pcObs4, pcObs5, pcObs6, pcObs7, pcObs8, pcObs9, pcObs10, ;
-                 pcRef1, pcRef2, pcRef3, pcRef4, pcRef5, pcCuenta
+                 pcRef1, pcRef2, pcRef3, pcRef4, pcRef5, pcCuenta, plVigente
 
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
@@ -2720,14 +2731,13 @@ DEFINE CLASS Cliente AS CUSTOM
          pcDocumento = THIS.cDocumento
          pcRUC = IIF(!EMPTY(THIS.cRUC), THIS.cRUC, NULL)
          pcDV = IIF(!EMPTY(THIS.cDV), THIS.cDV, NULL)
-         pcEstado = THIS.cEstado
          pnPlazo = IIF(!EMPTY(THIS.nPlazo), THIS.nPlazo, NULL)
          pnVendedor = IIF(!EMPTY(THIS.nVendedor), THIS.nVendedor, NULL)
          pnLista = THIS.nLista
          pnLimiteCre = THIS.nLimiteCre
          pnSaldoActu = THIS.nSaldoActu
          pnSaldoUSD = THIS.nSaldoUSD
-         plFacturar = IIF(!THIS.lFacturar, 0, 1)
+         plFacturar = IIF(!THIS.lFacturar, '0', '1')
          pdFecIOper = IIF(!EMPTY(THIS.dFecIOper), THIS.dFecIOper, NULL)
          pnMotivoClie = THIS.nMotivoClie
          pcODatosClie = IIF(!EMPTY(THIS.cODatosClie), THIS.cODatosClie, NULL)
@@ -2747,17 +2757,18 @@ DEFINE CLASS Cliente AS CUSTOM
          pcRef4 = IIF(!EMPTY(THIS.cRef4), THIS.cRef4, NULL)
          pcRef5 = IIF(!EMPTY(THIS.cRef5), THIS.cRef5, NULL)
          pcCuenta = IIF(!EMPTY(THIS.cCuenta), THIS.cCuenta, NULL)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, direc1 = ?pcDirec1, direc2 = ?pcDirec2, direc3 = ?pcDirec3, direc4 = ?pcDirec4, direc5 = ?pcDirec5, ' + ;
                                           'direc6 = ?pcDirec6, direc7 = ?pcDirec7, direc8 = ?pcDirec8, direc9 = ?pcDirec9, departamen = ?pnDepartamen, ' + ;
                                           'ciudad = ?pnCiudad, barrio = ?pnBarrio, ruta = ?pnRuta, telefono = ?pcTelefono, fax = ?pcFax, e_mail = ?pcEMail, ' + ;
-                                          'contacto = ?pcContacto, fechanac = ?pdFechaNac, documento = ?pcDocumento, ruc = ?pcRUC, dv = ?pcDV, estado = ?pcEstado, ' + ;
+                                          'contacto = ?pcContacto, fechanac = ?pdFechaNac, documento = ?pcDocumento, ruc = ?pcRUC, dv = ?pcDV, ' + ;
                                           'plazo = ?pnPlazo, vendedor = ?pnVendedor, lista = ?pnLista, limite_cre = ?pnLimiteCre, facturar = ?plFacturar, ' + ;
                                           'fec_ioper = ?pdFecIOper, motivoclie = ?pnMotivoClie, odatosclie = ?pcODatosClie, obs1 = ?pcObs1, obs2 = ?pcObs2, ' + ;
                                           'obs3 = ?pcObs3, obs4 = ?pcObs4, obs5 = ?pcObs5, obs6 = ?pcObs6, obs7 = ?pcObs7, obs8 = ?pcObs8, obs9 = ?pcObs9, ' + ;
-                                          'obs10 = ?pcObs10, ref1 = ?pcRef1, ref2 = ?pcRef2, ref3 = ?pcRef3, ref4 = ?pcRef4, ref5 = ?pcRef5, cuenta = ?pcCuenta', ; 
-                                          THIS.cClavePrimaria + ' = ?pnCodigo')
+                                          'obs10 = ?pcObs10, ref1 = ?pcRef1, ref2 = ?pcRef2, ref3 = ?pcRef3, ref4 = ?pcRef4, ref5 = ?pcRef5, cuenta = ?pcCuenta, ' + ;
+                                          'vigente = ?plVigente', THIS.cClavePrimaria + ' = ?pnCodigo')
             WAIT 'Registro almacenado correctamente.' WINDOW NOWAIT
          ENDIF
       ELSE

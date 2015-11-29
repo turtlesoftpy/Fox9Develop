@@ -296,7 +296,7 @@ DEFINE CLASS Barrio AS CUSTOM
             .cNombre = nombre
             .nDepartamen = departamen
             .nCiudad = ciudad
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -370,7 +370,7 @@ DEFINE CLASS Barrio AS CUSTOM
             .cNombre = nombre
             .nDepartamen = departamen
             .nCiudad = ciudad
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -576,7 +576,7 @@ DEFINE CLASS Barrio AS CUSTOM
          pcNombre = THIS.cNombre
          pnDepartamen = THIS.nDepartamen
          pnCiudad = THIS.nCiudad
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, departamen, ciudad, vigente', ;
@@ -602,7 +602,7 @@ DEFINE CLASS Barrio AS CUSTOM
          pcNombre = THIS.cNombre
          pnDepartamen = THIS.nDepartamen
          pnCiudad = THIS.nCiudad
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, departamen = ?pnDepartamen, ciudad = ?pnCiudad, vigente = ?plVigente', ;

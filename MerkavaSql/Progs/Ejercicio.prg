@@ -267,7 +267,7 @@ DEFINE CLASS Ejercicio AS CUSTOM
             .nPeriodo = periodo
             .dFechaInicio = fecha_inicio
             .dFechaFin = fecha_fin
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -342,7 +342,7 @@ DEFINE CLASS Ejercicio AS CUSTOM
             .nPeriodo = periodo
             .dFechaInicio = fecha_inicio
             .dFechaFin = fecha_fin
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -417,7 +417,7 @@ DEFINE CLASS Ejercicio AS CUSTOM
             .nPeriodo = periodo
             .dFechaInicio = fecha_inicio
             .dFechaFin = fecha_fin
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -606,7 +606,7 @@ DEFINE CLASS Ejercicio AS CUSTOM
          pnPeriodo = THIS.nPeriodo
          pdFechaInicio = THIS.dFechaInicio
          pdFechaFin = THIS.dFechaFin
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, periodo, fecha_inicio, fecha_fin, vigente', ;
@@ -633,7 +633,7 @@ DEFINE CLASS Ejercicio AS CUSTOM
          pnPeriodo = THIS.nPeriodo
          pdFechaInicio = THIS.dFechaInicio
          pdFechaFin = THIS.dFechaFin
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, periodo = ?pnPeriodo, fecha_inicio = ?pdFechaInicio, fecha_fin = ?pdFechaFin, vigente = ?plVigente', ;

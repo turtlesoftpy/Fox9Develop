@@ -1,12 +1,21 @@
 CLEAR ALL
 PUBLIC goCapaDatos
+*!*	goCapaDatos = NEWOBJECT('CapaDatos', 'CapaDatos.prg', NULL, ;
+*!*	                        'MySQL ODBC 5.2w Driver', ;
+*!*	                        'localhost', ;
+*!*	                        '3306', ;
+*!*	                        'merkava_80004234_001', ;
+*!*	                        'root', ;
+*!*	                        'masterkey')
+
 goCapaDatos = NEWOBJECT('CapaDatos', 'CapaDatos.prg', NULL, ;
-                        'MySQL ODBC 5.2w Driver', ;
+                        'PostgreSQL Unicode', ;
                         'localhost', ;
-                        '3306', ;
+                        '5432', ;
                         'merkava_80004234_001', ;
-                        'root', ;
+                        'postgres', ;
                         'masterkey')
+
 IF VARTYPE(goCapaDatos) <> 'O' THEN
 ? "error"
    RETURN .F.

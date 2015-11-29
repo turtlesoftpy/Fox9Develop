@@ -289,7 +289,7 @@ DEFINE CLASS Plazo AS CUSTOM
             .cSeparacion = separacion
             .nPrimero = primero
             .nResto = resto
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -365,7 +365,7 @@ DEFINE CLASS Plazo AS CUSTOM
             .cSeparacion = separacion
             .nPrimero = primero
             .nResto = resto
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -546,7 +546,7 @@ DEFINE CLASS Plazo AS CUSTOM
          pcSeparacion = THIS.cSeparacion
          pnPrimero = THIS.nPrimero
          pnResto = THIS.nResto
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, num_vtos, separacion, primero, resto, vigente', ;
@@ -574,7 +574,7 @@ DEFINE CLASS Plazo AS CUSTOM
          pcSeparacion = THIS.cSeparacion
          pnPrimero = THIS.nPrimero
          pnResto = THIS.nResto
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, num_vtos = ?pnNumVtos, separacion = ?pcSeparacion, primero = ?pnPrimero, resto = ?pnResto, vigente = ?plVigente', ;

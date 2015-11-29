@@ -2,13 +2,22 @@ PUBLIC goAplicacion, goCapaDatos, glAccesoConcedido
 LOCAL llRetorno
 
 goAplicacion = NEWOBJECT('Aplicacion', 'Aplicacion.prg')
-goCapaDatos  = NEWOBJECT('CapaDatos', 'CapaDatos.prg', NULL, ;
-                         'MySQL ODBC 5.2w Driver', ;
-                         'localhost', ;
-                         '3306', ;
-                         'merkava_80004234_001', ;
-                         'root', ;
-                         'masterkey')
+*!*	goCapaDatos  = NEWOBJECT('CapaDatos', 'CapaDatos.prg', NULL, ;
+*!*	                         'MySQL ODBC 5.2w Driver', ;
+*!*	                         'localhost', ;
+*!*	                         '3306', ;
+*!*	                         'merkava_80004234_001', ;
+*!*	                         'root', ;
+*!*	                         'masterkey')
+
+goCapaDatos = NEWOBJECT('CapaDatos', 'CapaDatos.prg', NULL, ;
+                        'PostgreSQL Unicode', ;
+                        'localhost', ;
+                        '5432', ;
+                        'merkava_80004234_001', ;
+                        'postgres', ;
+                        'masterkey')
+
 glAccesoConcedido = .F.
 llRetorno = .T.
 

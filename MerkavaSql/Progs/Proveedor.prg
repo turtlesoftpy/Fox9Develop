@@ -47,6 +47,8 @@ DEFINE CLASS Proveedor AS CUSTOM
    PROTECTED cTVend5
    PROTECTED nSaldoActu
    PROTECTED nSaldoUSD
+   PROTECTED lVigente
+
    PROTECTED cVigente
 
    * ---------------------------------------------------------------------------- *
@@ -98,6 +100,8 @@ DEFINE CLASS Proveedor AS CUSTOM
          .cTVend5 = ''
          .nSaldoActu = 0
          .nSaldoUSD = 0
+         .lVigente = .F.
+
          .cVigente = ''
       ENDWITH
    ENDFUNC
@@ -671,8 +675,22 @@ DEFINE CLASS Proveedor AS CUSTOM
       THIS.cTVend5 = tcTVend5
    ENDFUNC
 
-  * ---------------------------------------------------------------------------- *
+   * ---------------------------------------------------------------------------- *
    FUNCTION SetVigente
+      LPARAMETER tlVigente
+
+      * inicio { validación de parámetro }
+      IF VARTYPE(tlVigente) <> 'L' THEN
+         MESSAGEBOX([El parámetro 'tlVigente' debe ser de tipo lógico.], 0+16, THIS.Name + '.SetVigente()')
+         RETURN .F.
+      ENDIF
+      * fin { validación de parámetro }
+
+      THIS.lVigente = tlVigente
+   ENDFUNC
+
+  * ---------------------------------------------------------------------------- *
+   FUNCTION SetVigente2
       LPARAMETER tcVigente
 
       * inicio { validación de parámetro }
@@ -892,7 +910,7 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION GetVigente
-      RETURN THIS.cVigente
+      RETURN THIS.lVigente
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
@@ -1734,7 +1752,7 @@ DEFINE CLASS Proveedor AS CUSTOM
          .cTVend5 = IIF(!ISNULL(tvend5), tvend5, '')
          .nSaldoActu = saldo_actu
          .nSaldoUSD = saldo_usd
-         .cVigente = vigente
+         .lVigente = IIF(vigente = '0', .F., .T.)
       ENDWITH
    ENDFUNC
 
@@ -1912,7 +1930,7 @@ DEFINE CLASS Proveedor AS CUSTOM
                  pcTelDueno, pcGteGral, pcTelGG, pcGteVentas, pcTelGV, pcGteMkg, pcTelGM, pcSTecnico, pcSTDirec1, pcSTDirec2, ;
                  pcSTTel, pcSTHablar1, pcVendedor1, pcLArti1, pcTVend1, pcVendedor2, pcLArti2, pcTVend2, pcVendedor3, ;
                  pcLArti3, pcTVend3, pcVendedor4, pcLArti4, pcTVend4, pcVendedor5, pcLArti5, pcTVend5, pnSaldoActu, ;
-                 pnSaldoUSD, pcVigente
+                 pnSaldoUSD, plVigente
 
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
@@ -1955,7 +1973,7 @@ DEFINE CLASS Proveedor AS CUSTOM
          pcTVend5 = IIF(!EMPTY(THIS.cTVend5), THIS.cTVend5, NULL)
          pnSaldoActu = THIS.nSaldoActu
          pnSaldoUSD = THIS.nSaldoUSD
-         pcVigente = THIS.cVigente
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, direc1, direc2, ciudad, telefono, fax, e_mail, ruc, dv, dias_plazo, dueno, ' + ;
@@ -1967,7 +1985,7 @@ DEFINE CLASS Proveedor AS CUSTOM
                                         '?pcTelDueno, ?pcGteGral, ?pcTelGG, ?pcGteVentas, ?pcTelGV, ?pcGteMkg, ?pcTelGM, ?pcSTecnico, ?pcSTDirec1, ?pcSTDirec2, ' + ;
                                         '?pcSTTel, ?pcSTHablar1, ?pcVendedor1, ?pcLArti1, ?pcTVend1, ?pcVendedor2, ?pcLArti2, ?pcTVend2, ?pcVendedor3, ' + ;
                                         '?pcLArti3, ?pcTVend3, ?pcVendedor4, ?pcLArti4, ?pcTVend4, ?pcVendedor5, ?pcLArti5, ?pcTVend5, ?pnSaldoActu, ' + ;
-                                        '?pnSaldoUSD, ?pcVigente')
+                                        '?pnSaldoUSD, ?plVigente')
             WAIT 'Registro almacenado correctamente.' WINDOW NOWAIT
          ENDIF
       ELSE
@@ -1987,7 +2005,7 @@ DEFINE CLASS Proveedor AS CUSTOM
          PRIVATE pnCodigo, pcNombre, pcDirec1, pcDirec2, pcCiudad, pcTelefono, pcFax, pcEMail, pcRUC, pcDV, pnDiasPlazo, pcDueno, ;
                  pcTelDueno, pcGteGral, pcTelGG, pcGteVentas, pcTelGV, pcGteMkg, pcTelGM, pcSTecnico, pcSTDirec1, pcSTDirec2, ;
                  pcSTTel, pcSTHablar1, pcVendedor1, pcLArti1, pcTVend1, pcVendedor2, pcLArti2, pcTVend2, pcVendedor3, ;
-                 pcLArti3, pcTVend3, pcVendedor4, pcLArti4, pcTVend4, pcVendedor5, pcLArti5, pcTVend5, pcVigente
+                 pcLArti3, pcTVend3, pcVendedor4, pcLArti4, pcTVend4, pcVendedor5, pcLArti5, pcTVend5, plVigente
 
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
@@ -2030,7 +2048,7 @@ DEFINE CLASS Proveedor AS CUSTOM
          pcTVend5 = IIF(!EMPTY(THIS.cTVend5), THIS.cTVend5, NULL)
          pnSaldoActu = THIS.nSaldoActu
          pnSaldoUSD = THIS.nSaldoUSD
-         pcVigente = THIS.cVigente
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, direc1 = ?pcDirec1, direc2 = ?pcDirec2, ciudad = ?pcCiudad, telefono = ?pcTelefono, fax = ?pcFax, ' + ;
@@ -2040,7 +2058,7 @@ DEFINE CLASS Proveedor AS CUSTOM
                                           'sthablar1 = ?pcSTHablar1, vendedor1 = ?pcVendedor1, larti1 = ?pcLArti1, tvend1 = ?pcTVend1, vendedor2 = ?pcVendedor2, ' + ;
                                           'larti2 = ?pcLArti2, tvend2 = ?pcTVend2, vendedor3 = ?pcVendedor3, larti3 = ?pcLArti3, tvend3 = ?pcTVend3, ' + ;
                                           'vendedor4 = ?pcVendedor4, larti4 = ?pcLArti4, tvend4 = ?pcTVend4, vendedor5 = ?pcVendedor5, larti5 = ?pcLArti5, ' + ;
-                                          'tvend5 = ?pcTVend5, vigente = ?pcVigente', ;
+                                          'tvend5 = ?pcTVend5, vigente = ?plVigente', ;
                                           THIS.cClavePrimaria + ' = ?pnCodigo')
             WAIT 'Registro almacenado correctamente.' WINDOW NOWAIT
          ENDIF

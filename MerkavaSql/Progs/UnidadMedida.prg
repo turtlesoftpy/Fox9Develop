@@ -244,8 +244,8 @@ DEFINE CLASS UnidadMedida AS CUSTOM
             .nCodigo = codigo
             .cNombre = nombre
             .cSimbolo = simbolo
-            .lDivisible = IIF(divisible = 0, .F., .T.)
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lDivisible = IIF(divisible = '0', .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -318,8 +318,8 @@ DEFINE CLASS UnidadMedida AS CUSTOM
             .nCodigo = codigo
             .cNombre = nombre
             .cSimbolo = simbolo
-            .lDivisible = IIF(divisible = 0, .F., .T.)
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lDivisible = IIF(divisible = '0', .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -392,8 +392,8 @@ DEFINE CLASS UnidadMedida AS CUSTOM
             .nCodigo = codigo
             .cNombre = nombre
             .cSimbolo = simbolo
-            .lDivisible = IIF(divisible = 0, .F., .T.)
-            .lVigente = IIF(vigente = 0, .F., .T.)
+            .lDivisible = IIF(divisible = '0', .F., .T.)
+            .lVigente = IIF(vigente = '0', .F., .T.)
          ENDWITH
 
          IF VARTYPE(tcCursor) = 'C' THEN
@@ -546,8 +546,8 @@ DEFINE CLASS UnidadMedida AS CUSTOM
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
          pcSimbolo = THIS.cSimbolo
-         plDivisible = IIF(!THIS.lDivisible, 0, 1)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plDivisible = IIF(!THIS.lDivisible, '0', '1')
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.AgregarRegistro(THIS.cTabla, ;
                                         'codigo, nombre, simbolo, divisible, vigente', ;
@@ -572,8 +572,8 @@ DEFINE CLASS UnidadMedida AS CUSTOM
          pnCodigo = THIS.nCodigo
          pcNombre = THIS.cNombre
          pcSimbolo = THIS.cSimbolo
-         plDivisible = IIF(!THIS.lDivisible, 0, 1)
-         plVigente = IIF(!THIS.lVigente, 0, 1)
+         plDivisible = IIF(!THIS.lDivisible, '0', '1')
+         plVigente = IIF(!THIS.lVigente, '0', '1')
 
          IF goCapaDatos.ModificarRegistro(THIS.cTabla, ;
                                           'nombre = ?pcNombre, simbolo = ?pcSimbolo, divisible = ?plDivisible, vigente = ?plVigente', ;
