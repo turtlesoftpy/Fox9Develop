@@ -358,8 +358,8 @@ DEFINE CLASS Ciudad AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarCodigo()
-      IF !BETWEEN(THIS.nCodigo, 1, 65535) THEN
-         MESSAGEBOX([El código debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarCodigo()')
+      IF !BETWEEN(THIS.nCodigo, 1, 32767) THEN
+         MESSAGEBOX([El código debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarCodigo()')
          RETURN .F.
       ENDIF
 
@@ -419,8 +419,8 @@ DEFINE CLASS Ciudad AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarDepartamen()
-      IF !BETWEEN(THIS.nDepartamen, 1, 65535) THEN
-         MESSAGEBOX([El departamento debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarDepartamen()')
+      IF !BETWEEN(THIS.nDepartamen, 1, 32767) THEN
+         MESSAGEBOX([El departamento debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarDepartamen()')
          RETURN .F.
       ENDIF
 

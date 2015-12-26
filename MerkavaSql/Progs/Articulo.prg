@@ -1768,8 +1768,8 @@ DEFINE CLASS Articulo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarFamilia()
-      IF !BETWEEN(THIS.nFamilia, 1, 65535) THEN
-         MESSAGEBOX([La familia debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarFamilia()')
+      IF !BETWEEN(THIS.nFamilia, 1, 32767) THEN
+         MESSAGEBOX([La familia debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarFamilia()')
          RETURN .F.
       ENDIF
 
@@ -1786,8 +1786,8 @@ DEFINE CLASS Articulo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarRubro()
-      IF !BETWEEN(THIS.nRubro, 1, 65535) THEN
-         MESSAGEBOX([El rubro debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarRubro()')
+      IF !BETWEEN(THIS.nRubro, 1, 32767) THEN
+         MESSAGEBOX([El rubro debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarRubro()')
          RETURN .F.
       ENDIF
 
@@ -1804,8 +1804,8 @@ DEFINE CLASS Articulo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarSubRubro()
-      IF !BETWEEN(THIS.nSubRubro, 1, 65535) THEN
-         MESSAGEBOX([El sub-rubro debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarSubRubro()')
+      IF !BETWEEN(THIS.nSubRubro, 1, 32767) THEN
+         MESSAGEBOX([El sub-rubro debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarSubRubro()')
          RETURN .F.
       ENDIF
 
@@ -1822,8 +1822,8 @@ DEFINE CLASS Articulo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarMarca()
-      IF !BETWEEN(THIS.nMarca, 1, 65535) THEN
-         MESSAGEBOX([La marca debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarMarca()')
+      IF !BETWEEN(THIS.nMarca, 1, 32767) THEN
+         MESSAGEBOX([La marca debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarMarca()')
          RETURN .F.
       ENDIF
 
@@ -1840,8 +1840,8 @@ DEFINE CLASS Articulo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarUnidadMedida()
-      IF !BETWEEN(THIS.nUnidadMedida, 1, 65535) THEN
-         MESSAGEBOX([La unidad de medida debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarUnidadMedida()')
+      IF !BETWEEN(THIS.nUnidadMedida, 1, 32767) THEN
+         MESSAGEBOX([La unidad de medida debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarUnidadMedida()')
          RETURN .F.
       ENDIF
 
@@ -1858,8 +1858,8 @@ DEFINE CLASS Articulo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarProveedor()
-      IF !BETWEEN(THIS.nProveedor, 1, 65535) THEN
-         MESSAGEBOX([El proveedor debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarProveedor()')
+      IF !BETWEEN(THIS.nProveedor, 1, 32767) THEN
+         MESSAGEBOX([El proveedor debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarProveedor()')
          RETURN .F.
       ENDIF
 
@@ -1868,7 +1868,7 @@ DEFINE CLASS Articulo AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF THIS.oProveedor.GetVigente() <> 'S' THEN
+      IF !THIS.oProveedor.GetVigente() THEN
          MESSAGEBOX('El proveedor no está vigente.', 0+16, THIS.Name + '.ValidarProveedor()')
          RETURN .F.
       ENDIF
@@ -1876,8 +1876,8 @@ DEFINE CLASS Articulo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarPais()
-      IF !BETWEEN(THIS.nPais, 1, 65535) THEN
-         MESSAGEBOX([El país debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarPais()')
+      IF !BETWEEN(THIS.nPais, 1, 32767) THEN
+         MESSAGEBOX([El país debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarPais()')
          RETURN .F.
       ENDIF
 
@@ -2324,8 +2324,8 @@ DEFINE CLASS Articulo AS CUSTOM
          .nPVentaD5 = IIF(!ISNULL(pventad5), pventad5, 0)
          .nStockMin = IIF(!ISNULL(stock_min), stock_min, 0)
          .nStockMax = IIF(!ISNULL(stock_max), stock_max, 0)
-         .lPolInvSMin = IIF(polinvsmin = 0, .F., .T.)
-         .lPolInvSMax = IIF(polinvsmax = 0, .F., .T.)
+         .lPolInvSMin = IIF(polinvsmin = '0', .F., .T.)
+         .lPolInvSMax = IIF(polinvsmax = '0', .F., .T.)
          .cCaracter1 = IIF(!ISNULL(caracter1), caracter1, '')
          .cCaracter2 = IIF(!ISNULL(caracter2), caracter2, '')
          .cCaracter3 = IIF(!ISNULL(caracter3), caracter3, '')
@@ -2387,8 +2387,8 @@ DEFINE CLASS Articulo AS CUSTOM
          pnPVentaD5 = IIF(THIS.nPVentaD5 > 0, THIS.nPVentaD5, NULL)
          pnStockMin = IIF(THIS.nStockMin > 0, THIS.nStockMin, NULL)
          pnStockMax = IIF(THIS.nStockMax > 0, THIS.nStockMax, NULL)
-         plPolInvSMin = IIF(!THIS.lPolInvSMin, 0, 1)
-         plPolInvSMax = IIF(!THIS.lPolInvSMax, 0, 1)
+         plPolInvSMin = IIF(!THIS.lPolInvSMin, '0', '1')
+         plPolInvSMax = IIF(!THIS.lPolInvSMax, '0', '1')
          pcCaracter1 = IIF(!EMPTY(THIS.cCaracter1), THIS.cCaracter1, NULL)
          pcCaracter2 = IIF(!EMPTY(THIS.cCaracter2), THIS.cCaracter2, NULL)
          pcCaracter3 = IIF(!EMPTY(THIS.cCaracter3), THIS.cCaracter3, NULL)
@@ -2470,8 +2470,8 @@ DEFINE CLASS Articulo AS CUSTOM
          pnPVentaD5 = IIF(THIS.nPVentaD5 > 0, THIS.nPVentaD5, NULL)
          pnStockMin = IIF(THIS.nStockMin > 0, THIS.nStockMin, NULL)
          pnStockMax = IIF(THIS.nStockMax > 0, THIS.nStockMax, NULL)
-         plPolInvSMin = IIF(!THIS.lPolInvSMin, 0, 1)
-         plPolInvSMax = IIF(!THIS.lPolInvSMax, 0, 1)
+         plPolInvSMin = IIF(!THIS.lPolInvSMin, '0', '1')
+         plPolInvSMax = IIF(!THIS.lPolInvSMax, '0', '1')
          pcCaracter1 = IIF(!EMPTY(THIS.cCaracter1), THIS.cCaracter1, NULL)
          pcCaracter2 = IIF(!EMPTY(THIS.cCaracter2), THIS.cCaracter2, NULL)
          pcCaracter3 = IIF(!EMPTY(THIS.cCaracter3), THIS.cCaracter3, NULL)

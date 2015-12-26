@@ -913,19 +913,31 @@ DEFINE CLASS Proveedor AS CUSTOM
       RETURN THIS.lVigente
    ENDFUNC
 
+*!*	   * ---------------------------------------------------------------------------- *
+*!*	   FUNCTION GetNuevoCodigo()
+*!*	      LOCAL lnCodigo, loModelo, llExiste
+*!*	      lnCodigo = 1
+*!*	      loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
+*!*	      llExiste = loModelo.BuscarPorCodigo(lnCodigo)
+
+*!*	      DO WHILE llExiste
+*!*	         lnCodigo = lnCodigo + 1
+*!*	         llExiste = loModelo.BuscarPorCodigo(lnCodigo)
+*!*	      ENDDO
+
+*!*	      RETURN lnCodigo
+*!*	   ENDFUNC
+
    * ---------------------------------------------------------------------------- *
    FUNCTION GetNuevoCodigo()
-      LOCAL lnCodigo, loModelo, llExiste
-      lnCodigo = 1
-      loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
-      llExiste = loModelo.BuscarPorCodigo(lnCodigo)
+      LOCAL lnRetorno
+      lnRetorno = goCapaDatos.RecuperarValor(THIS.cTabla, 'COALESCE(MAX(codigo), 0) + 1 AS codigo')
 
-      DO WHILE llExiste
-         lnCodigo = lnCodigo + 1
-         llExiste = loModelo.BuscarPorCodigo(lnCodigo)
-      ENDDO
+      IF VARTYPE(lnRetorno) = 'C' THEN
+         lnRetorno = VAL(lnRetorno)
+      ENDIF
 
-      RETURN lnCodigo
+      RETURN lnRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
@@ -1250,8 +1262,8 @@ DEFINE CLASS Proveedor AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarCodigo()
-      IF !BETWEEN(THIS.nCodigo, 1, 65535) THEN
-         MESSAGEBOX([El código debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarCodigo()')
+      IF !BETWEEN(THIS.nCodigo, 1, 32767) THEN
+         MESSAGEBOX([El código debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarCodigo()')
          RETURN .F.
       ENDIF
 

@@ -351,11 +351,11 @@ DEFINE CLASS CapaDatos AS BaseDatos OF BaseDatos
       lnRetorno = SQLEXEC(THIS.ObtenerConexion(), lcSQL, lcCursor)
 
       IF lnRetorno > 0 THEN
-         IF ATC('COALESCE', tcCampo) > 0 THEN
-            tcCampo = SUBSTR(tcCampo, AT(')', tcCampo) + 5)
-         ENDIF
+*!*	         IF ATC('COALESCE', tcCampo) > 0 THEN
+*!*	            tcCampo = SUBSTR(tcCampo, AT(')', tcCampo) + 5)
+*!*	         ENDIF
 
-         tcCampo = STRTRAN(STRTRAN(STRTRAN(STRTRAN(STRTRAN(STRTRAN(tcCampo, 'COUNT(*) AS ', ''), 'MIN', ''), 'MAX', ''), 'SUM', ''), '(', ''), ')', '')
+         tcCampo = STRTRAN(STRTRAN(STRTRAN(STRTRAN(STRTRAN(STRTRAN(STRTRAN(STRTRAN(tcCampo, 'COALESCE', ''), 'COUNT(*) AS ', ''), 'MIN', ''), 'MAX', ''), 'SUM', ''), '(', ''), ')', ''), ',', '')
          tcCampo = IIF(AT(' ', tcCampo) > 0, ALLTRIM(SUBSTR(tcCampo, 1, AT(' ', tcCampo))), tcCampo)
 
          IF USED(lcCursor) THEN

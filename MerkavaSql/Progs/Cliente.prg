@@ -1311,19 +1311,31 @@ DEFINE CLASS Cliente AS CUSTOM
       RETURN lcRetorno
    ENDFUNC
 
+*!*	   * ---------------------------------------------------------------------------- *
+*!*	   FUNCTION GetNuevoCodigo()
+*!*	      LOCAL lnCodigo, loModelo, llExiste
+*!*	      lnCodigo = 1
+*!*	      loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
+*!*	      llExiste = loModelo.BuscarPorCodigo(lnCodigo)
+
+*!*	      DO WHILE llExiste
+*!*	         lnCodigo = lnCodigo + 1
+*!*	         llExiste = loModelo.BuscarPorCodigo(lnCodigo)
+*!*	      ENDDO
+
+*!*	      RETURN lnCodigo
+*!*	   ENDFUNC
+
    * ---------------------------------------------------------------------------- *
    FUNCTION GetNuevoCodigo()
-      LOCAL lnCodigo, loModelo, llExiste
-      lnCodigo = 1
-      loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
-      llExiste = loModelo.BuscarPorCodigo(lnCodigo)
+      LOCAL lnRetorno
+      lnRetorno = goCapaDatos.RecuperarValor(THIS.cTabla, 'COALESCE(MAX(codigo), 0) + 1 AS codigo')
 
-      DO WHILE llExiste
-         lnCodigo = lnCodigo + 1
-         llExiste = loModelo.BuscarPorCodigo(lnCodigo)
-      ENDDO
+      IF VARTYPE(lnRetorno) = 'C' THEN
+         lnRetorno = VAL(lnRetorno)
+      ENDIF
 
-      RETURN lnCodigo
+      RETURN lnRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
@@ -1716,8 +1728,8 @@ DEFINE CLASS Cliente AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarCodigo()
-      IF !BETWEEN(THIS.nCodigo, 1, 16777215) THEN
-         MESSAGEBOX([El código debe ser un valor entre 1 y 16777215.], 0+16, THIS.Name + '.ValidarCodigo()')
+      IF !BETWEEN(THIS.nCodigo, 1, 2147483647) THEN
+         MESSAGEBOX([El código debe ser un valor entre 1 y 2147483647.], 0+16, THIS.Name + '.ValidarCodigo()')
          RETURN .F.
       ENDIF
 
@@ -1849,8 +1861,8 @@ DEFINE CLASS Cliente AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarDepartamen()
-      IF !BETWEEN(THIS.nDepartamen, 0, 65535) THEN
-         MESSAGEBOX([El departamento debe ser un valor entre 0 y 65535.], 0+16, THIS.Name + '.ValidarDepartamen()')
+      IF !BETWEEN(THIS.nDepartamen, 0, 32767) THEN
+         MESSAGEBOX([El departamento debe ser un valor entre 0 y 32767.], 0+16, THIS.Name + '.ValidarDepartamen()')
          RETURN .F.
       ENDIF
 
@@ -1869,8 +1881,8 @@ DEFINE CLASS Cliente AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarCiudad()
-      IF !BETWEEN(THIS.nCiudad, 0, 65535) THEN
-         MESSAGEBOX([La ciudad debe ser un valor entre 0 y 65535.], 0+16, THIS.Name + '.ValidarCiudad()')
+      IF !BETWEEN(THIS.nCiudad, 0, 32767) THEN
+         MESSAGEBOX([La ciudad debe ser un valor entre 0 y 32767.], 0+16, THIS.Name + '.ValidarCiudad()')
          RETURN .F.
       ENDIF
 
@@ -1898,8 +1910,8 @@ DEFINE CLASS Cliente AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarBarrio()
-      IF !BETWEEN(THIS.nBarrio, 0, 65535) THEN
-         MESSAGEBOX([El barrio debe ser un valor entre 0 y 65535.], 0+16, THIS.Name + '.ValidarBarrio()')
+      IF !BETWEEN(THIS.nBarrio, 0, 32767) THEN
+         MESSAGEBOX([El barrio debe ser un valor entre 0 y 32767.], 0+16, THIS.Name + '.ValidarBarrio()')
          RETURN .F.
       ENDIF
 
@@ -1935,8 +1947,8 @@ DEFINE CLASS Cliente AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarRuta()
-      IF !BETWEEN(THIS.nRuta, 1, 65535) THEN
-         MESSAGEBOX([La ruta debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarRuta()')
+      IF !BETWEEN(THIS.nRuta, 1, 32767) THEN
+         MESSAGEBOX([La ruta debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarRuta()')
          RETURN .F.
       ENDIF
 
@@ -2137,8 +2149,8 @@ DEFINE CLASS Cliente AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarPlazo()
-      IF !BETWEEN(THIS.nPlazo, 0, 65535) THEN
-         MESSAGEBOX([El plazo debe ser un valor entre 0 y 65535.], 0+16, THIS.Name + '.ValidarPlazo()')
+      IF !BETWEEN(THIS.nPlazo, 0, 32767) THEN
+         MESSAGEBOX([El plazo debe ser un valor entre 0 y 32767.], 0+16, THIS.Name + '.ValidarPlazo()')
          RETURN .F.
       ENDIF
 
@@ -2157,8 +2169,8 @@ DEFINE CLASS Cliente AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarVendedor()
-      IF !BETWEEN(THIS.nVendedor, 0, 65535) THEN
-         MESSAGEBOX([El vendedor debe ser un valor entre 0 y 65535.], 0+16, THIS.Name + '.ValidarVendedor()')
+      IF !BETWEEN(THIS.nVendedor, 0, 32767) THEN
+         MESSAGEBOX([El vendedor debe ser un valor entre 0 y 32767.], 0+16, THIS.Name + '.ValidarVendedor()')
          RETURN .F.
       ENDIF
 
@@ -2208,8 +2220,8 @@ DEFINE CLASS Cliente AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarMotivoClie()
-      IF !BETWEEN(THIS.nMotivoClie, 1, 65535) THEN
-         MESSAGEBOX([El motivo de ser cliente debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarMotivoClie()')
+      IF !BETWEEN(THIS.nMotivoClie, 1, 32767) THEN
+         MESSAGEBOX([El motivo de ser cliente debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarMotivoClie()')
          RETURN .F.
       ENDIF
 

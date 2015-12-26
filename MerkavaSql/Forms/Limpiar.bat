@@ -49,6 +49,12 @@ ren FrmBuscarSubRubro.sct FrmBuscarSubRubro.sct
 ren FrmBuscarSubRubro.scx FrmBuscarSubRubro.scx
 ren FrmBuscarSucursal.sct FrmBuscarSucursal.sct
 ren FrmBuscarSucursal.scx FrmBuscarSucursal.scx
+ren FrmBuscarTimbradoComp.sct FrmBuscarTimbradoComp.sct
+ren FrmBuscarTimbradoComp.scx FrmBuscarTimbradoComp.scx
+ren FrmBuscarTipoDocuComp.sct FrmBuscarTipoDocuComp.sct
+ren FrmBuscarTipoDocuComp.scx FrmBuscarTipoDocuComp.scx
+ren FrmBuscarTipoDocuCompSet.sct FrmBuscarTipoDocuCompSet.sct
+ren FrmBuscarTipoDocuCompSet.scx FrmBuscarTipoDocuCompSet.scx
 ren FrmBuscarUnidadMedida.sct FrmBuscarUnidadMedida.sct
 ren FrmBuscarUnidadMedida.scx FrmBuscarUnidadMedida.scx
 ren FrmBuscarVendedor.sct FrmBuscarVendedor.sct
@@ -59,6 +65,8 @@ ren FrmCliente.sct FrmCliente.sct
 ren FrmCliente.scx FrmCliente.scx
 ren FrmCobrador.sct FrmCobrador.sct
 ren FrmCobrador.scx FrmCobrador.scx
+ren FrmCompra.sct FrmCompra.sct
+ren FrmCompra.scx FrmCompra.scx
 ren FrmDepar.sct FrmDepar.sct
 ren FrmDepar.scx FrmDepar.scx
 ren FrmDeposito.sct FrmDeposito.sct
@@ -95,6 +103,12 @@ ren FrmSubRubro.sct FrmSubRubro.sct
 ren FrmSubRubro.scx FrmSubRubro.scx
 ren FrmSucursal.sct FrmSucursal.sct
 ren FrmSucursal.scx FrmSucursal.scx
+ren FrmTimbradoComp.sct FrmTimbradoComp.sct
+ren FrmTimbradoComp.scx FrmTimbradoComp.scx
+ren FrmTipoDocuComp.sct FrmTipoDocuComp.sct
+ren FrmTipoDocuComp.scx FrmTipoDocuComp.scx
+ren FrmTipoDocuCompSet.sct FrmTipoDocuCompSet.sct
+ren FrmTipoDocuCompSet.scx FrmTipoDocuCompSet.scx
 ren FrmUnidadMedida.sct FrmUnidadMedida.sct
 ren FrmUnidadMedida.scx FrmUnidadMedida.scx
 ren FrmVendedor.sct FrmVendedor.sct

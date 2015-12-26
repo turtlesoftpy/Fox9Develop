@@ -381,9 +381,9 @@ DEFINE CLASS Modelo AS CUSTOM
       goCapaDatos.LlamarConsulta(THIS.cSql, lcCursor)
 
       IF ISNULL(tcCondicionFiltrado) THEN
-         lcSql = 'SELECT * FROM ' + lcCursor + ' WHERE UPPER(nombre) LIKE [' + ALLTRIM(UPPER(pcNombre)) + '] INTO CURSOR ' + lcCursor
+         lcSql = 'SELECT * FROM ' + lcCursor + ' WHERE UPPER(nombre) LIKE [' + pcNombre + '] INTO CURSOR ' + lcCursor
       ELSE
-         lcSql = 'SELECT * FROM ' + lcCursor + ' WHERE UPPER(nombre) LIKE [' + ALLTRIM(UPPER(pcNombre)) + '] AND ' + tcCondicionFiltrado + ' INTO CURSOR ' + lcCursor
+         lcSql = 'SELECT * FROM ' + lcCursor + ' WHERE UPPER(nombre) LIKE [' + pcNombre + '] AND ' + tcCondicionFiltrado + ' INTO CURSOR ' + lcCursor
       ENDIF
 
       &lcSql
@@ -460,9 +460,9 @@ DEFINE CLASS Modelo AS CUSTOM
       goCapaDatos.LlamarConsulta(THIS.cSql, lcCursor)
 
       IF ISNULL(tcCondicionFiltrado) THEN
-         lcSql = 'SELECT * FROM ' + lcCursor + ' WHERE UPPER(nombre2) LIKE [' + ALLTRIM(UPPER(pcNombre2)) + '] INTO CURSOR ' + lcCursor
+         lcSql = 'SELECT * FROM ' + lcCursor + ' WHERE UPPER(nombre2) LIKE [' + pcNombre2 + '] INTO CURSOR ' + lcCursor
       ELSE
-         lcSql = 'SELECT * FROM ' + lcCursor + ' WHERE UPPER(nombre2) LIKE [' + ALLTRIM(UPPER(pcNombre2)) + '] AND ' + tcCondicionFiltrado + ' INTO CURSOR ' + lcCursor
+         lcSql = 'SELECT * FROM ' + lcCursor + ' WHERE UPPER(nombre2) LIKE [' + pcNombre2 + '] AND ' + tcCondicionFiltrado + ' INTO CURSOR ' + lcCursor
       ENDIF
 
       &lcSql
@@ -513,8 +513,8 @@ DEFINE CLASS Modelo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarCodigo()
-      IF !BETWEEN(THIS.nCodigo, 1, 65535) THEN
-         MESSAGEBOX([El código debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarCodigo()')
+      IF !BETWEEN(THIS.nCodigo, 1, 32767) THEN
+         MESSAGEBOX([El código debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarCodigo()')
          RETURN .F.
       ENDIF
 
@@ -574,8 +574,8 @@ DEFINE CLASS Modelo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarMaquina()
-      IF !BETWEEN(THIS.nMaquina, 1, 65535) THEN
-         MESSAGEBOX([El maquinato debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarMaquina()')
+      IF !BETWEEN(THIS.nMaquina, 1, 32767) THEN
+         MESSAGEBOX([El maquinato debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarMaquina()')
          RETURN .F.
       ENDIF
 
@@ -612,8 +612,8 @@ DEFINE CLASS Modelo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarMarca()
-      IF !BETWEEN(THIS.nMarca, 1, 65535) THEN
-         MESSAGEBOX([La marca debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarMarca()')
+      IF !BETWEEN(THIS.nMarca, 1, 32767) THEN
+         MESSAGEBOX([La marca debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarMarca()')
          RETURN .F.
       ENDIF
 

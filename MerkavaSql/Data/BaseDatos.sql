@@ -72,6 +72,74 @@ $$ LANGUAGE plpgsql;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE cuenta (
+   codigo VARCHAR(18) NOT NULL,
+   nombre VARCHAR(100) NOT NULL,
+   modificable BOOLEAN NOT NULL,
+   asentable BOOLEAN NOT NULL,
+   vigente BOOLEAN NOT NULL
+);
+
+ALTER TABLE cuenta
+   ADD CONSTRAINT pk_cuenta_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT unq_cuenta_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT chk_cuenta_codigo
+      CHECK (codigo <> ''),
+   ADD CONSTRAINT chk_cuenta_codigo_longitud
+      CHECK (LENGTH(codigo) IN (1, 4, 7, 10, 13)),
+   ADD CONSTRAINT chk_cuenta_nombre
+      CHECK (nombre <> '');
+
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1', 'ACTIVO', '0', '0', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01', 'ACTIVO CORRIENTE', '0', '0', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01', 'DISPONIBILIDADES', '0', '0', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01.01', 'RECAUDACIONES A DEPOSITAR', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01.02', 'CAJA', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01.03', 'FONDOS FIJOS', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01.04', 'BANCOS', '0', '0', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01.04.01', 'BANCO REGIONAL S.A.E.C.A. CTA. CTE.', '1', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01.04.02', 'BANCO NACIONAL DE FOMENTO CTA. CTE.', '1', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01.04.03', 'BANCO REGIONAL S.A.E.C.A. CTA. CTE. USD', '1', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01.04.04', 'VISION BANCO S.A.E.C.A. CTA. CTE.', '1', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.01.04.05', 'BBVA PARAGUAY S.A. CTA. CTE.', '1', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.04', 'INVENTARIOS', '0', '0', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.04.01', 'MERCADERÍAS', '0', '0', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.04.01.01', 'MERCADERÍAS GRAVADAS POR EL IVA AL 10%', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.04.01.02', 'MERCADERÍAS GRAVADAS POR EL IVA AL 5%', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('1.01.04.01.03', 'MERCADERÍAS EXENTAS DEL IVA', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('4.01', 'VENTAS DE MERCADERÍAS', '0', '0', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('4.01.01', 'VENTAS DE MERCADERÍAS GRAVADAS POR EL IVA', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('4.01.02', 'VENTAS DE MERCADERÍAS EXENTAS DEL IVA', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('4.09', 'VENTAS DE SERVICIOS GRAVADOS', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('4.98', '(-) DESCUENTOS CONCEDIDOS', '0', '1', '1');
+INSERT INTO cuenta (codigo, nombre, modificable, asentable, vigente)
+   VALUES ('4.99', '(-) DEVOLUCIONES', '0', '1', '1');
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE depar (
    codigo SMALLINT NOT NULL,
    nombre VARCHAR(50) NOT NULL,
@@ -426,9 +494,9 @@ ALTER TABLE moneda
       CHECK (simbolo <> '');
 
 INSERT INTO moneda (codigo, nombre, simbolo, decimales, vigente)
-   VALUES (1, 'GUARANI', 'PYG', '0', '1');
+   VALUES (1, 'GUARANI', 'PYG', '0', '0', '1');
 INSERT INTO moneda (codigo, nombre, simbolo, decimales, vigente)
-   VALUES (2, 'DOLAR ESTADOUNIDENSE', 'USD', '1', '1');
+   VALUES (2, 'DOLAR ESTADOUNIDENSE', 'USD', '0', '1', '1');
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE cotizacion (
@@ -814,27 +882,27 @@ ALTER TABLE deposito
       CHECK (nombre <> '');
 
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (1, 'PRINCIPAL [001]', 1, '1', '1');
+   VALUES (1, 'PRINCIPAL [001]', 1, '0', '1', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (2, 'DEVOLUCION VENTA [001]', 1, '0', '1');
+   VALUES (2, 'DEVOLUCION VENTA [001]', 1, '0', '0', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (3, 'COMPRA [001]', 1, '0', '1');
+   VALUES (3, 'COMPRA [001]', 1, '0', '0', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (4, 'DEVOLUCION COMPRA [001]', 1, '0', '1');
+   VALUES (4, 'DEVOLUCION COMPRA [001]', 1, '0', '0', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (5, 'OT - TERMINADO [001]', 1, '0', '1');
+   VALUES (5, 'OT - TERMINADO [001]', 1, '0', '0', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (6, 'OT - EN REPARACION [001]', 1, '0', '1');
+   VALUES (6, 'OT - EN REPARACION [001]', 1, '0', '0', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (7, 'OT - DEVOLUCION [001]', 1, '0', '1');
+   VALUES (7, 'OT - DEVOLUCION [001]', 1, '0', '0', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (8, 'PRINCIPAL [006]', 6, '1', '1');
+   VALUES (8, 'PRINCIPAL [006]', 6, '0', '1', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (9, 'DEVOLUCION VENTA [006]', 6, '0', '1');
+   VALUES (9, 'DEVOLUCION VENTA [006]', 6, '0', '0', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (10, 'EN TRANSITO [001] -> [006]', 1, '0', '1');
+   VALUES (10, 'EN TRANSITO [001] -> [006]', 1, '0', '0', '1');
 INSERT INTO deposito (codigo, nombre, sucursal, venta, vigente)
-   VALUES (11, 'EN TRANSITO [006] -> [001]', 6, '0', '1');
+   VALUES (11, 'EN TRANSITO [006] -> [001]', 6, '0', '0', '1');
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE ejercicio (
@@ -930,6 +998,120 @@ ALTER TABLE unidad
       CHECK (nombre <> ''),
    ADD CONSTRAINT chk_unidad_simbolo
       CHECK (simbolo <> '');
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE tipoarticulo (
+   codigo SMALLINT NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   cuenta_compra_10 VARCHAR(18),
+   cuenta_compra_5 VARCHAR(18),
+   cuenta_compra_exenta VARCHAR(18),
+   cuenta_nc_desc_compra_10 VARCHAR(18),
+   cuenta_nc_desc_compra_5 VARCHAR(18),
+   cuenta_nc_desc_compra_exenta VARCHAR(18),
+   cuenta_nc_devol_compra_10 VARCHAR(18),
+   cuenta_nc_devol_compra_5 VARCHAR(18),
+   cuenta_nc_devol_compra_exenta VARCHAR(18),
+   cuenta_venta_10 VARCHAR(18),
+   cuenta_venta_5 VARCHAR(18),
+   cuenta_venta_exenta VARCHAR(18),
+   cuenta_nc_desc_venta_10 VARCHAR(18),
+   cuenta_nc_desc_venta_5 VARCHAR(18),
+   cuenta_nc_desc_venta_exenta VARCHAR(18),
+   cuenta_nc_devol_venta_10 VARCHAR(18),
+   cuenta_nc_devol_venta_5 VARCHAR(18),
+   cuenta_nc_devol_venta_exenta VARCHAR(18),
+   vigente BOOLEAN NOT NULL
+);
+
+ALTER TABLE tipoarticulo
+   ADD CONSTRAINT pk_tipoarticulo_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_compra_10
+      FOREIGN KEY (cuenta_compra_10) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_compra_5
+      FOREIGN KEY (cuenta_compra_5) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_compra_exenta
+      FOREIGN KEY (cuenta_compra_exenta) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_desc_compra_10
+      FOREIGN KEY (cuenta_nc_desc_compra_10) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_desc_compra_5
+      FOREIGN KEY (cuenta_nc_desc_compra_5) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_desc_compra_exenta
+      FOREIGN KEY (cuenta_nc_desc_compra_exenta) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_devol_compra_10
+      FOREIGN KEY (cuenta_nc_devol_compra_10) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_devol_compra_5
+      FOREIGN KEY (cuenta_nc_devol_compra_5) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_devol_compra_exenta
+      FOREIGN KEY (cuenta_nc_devol_compra_exenta) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_venta_10
+      FOREIGN KEY (cuenta_venta_10) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_venta_5
+      FOREIGN KEY (cuenta_venta_5) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_venta_exenta
+      FOREIGN KEY (cuenta_venta_exenta) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_desc_venta_10
+      FOREIGN KEY (cuenta_nc_desc_venta_10) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_desc_venta_5
+      FOREIGN KEY (cuenta_nc_desc_venta_5) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_desc_venta_exenta
+      FOREIGN KEY (cuenta_nc_desc_venta_exenta) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_devol_venta_10
+      FOREIGN KEY (cuenta_nc_devol_venta_10) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_devol_venta_5
+      FOREIGN KEY (cuenta_nc_devol_venta_5) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tipoarticulo_cuenta_nc_devol_venta_exenta
+      FOREIGN KEY (cuenta_nc_devol_venta_exenta) REFERENCES cuenta (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_tipoarticulo_nombre
+      UNIQUE (nombre),
+   ADD CONSTRAINT chk_tipoarticulo_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_tipoarticulo_nombre
+      CHECK (nombre <> '');
+
+INSERT INTO tipoarticulo (codigo, nombre, cuenta_compra_10, cuenta_compra_5, cuenta_compra_exenta, cuenta_nc_desc_compra_10, cuenta_nc_desc_compra_5, cuenta_nc_desc_compra_exenta, cuenta_nc_devol_compra_10, cuenta_nc_devol_compra_5, cuenta_nc_devol_compra_exenta, cuenta_venta_10, cuenta_venta_5, cuenta_venta_exenta, cuenta_nc_desc_venta_10, cuenta_nc_desc_venta_5, cuenta_nc_desc_venta_exenta, cuenta_nc_devol_venta_10, cuenta_nc_devol_venta_5, cuenta_nc_devol_venta_exenta, vigente)
+   VALUES (1, 'MERCADERIA', '1.01.04.01.01', '1.01.04.01.02', '1.01.04.01.03', '1.01.04.01.01', '1.01.04.01.02', '1.01.04.01.03', '1.01.04.01.01', '1.01.04.01.02', '1.01.04.01.03', '4.01.01', '4.01.01', '4.01.02', '4.98', '4.98', '4.98', '4.99', '4.99', '4.99', '1');
+INSERT INTO tipoarticulo (codigo, nombre, cuenta_compra_10, cuenta_compra_5, cuenta_compra_exenta, cuenta_nc_desc_compra_10, cuenta_nc_desc_compra_5, cuenta_nc_desc_compra_exenta, cuenta_nc_devol_compra_10, cuenta_nc_devol_compra_5, cuenta_nc_devol_compra_exenta, cuenta_venta_10, cuenta_venta_5, cuenta_venta_exenta, cuenta_nc_desc_venta_10, cuenta_nc_desc_venta_5, cuenta_nc_desc_venta_exenta, cuenta_nc_devol_venta_10, cuenta_nc_devol_venta_5, cuenta_nc_devol_venta_exenta, vigente)
+   VALUES (2, 'SERVICIO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4.09', '4.09', NULL, '4.98', '4.98', NULL, '4.99', '4.99', NULL, '1');
+INSERT INTO tipoarticulo (codigo, nombre, cuenta_compra_10, cuenta_compra_5, cuenta_compra_exenta, cuenta_nc_desc_compra_10, cuenta_nc_desc_compra_5, cuenta_nc_desc_compra_exenta, cuenta_nc_devol_compra_10, cuenta_nc_devol_compra_5, cuenta_nc_devol_compra_exenta, cuenta_venta_10, cuenta_venta_5, cuenta_venta_exenta, cuenta_nc_desc_venta_10, cuenta_nc_desc_venta_5, cuenta_nc_desc_venta_exenta, cuenta_nc_devol_venta_10, cuenta_nc_devol_venta_5, cuenta_nc_devol_venta_exenta, vigente)
+   VALUES (3, 'SERVICIO TERCERIZADO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4.09', '4.09', NULL, '4.98', '4.98', NULL, '4.99', '4.99', NULL, '1');
 
 /* -------------------------------------------------------------------------- */
 CREATE TABLE articulo (
@@ -1290,6 +1472,187 @@ ALTER TABLE cliente
       CHECK (cuenta IS NULL OR cuenta <> '');
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE docuvent (
+   codigo SMALLINT NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   abreviatur VARCHAR(10),
+   cond_venta CHARACTER(1) NOT NULL,
+   prefijo VARCHAR(10),
+   calc_iva BOOLEAN NOT NULL,
+   iva_inclui BOOLEAN NOT NULL,
+   vigente BOOLEAN NOT NULL
+);
+
+ALTER TABLE docuvent
+   ADD CONSTRAINT pk_docuvent_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT chk_docuvent_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_docuvent_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_docuvent_abreviatur
+      CHECK (abreviatur IS NULL OR abreviatur <> ''),
+   ADD CONSTRAINT chk_docuvent_cond_venta
+      CHECK (cond_venta IN ('1', '2', '3')),
+   ADD CONSTRAINT chk_docuvent_prefijo
+      CHECK (prefijo IS NULL OR prefijo <> '');
+
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (01, 'FACTURA CONTADO', 'FCON', '1', NULL, '1', '0', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (02, 'FACTURA CREDITO', 'FCRE', '2', NULL, '1', '0', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (03, 'COMPROBANTE DE VENTA', 'CVII', '1', NULL, '1', '1', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (04, 'TRIBUTO UNICO', 'TBUN', '1', NULL, '0', '0', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (05, 'C.I. VENTA CONTADO', 'CIVCON', '1', NULL, '0', '0', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (06, 'C.I. VENTA CREDITO', 'CIVCRE', '2', NULL, '0', '0', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (07, 'FACTURA', 'FRA.', '3', NULL, '1', '1', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (08, 'FACTURA', 'FRA.', '3', '001-001', '1', '1', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (09, 'FACTURA', 'FRA.', '3', '001-002', '1', '1', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (10, 'FACTURA', 'FRA.', '3', '003-001', '1', '1', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (11, 'FACTURA', 'FRA.', '3', '001-001', '1', '0', '1', '1');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (12, 'FACTURA', 'FRA.', '3', '005-001', '1', '1', '0');
+INSERT INTO docuvent (codigo, nombre, abreviatur, cond_venta, prefijo, calc_iva, iva_inclui, vigente)
+   VALUES (13, 'FACTURA', 'FRA.', '3', '006-001', '1', '0', '1', '1');
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE docucob (
+   codigo SMALLINT NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   abreviatur VARCHAR(10),
+   prefijo VARCHAR(10),
+   vigente BOOLEAN NOT NULL
+);
+
+ALTER TABLE docucob
+   ADD CONSTRAINT pk_docucob_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT chk_docucob_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_docucob_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_docucob_abreviatur
+      CHECK (abreviatur IS NULL OR abreviatur <> ''),
+   ADD CONSTRAINT chk_docucob_prefijo
+      CHECK (prefijo IS NULL OR prefijo <> '');
+
+INSERT INTO docucob (codigo, nombre, abreviatur, prefijo, vigente)
+   VALUES (01, 'RECIBO DE COBRO', 'RC', 'A', '0');
+INSERT INTO docucob (codigo, nombre, abreviatur, prefijo, vigente)
+   VALUES (02, 'C.I. DE COBRO', 'CIC', NULL, '0');
+INSERT INTO docucob (codigo, nombre, abreviatur, prefijo, vigente)
+   VALUES (03, 'RECIBO DE COBRO', 'RC', 'B', '1');
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE cabevent (
+   codventa INTEGER NOT NULL,
+   tipodocu INTEGER NOT NULL,
+   nrodocu INTEGER NOT NULL,
+   sucursal INTEGER NOT NULL,
+   condicion_venta CHAR(1) NOT NULL,
+   fechadocu TIMESTAMP NOT NULL,
+   listaprecio INTEGER,
+   moneda INTEGER,
+   tipocambio NUMERIC(9,2),
+   cantcuota INTEGER,
+   plazo INTEGER,
+   cliente INTEGER,
+   vendedor INTEGER,
+   porcdesc NUMERIC(8,4),
+   importdesc NUMERIC(12,2),
+   totaldocu NUMERIC(12,2),
+   fechaanu TIMESTAMP
+);
+
+ALTER TABLE cabevent
+   ADD CONSTRAINT pk_cabevent_codventa
+      PRIMARY KEY (codventa),
+   ADD CONSTRAINT unq_cabevent_tipodocu_nrodocu
+      UNIQUE (tipodocu, nrodocu),
+   ADD CONSTRAINT chk_cabevent_codventa
+      CHECK (codventa > 0),
+   ADD CONSTRAINT chk_cabevent_nrodocu
+      CHECK (nrodocu > 0),
+   ADD CONSTRAINT chk_cabevent_condicion_venta
+      CHECK (condicion_venta IN ('1', '2')),
+   ADD CONSTRAINT chk_cabevent_tipocambio
+      CHECK (tipocambio IS NULL OR tipocambio > 0),
+   ADD CONSTRAINT chk_cabevent_totaldocu
+      CHECK (totaldocu IS NULL OR totaldocu > 0);
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE cabecob (
+   codigo INTEGER NOT NULL,
+   tipodocu SMALLINT NOT NULL,
+   nrodocu INTEGER NOT NULL,
+   sucursal SMALLINT NOT NULL,
+   fechadocu DATE NOT NULL,
+   anticipo BOOLEAN,
+   cliente INTEGER,
+   cobrador INTEGER,
+   moneda INTEGER,
+   tipocambio NUMERIC(19,6),
+   totaldocu NUMERIC(19,6),
+   fechaanu DATE
+);
+
+ALTER TABLE cabecob
+   ADD CONSTRAINT pk_cabecob_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_cabecob_tipodocu
+      FOREIGN KEY (tipodocu) REFERENCES docucob (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabecob_sucursal
+      FOREIGN KEY (sucursal) REFERENCES sucursal (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabecob_cobrador
+      FOREIGN KEY (cobrador) REFERENCES cobrador (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_cabecob_tipodocu_nrodocu
+      UNIQUE (tipodocu, nrodocu),
+   ADD CONSTRAINT chk_cabecob_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_cabecob_nrodocu
+      CHECK (nrodocu > 0),
+   ADD CONSTRAINT chk_cabecob_tipocambio
+      CHECK (tipocambio IS NULL OR tipocambio > 0),
+   ADD CONSTRAINT chk_cabecob_totaldocu
+      CHECK (totaldocu IS NULL OR totaldocu > 0);
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE detacob (
+   codcobro INTEGER NOT NULL,
+   codventa INTEGER NOT NULL,
+   nrocuota INTEGER NOT NULL,
+   fechavto DATE NOT NULL,
+   monto NUMERIC(19,6) NOT NULL
+);
+
+ALTER TABLE detacob
+   ADD CONSTRAINT pk_detacob_codigo
+      PRIMARY KEY (codcobro, codventa, nrocuota),
+   ADD CONSTRAINT fk_detacob_codcobro
+      FOREIGN KEY (codcobro) REFERENCES cabecob (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT chk_cabecob_nrocuota
+      CHECK (nrocuota > 0),
+   ADD CONSTRAINT chk_cabecob_monto
+      CHECK (monto > 0);
+
+/* -------------------------------------------------------------------------- */
 ALTER TABLE sucursal
    ADD CONSTRAINT fk_sucursal_venta
       FOREIGN KEY (venta) REFERENCES deposito (codigo)
@@ -1319,3 +1682,250 @@ ALTER TABLE sucursal
       FOREIGN KEY (ot_devolucion) REFERENCES deposito (codigo)
          ON DELETE NO ACTION
          ON UPDATE NO ACTION;
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE tipodocucomp_set (
+   codigo SMALLINT NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   vigente BOOLEAN NOT NULL
+);
+
+ALTER TABLE tipodocucomp_set
+   ADD CONSTRAINT pk_tipodocucomp_set_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT chk_tipodocucomp_set_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_tipodocucomp_set_nombre
+      CHECK (nombre <> '');
+
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (1, 'Factura', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (2, 'Nota de Débito', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (3, 'Nota de Crédito', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (4, 'Despacho', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (5, 'Autofactura', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (7, 'Pasaje Aéreo', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (8, 'Factura del Exterior', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (9, 'Planilla de Sueldos', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (10, 'Comprobante de Ingresos', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (11, 'Retención Absorbida', '1');
+INSERT INTO tipodocucomp_set (codigo, nombre, vigente)
+   VALUES (13, 'Pasaje Aéreo Electrónico', '1');
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE tipodocucomp (
+   codigo SMALLINT NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   abreviatura VARCHAR(10),
+   condicion_compra CHARACTER(1) NOT NULL,
+   calcular_iva BOOLEAN NOT NULL,
+   iva_incluido BOOLEAN NOT NULL,
+   tipodocu_set SMALLINT,
+   timbrado BOOLEAN NOT NULL,
+   vigente BOOLEAN NOT NULL
+);
+
+ALTER TABLE tipodocucomp
+   ADD CONSTRAINT pk_tipodocucomp_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_tipodocucomp_tipodocu_set
+      FOREIGN KEY (tipodocu_set) REFERENCES tipodocucomp_set (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT chk_tipodocucomp_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_tipodocucomp_nombre
+      CHECK (nombre <> ''),
+   ADD CONSTRAINT chk_tipodocucomp_abreviatura
+      CHECK (abreviatura IS NULL OR abreviatura <> ''),
+   ADD CONSTRAINT chk_tipodocucomp_condicion_compra
+      CHECK (condicion_compra IN ('1', '2', '3'));
+
+INSERT INTO tipodocucomp (codigo, nombre, abreviatura, condicion_venta, calcular_iva, iva_incluido, tipodocu_set, timbrado, vigente)
+   VALUES (01, 'FACTURA CONTADO', 'FCON', '1', '1', '0', NULL, '0', '0');
+INSERT INTO tipodocucomp (codigo, nombre, abreviatura, condicion_venta, calcular_iva, iva_incluido, tipodocu_set, timbrado, vigente)
+   VALUES (02, 'FACTURA CREDITO', 'FCRE', '2', '1', '0', NULL, '0', '0');
+INSERT INTO tipodocucomp (codigo, nombre, abreviatura, condicion_venta, calcular_iva, iva_incluido, tipodocu_set, timbrado, vigente)
+   VALUES (03, 'COMPROBANTE DE VENTA', 'CVII', '1', '1', '1', NULL, '0', '0');
+INSERT INTO tipodocucomp (codigo, nombre, abreviatura, condicion_venta, calcular_iva, iva_incluido, tipodocu_set, timbrado, vigente)
+   VALUES (04, 'TRIBUTO UNICO', 'TBUN', '1', '0', '0', NULL, '0', '0');
+INSERT INTO tipodocucomp (codigo, nombre, abreviatura, condicion_venta, calcular_iva, iva_incluido, tipodocu_set, timbrado, vigente)
+   VALUES (05, ' C.I. COMPRA CONTADO', 'CICCON', '1', '0', '0', NULL, '0', '0');
+INSERT INTO tipodocucomp (codigo, nombre, abreviatura, condicion_venta, calcular_iva, iva_incluido, tipodocu_set, timbrado, vigente)
+   VALUES (06, ' C.I. COMPRA CREDITO', 'CICCRE', '2', '0', '0', NULL, '0', '0');
+INSERT INTO tipodocucomp (codigo, nombre, abreviatura, condicion_venta, calcular_iva, iva_incluido, tipodocu_set, timbrado, vigente)
+   VALUES (07, 'FACTURA', 'FRA.', '1', '1', '1', NULL, '0', '0');
+INSERT INTO tipodocucomp (codigo, nombre, abreviatura, condicion_venta, calcular_iva, iva_incluido, tipodocu_set, timbrado, vigente)
+   VALUES (08, 'FACTURA', 'FRA.', '2', '1', '1', NULL, '0', '0');
+INSERT INTO tipodocucomp (codigo, nombre, abreviatura, condicion_venta, calcular_iva, iva_incluido, tipodocu_set, timbrado, vigente)
+   VALUES (09, 'FACTURA', 'FRA.', '3', '1', '1', 1, '1', '1');
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE timbradocomp (
+   proveedor SMALLINT NOT NULL,
+   timbrado INTEGER NOT NULL,
+   tipodocucomp_set SMALLINT NOT NULL,
+   establecimiento SMALLINT NOT NULL,
+   punto_expedicion SMALLINT NOT NULL,
+   fecha_desde DATE,
+   fecha_hasta DATE NOT NULL,
+   rango_desde INTEGER,
+   rango_hasta INTEGER
+);
+
+ALTER TABLE timbradocomp
+   ADD CONSTRAINT pk_timbradocomp_codigo
+      PRIMARY KEY (proveedor, timbrado, tipodocucomp_set, establecimiento, punto_expedicion),
+   ADD CONSTRAINT fk_timbradocomp_proveedor
+      FOREIGN KEY (proveedor) REFERENCES proveedor (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_timbradocomp_tipodocucomp_set
+      FOREIGN KEY (tipodocucomp_set) REFERENCES tipodocucomp_set (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_timbradocomp_timbrado
+      UNIQUE (timbrado, tipodocucomp_set, establecimiento, punto_expedicion),
+   ADD CONSTRAINT chk_timbradocomp_timbrado
+      CHECK (timbrado BETWEEN 10000000 AND 99999999),
+   ADD CONSTRAINT chk_timbradocomp_establecimiento
+      CHECK (establecimiento BETWEEN 1 AND 999),
+   ADD CONSTRAINT chk_timbradocomp_punto_expedicion
+      CHECK (punto_expedicion BETWEEN 1 AND 999),
+   ADD CONSTRAINT chk_timbradocomp_rango_desde
+      CHECK (rango_desde IS NULL OR rango_desde BETWEEN 1 AND 9999999),
+   ADD CONSTRAINT chk_timbradocomp_rango_hasta
+      CHECK (rango_hasta IS NULL OR rango_hasta BETWEEN 1 AND 9999999);
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE cabecomp (
+   codcompra INTEGER NOT NULL,
+   tipodocu SMALLINT NOT NULL,
+   tipodocucomp_set SMALLINT,
+   establecimiento SMALLINT,
+   punto_expedicion SMALLINT,
+   nrodocu INTEGER NOT NULL,
+   proveedor SMALLINT NOT NULL,
+   condicion_compra CHAR(1) NOT NULL,
+   fechadocu DATE NOT NULL,
+   moneda SMALLINT NOT NULL,
+   tipocambio NUMERIC(19,6) NOT NULL,
+   tipocambio_set NUMERIC(19,6),
+   plazo SMALLINT,
+   cantidad_cuota SMALLINT,
+   sucursal SMALLINT NOT NULL,
+   deposito SMALLINT NOT NULL,
+   timbrado INTEGER,
+   porcdesc NUMERIC(19,6) NOT NULL,
+   importdesc NUMERIC(19,6) NOT NULL,
+   monto_docu NUMERIC(19,6) NOT NULL,
+   monto_ndeb NUMERIC(19,6) NOT NULL,
+   monto_ncre NUMERIC(19,6) NOT NULL,
+   monto_pago NUMERIC(19,6) NOT NULL,
+   comentario VARCHAR(254)
+);
+
+ALTER TABLE cabecomp
+   ADD CONSTRAINT pk_cabecomp_codcompra
+      PRIMARY KEY (codcompra),
+   ADD CONSTRAINT fk_cabecomp_tipodocu
+      FOREIGN KEY (tipodocu) REFERENCES tipodocucomp (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabecomp_tipodocucomp_set
+      FOREIGN KEY (tipodocucomp_set) REFERENCES tipodocucomp_set (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabecomp_proveedor
+      FOREIGN KEY (proveedor) REFERENCES proveedor (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabecomp_moneda
+      FOREIGN KEY (moneda) REFERENCES moneda (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabecomp_plazo
+      FOREIGN KEY (plazo) REFERENCES plazo (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabecomp_sucursal
+      FOREIGN KEY (sucursal) REFERENCES sucursal (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabecomp_deposito
+      FOREIGN KEY (deposito) REFERENCES deposito (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabecomp_timbrado
+      FOREIGN KEY (proveedor, timbrado, tipodocucomp_set, establecimiento, punto_expedicion) REFERENCES timbradocomp (proveedor, timbrado, tipodocucomp_set, establecimiento, punto_expedicion)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_cabecomp_documento
+      UNIQUE (proveedor, timbrado, tipodocu, establecimiento, punto_expedicion, nrodocu),
+   ADD CONSTRAINT chk_cabecomp_codcompra
+      CHECK (codcompra > 0),
+   ADD CONSTRAINT chk_cabecomp_establecimiento
+      CHECK (establecimiento IS NULL OR establecimiento BETWEEN 1 AND 999),
+   ADD CONSTRAINT chk_cabecomp_punto_expedicion
+      CHECK (punto_expedicion IS NULL OR punto_expedicion BETWEEN 1 AND 999),
+   ADD CONSTRAINT chk_cabecomp_nrodocu
+      CHECK (nrodocu BETWEEN 1 AND 9999999),
+   ADD CONSTRAINT chk_cabecomp_condicion_compra
+      CHECK (condicion_compra IN ('1', '2')),
+   ADD CONSTRAINT chk_cabecomp_fechadocu
+      CHECK (fechadocu <= CURRENT_DATE),
+   ADD CONSTRAINT chk_cabecomp_tipocambio
+      CHECK (tipocambio > 0),
+   ADD CONSTRAINT chk_cabecomp_tipocambio_set
+      CHECK (tipocambio_set IS NULL OR tipocambio_set > 0),
+   ADD CONSTRAINT chk_cabecomp_cantidad_cuota
+      CHECK (cantidad_cuota IS NULL OR cantidad_cuota BETWEEN 1 AND 999),
+   ADD CONSTRAINT chk_cabecomp_monto_docu
+      CHECK (monto_docu >= 0),
+   ADD CONSTRAINT chk_cabecomp_monto_ndeb
+      CHECK (monto_ndeb >= 0),
+   ADD CONSTRAINT chk_cabecomp_monto_ncre
+      CHECK (monto_ncre >= 0),
+   ADD CONSTRAINT chk_cabecomp_monto_pago
+      CHECK (monto_pago >= 0),
+   ADD CONSTRAINT chk_cabecomp_comentario
+      CHECK (comentario IS NULL OR comentario <> '');
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *                                VISTA (VIEW)                                *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* -------------------------------------------------------------------------- */
+CREATE VIEW vmodelo (
+   codigo,
+   nombre,
+   nombre2,
+   maquina,
+   marca,
+   vigente) AS
+
+   SELECT
+      a.codigo,
+      a.nombre,
+      CAST(CONCAT(RTRIM(LTRIM(b.nombre)), ' ', RTRIM(LTRIM(c.nombre)), ' ', RTRIM(LTRIM(a.nombre))) AS VARCHAR(150)) AS nombre2,
+      a.maquina,
+      a.marca,
+      a.vigente
+   FROM
+      modelo a
+      INNER JOIN maquina b
+         ON a.maquina = b.codigo
+      INNER JOIN marca_taller c
+         ON a.marca = c.codigo
+   ORDER BY
+      3
+;

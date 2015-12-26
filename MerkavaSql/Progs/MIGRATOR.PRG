@@ -27,7 +27,9 @@ SCAN ALL
       .SetP5(p5)
       .SetVigente(vigente)
 
-      .Agregar()
+      IF !.Agregar() THEN
+         ? 'La familia con código: ' + ALLTRIM(STR(familias.codigo)) + ' no pudo ser migrado.'
+      ENDIF
    ENDWITH
 ENDSCAN
 
@@ -48,7 +50,9 @@ SCAN ALL
       .SetNombre(ALLTRIM(nombre))
       .SetVigente(vigente)
 
-      .Agregar()
+      IF !.Agregar() THEN
+         ? 'El rubro con código: ' + ALLTRIM(STR(rubros1.codigo)) + ' no pudo ser migrado.'
+      ENDIF
    ENDWITH
 ENDSCAN
 
@@ -69,7 +73,9 @@ SCAN ALL
       .SetNombre(ALLTRIM(nombre))
       .SetVigente(vigente)
 
-      .Agregar()
+      IF !.Agregar() THEN
+         ? 'El sub-rubro con código: ' + ALLTRIM(STR(rubros2.codigo)) + ' no pudo ser migrado.'
+      ENDIF
    ENDWITH
 ENDSCAN
 
@@ -90,7 +96,9 @@ SCAN ALL
       .SetNombre(ALLTRIM(nombre))
       .SetVigente(vigente)
 
-      .Agregar()
+      IF !.Agregar() THEN
+         ? 'La marca con código: ' + ALLTRIM(STR(marcas1.codigo)) + ' no pudo ser migrado.'
+      ENDIF
    ENDWITH
 ENDSCAN
 
@@ -98,50 +106,54 @@ RELEASE loMarca
 SELECT marcas1
 USE
 
-**/
-*   MarcaTaller
-*/
-loMarcaTaller = NEWOBJECT('MarcaTaller', 'MarcaTaller.prg')
-USE c:\turtle\aya\integrad.000\marcas2
+*!*	**/
+*!*	*   MarcaTaller         -- NO ES NECESARIO MIGRAR --
+*!*	*/
+*!*	loMarcaTaller = NEWOBJECT('MarcaTaller', 'MarcaTaller.prg')
+*!*	USE c:\turtle\aya\integrad.000\marcas2
 
-SELECT marcas2
-SCAN ALL
-   WITH loMarcaTaller
-      .SetCodigo(codigo)
-      .SetNombre(ALLTRIM(nombre))
-      .SetVigente(vigente)
+*!*	SELECT marcas2
+*!*	SCAN ALL
+*!*	   WITH loMarcaTaller
+*!*	      .SetCodigo(codigo)
+*!*	      .SetNombre(ALLTRIM(nombre))
+*!*	      .SetVigente(vigente)
 
-      .Agregar()
-   ENDWITH
-ENDSCAN
+*!*	      IF !.Agregar() THEN
+*!*	         ? 'La marca para taller con código: ' + ALLTRIM(STR(marcas2.codigo)) + ' no pudo ser migrado.'
+*!*	      ENDIF
+*!*	   ENDWITH
+*!*	ENDSCAN
 
-RELEASE loMarcaTaller
-SELECT marcas2
-USE
-
-**/
-*   Maquina
-*/
-loMaquina = NEWOBJECT('Maquina', 'Maquina.prg')
-USE c:\turtle\aya\integrad.000\maquinas
-
-SELECT maquinas
-SCAN ALL
-   WITH loMaquina
-      .SetCodigo(codigo)
-      .SetNombre(ALLTRIM(nombre))
-      .SetVigente(vigente)
-
-      .Agregar()
-   ENDWITH
-ENDSCAN
-
-RELEASE loMaquina
-SELECT maquinas
-USE
+*!*	RELEASE loMarcaTaller
+*!*	SELECT marcas2
+*!*	USE
 
 *!*	**/
-*!*	*   Modelo
+*!*	*   Maquina             -- NO ES NECESARIO MIGRAR --
+*!*	*/
+*!*	loMaquina = NEWOBJECT('Maquina', 'Maquina.prg')
+*!*	USE c:\turtle\aya\integrad.000\maquinas
+
+*!*	SELECT maquinas
+*!*	SCAN ALL
+*!*	   WITH loMaquina
+*!*	      .SetCodigo(codigo)
+*!*	      .SetNombre(ALLTRIM(nombre))
+*!*	      .SetVigente(vigente)
+
+*!*	      IF !.Agregar() THEN
+*!*	         ? 'La máquina con código: ' + ALLTRIM(STR(maquinas.codigo)) + ' no pudo ser migrado.'
+*!*	      ENDIF
+*!*	   ENDWITH
+*!*	ENDSCAN
+
+*!*	RELEASE loMaquina
+*!*	SELECT maquinas
+*!*	USE
+
+*!*	**/
+*!*	*   Modelo              -- NO ES NECESARIO MIGRAR --
 *!*	*/
 *!*	loModelo = NEWOBJECT('Modelo', 'Modelo.prg')
 
@@ -193,7 +205,9 @@ USE
 *!*	      .SetMarca(lnMarca)
 *!*	      .SetVigente(llVigente)
 
-*!*	      .Agregar()
+*!*	      IF !.Agregar() THEN
+*!*	         ? 'El modelo con código: ' + ALLTRIM(STR(tm_modelo.codigo)) + ' no pudo ser migrado.'
+*!*	      ENDIF
 *!*	   ENDWITH
 *!*	ENDSCAN
 
@@ -222,11 +236,38 @@ SCAN ALL
    WITH loUnidadMedida
       .SetCodigo(codigo)
       .SetNombre(ALLTRIM(nombre))
-      .SetSimbolo(ALLTRIM(STR(codigo)))
       .SetDivisible(.F.)
       .SetVigente(vigente)
 
-      .Agregar()
+      DO CASE
+      CASE nombre = '-'
+         .SetSimbolo('-')
+      CASE nombre = 'UNIDAD'
+         .SetSimbolo('u')
+      CASE nombre = 'METRO'
+         .SetSimbolo('m')
+      CASE nombre = 'LITRO'
+         .SetSimbolo('l')
+      CASE nombre = 'KILO'
+         .SetNombre('KILOGRAMO')
+         .SetSimbolo('kg')
+      CASE nombre = 'JUEGO'
+         .SetSimbolo('jgo')
+      CASE nombre = 'PAR'
+         .SetSimbolo('par')
+      CASE nombre = 'KIT'
+         .SetSimbolo('kit')
+      CASE nombre = 'CAJA'
+         .SetSimbolo('caja')
+      CASE nombre = 'LATA'
+         .SetSimbolo('lata')
+      OTHERWISE
+         .SetSimbolo(ALLTRIM(STR(codigo)))
+      ENDCASE
+
+      IF !.Agregar() THEN
+         ? 'La unidad de medida con código: ' + ALLTRIM(STR(unidad.codigo)) + ' no pudo ser migrado.'
+      ENDIF
    ENDWITH
 ENDSCAN
 
@@ -247,7 +288,9 @@ SCAN ALL
       .SetNombre(ALLTRIM(nombre))
       .SetVigente(vigente)
 
-      .Agregar()
+      IF !.Agregar() THEN
+         ? 'El país con código: ' + ALLTRIM(STR(proceden.codigo)) + ' no pudo ser migrado.'
+      ENDIF
    ENDWITH
 ENDSCAN
 
@@ -322,7 +365,8 @@ SCAN ALL
       .SetVendedor5(ALLTRIM(vendedor5))
       .SetLArti5(ALLTRIM(larti5))
       .SetTVend5(ALLTRIM(tvend5))
-      .SetVigente('S')
+      .SetVigente(.T.)
+      .SetVigente2('S')
 
       IF proveedo.codigo <> 39 THEN
          IF !.Agregar() THEN
@@ -337,10 +381,6 @@ SELECT proveedo
 USE
 SELECT ruc
 USE
-
-CLEAR ALL
-CLEAR
-DO INICIODEV
 
 **/
 *   Articulo
@@ -367,7 +407,7 @@ SCAN ALL
       .SetProveedor(maesprod.proveedor)
       .SetPais(maesprod.procedenci)
       .SetUbicacion(ALLTRIM(maesprod.ubicacion))
-      .SetVigente(maesprod.vigente)
+      .SetVigente(.T.)
       .SetLPrecio(maesprod.lprecio)
       .SetGravado(maesprod.impuesto)
       .SetPorcIVA(maesprod.pimpuesto)

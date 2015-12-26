@@ -400,8 +400,8 @@ DEFINE CLASS Plazo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarCodigo()
-      IF !BETWEEN(THIS.nCodigo, 1, 65535) THEN
-         MESSAGEBOX([El código debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarCodigo()')
+      IF !BETWEEN(THIS.nCodigo, 1, 32767) THEN
+         MESSAGEBOX([El código debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarCodigo()')
          RETURN .F.
       ENDIF
 
@@ -461,8 +461,8 @@ DEFINE CLASS Plazo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarNumVtos()
-      IF !BETWEEN(THIS.nNumVtos, 1, 65535) THEN
-         MESSAGEBOX([Número vencimientos: El valor debe estar entre 1 y 65535.], 0+16, THIS.Name + '.ValidarNumVtos()')
+      IF !BETWEEN(THIS.nNumVtos, 1, 32767) THEN
+         MESSAGEBOX([Número vencimientos: El valor debe estar entre 1 y 32767.], 0+16, THIS.Name + '.ValidarNumVtos()')
          RETURN .F.
       ENDIF
    ENDFUNC
@@ -477,16 +477,16 @@ DEFINE CLASS Plazo AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarPrimerVto()
-      IF !BETWEEN(THIS.nPrimero, 0, 65535) THEN
-         MESSAGEBOX([Primer vencimiento: El valor debe estar entre 0 y 65535.], 0+16, THIS.Name + '.ValidarPrimerVto()')
+      IF !BETWEEN(THIS.nPrimero, 0, 32767) THEN
+         MESSAGEBOX([Primer vencimiento: El valor debe estar entre 0 y 32767.], 0+16, THIS.Name + '.ValidarPrimerVto()')
          RETURN .F.
       ENDIF
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarRestoVtos()
-      IF !BETWEEN(THIS.nResto, 0, 65535) THEN
-         MESSAGEBOX([Resto vencimientos: El valor debe estar entre 0 y 65535.], 0+16, THIS.Name + '.ValidarRestoVtos()')
+      IF !BETWEEN(THIS.nResto, 0, 32767) THEN
+         MESSAGEBOX([Resto vencimientos: El valor debe estar entre 0 y 32767.], 0+16, THIS.Name + '.ValidarRestoVtos()')
          RETURN .F.
       ENDIF
 

@@ -380,8 +380,8 @@ DEFINE CLASS Empresa AS CUSTOM
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarSucursal()
-      IF !BETWEEN(THIS.nSucursal, 1, 65535) THEN
-         MESSAGEBOX([La sucursal debe ser un valor entre 1 y 65535.], 0+16, THIS.Name + '.ValidarSucursal()')
+      IF !BETWEEN(THIS.nSucursal, 1, 32767) THEN
+         MESSAGEBOX([La sucursal debe ser un valor entre 1 y 32767.], 0+16, THIS.Name + '.ValidarSucursal()')
          RETURN .F.
       ENDIF
 
