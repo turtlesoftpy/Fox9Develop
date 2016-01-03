@@ -236,9 +236,13 @@ DEFINE CLASS Barrio AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       IF ISNULL(tcCondicionFiltrado) THEN
          goCapaDatos.LlamarConsulta('SELECT * FROM ' + THIS.cTabla + ' ORDER BY nombre', lcCursor)
@@ -251,6 +255,12 @@ DEFINE CLASS Barrio AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -273,9 +283,13 @@ DEFINE CLASS Barrio AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -291,13 +305,7 @@ DEFINE CLASS Barrio AS CUSTOM
       CASE RECCOUNT() = 0   && No hay registros.
          llRetorno = .F.
       CASE RECCOUNT() = 1   && Se ha encontrado un registro.
-         WITH THIS
-            .nCodigo = codigo
-            .cNombre = nombre
-            .nDepartamen = departamen
-            .nCiudad = ciudad
-            .lVigente = IIF(vigente = '0', .F., .T.)
-         ENDWITH
+         THIS.CargarDatos()
 
          IF VARTYPE(tcCursor) = 'C' THEN
             IF EMPTY(tcCursor) THEN
@@ -326,6 +334,12 @@ DEFINE CLASS Barrio AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -347,9 +361,13 @@ DEFINE CLASS Barrio AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcNombre
       pcNombre = UPPER(IIF(!INLIST(VARTYPE(tcNombre), 'L', 'X'), ALLTRIM(tcNombre), ALLTRIM(THIS.cNombre)))
@@ -365,13 +383,7 @@ DEFINE CLASS Barrio AS CUSTOM
       CASE RECCOUNT() = 0   && No hay registros.
          llRetorno = .F.
       CASE RECCOUNT() = 1   && Se ha encontrado un registro.
-         WITH THIS
-            .nCodigo = codigo
-            .cNombre = nombre
-            .nDepartamen = departamen
-            .nCiudad = ciudad
-            .lVigente = IIF(vigente = '0', .F., .T.)
-         ENDWITH
+         THIS.CargarDatos()
 
          IF VARTYPE(tcCursor) = 'C' THEN
             IF EMPTY(tcCursor) THEN
@@ -399,6 +411,12 @@ DEFINE CLASS Barrio AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -565,9 +583,25 @@ DEFINE CLASS Barrio AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
+   PROTECTED FUNCTION CargarDatos
+      WITH THIS
+         .SetCodigo(codigo)
+         .SetNombre(nombre)
+         .SetDepartamen(departamen)
+         .SetCiudad(ciudad)
+         .SetVigente(IIF(vigente('0', .F., .T.))
+      ENDWITH
+   ENDFUNC
+
+   * ---------------------------------------------------------------------------- *
    FUNCTION Agregar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 1
 
       IF THIS.Validar() THEN
@@ -587,13 +621,24 @@ DEFINE CLASS Barrio AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Modificar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 2
 
       IF THIS.Validar() THEN
@@ -613,6 +658,12 @@ DEFINE CLASS Barrio AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -623,9 +674,13 @@ DEFINE CLASS Barrio AS CUSTOM
       * inicio { integridad referencial }
       WAIT 'Comprobando integridad referencial, por favor espere...' WINDOW NOWAIT
 
-      LOCAL llRetorno, loModelo, llExiste, lcTablaRelacionada, lnCantidadRegistro
+      LOCAL llRetorno, loModelo, lnAreaTrabajo, lcOrden, llExiste, lcTablaRelacionada, lnCantidadRegistro
       llRetorno = .T.
       loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -660,6 +715,12 @@ DEFINE CLASS Barrio AS CUSTOM
                                        THIS.cClavePrimaria + ' = ?pnCodigo')
             WAIT 'Registro borrado exitosamente.' WINDOW NOWAIT
          ENDIF
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN llRetorno

@@ -241,9 +241,13 @@ DEFINE CLASS Empresa AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       IF ISNULL(tcCondicionFiltrado) THEN
          goCapaDatos.LlamarConsulta('SELECT * FROM ' + THIS.cTabla + ' ORDER BY nombre', lcCursor)
@@ -256,19 +260,7 @@ DEFINE CLASS Empresa AS CUSTOM
       CASE RECCOUNT() = 0   && No hay registros.
          llRetorno = .F.
       CASE RECCOUNT() = 1   && Se ha encontrado un registro.
-         WITH THIS
-            .cNombre = nombre
-            .cRazonSocial = razon_social
-            .cRUC = ruc
-            .cDV = dv
-            .cSitioWeb = sitio_web
-            .cEMail = e_mail
-            .nSucursal = sucursal
-            .nEjercicio = ejercicio
- 
-            .SetSucursal(.nSucursal)
-            .SetEjercicio(.nEjercicio)
-         ENDWITH
+         THIS.CargarDatos()
 
          IF VARTYPE(tcCursor) = 'C' THEN
             IF EMPTY(tcCursor) THEN
@@ -296,6 +288,12 @@ DEFINE CLASS Empresa AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -450,9 +448,28 @@ DEFINE CLASS Empresa AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
+   PROTECTED FUNCTION CargarDatos
+      WITH THIS
+         .SetNombre(nombre)
+         .SetRazonSocial(razon_social)
+         .SetRUC(ruc)
+         .SetDV(dv)
+         .SetSitioWeb(sitio_web)
+         .SetEMail(e_mail)
+         .SetSucursal(sucursal)
+         .SetEjercicio(ejercicio)
+      ENDWITH
+   ENDFUNC
+
+   * ---------------------------------------------------------------------------- *
    FUNCTION Modificar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 2
 
       IF THIS.Validar() THEN
@@ -473,6 +490,12 @@ DEFINE CLASS Empresa AS CUSTOM
          ENDIF
       ELSE
          llRetorno = .F.
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN llRetorno

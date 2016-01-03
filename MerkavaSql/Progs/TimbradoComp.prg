@@ -348,9 +348,13 @@ DEFINE CLASS TimbradoComp AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor, lcSql
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden, lcSql
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       goCapaDatos.LlamarConsulta(THIS.cSql, lcCursor)
 
@@ -367,6 +371,12 @@ DEFINE CLASS TimbradoComp AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -389,9 +399,13 @@ DEFINE CLASS TimbradoComp AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor, lcSql
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden, lcSql
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnProveedor
       pnProveedor = IIF(!INLIST(VARTYPE(tnProveedor), 'L', 'X'), tnProveedor, THIS.nProveedor)
@@ -440,6 +454,12 @@ DEFINE CLASS TimbradoComp AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -461,9 +481,13 @@ DEFINE CLASS TimbradoComp AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor, lcSql
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden, lcSql
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnTimbrado
       pnTimbrado = IIF(!INLIST(VARTYPE(tnTimbrado), 'L', 'X'), tnTimbrado, THIS.nTimbrado)
@@ -512,6 +536,12 @@ DEFINE CLASS TimbradoComp AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -533,9 +563,13 @@ DEFINE CLASS TimbradoComp AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor, lcSql
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden, lcSql
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnTipoDocuCompSet
       pnTipoDocuCompSet = IIF(!INLIST(VARTYPE(tnTipoDocuCompSet), 'L', 'X'), tnTipoDocuCompSet, THIS.nTipoDocuCompSet)
@@ -584,6 +618,12 @@ DEFINE CLASS TimbradoComp AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -612,9 +652,13 @@ DEFINE CLASS TimbradoComp AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor, lcSql
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden, lcSql
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcRuc
       pcRuc = UPPER(ALLTRIM(tcRuc))
@@ -662,6 +706,12 @@ DEFINE CLASS TimbradoComp AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -945,22 +995,27 @@ DEFINE CLASS TimbradoComp AS CUSTOM
    * ---------------------------------------------------------------------------- *
    PROTECTED FUNCTION CargarDatos
       WITH THIS
-         .nProveedor = proveedor
-         .nTimbrado = timbrado
-         .nTipoDocuCompSet = tipodocucomp_set
-         .nEstablecimiento = establecimiento
-         .nPuntoExpedicion = punto_expedicion
-         .dFechaDesde = IIF(!ISNULL(fecha_desde), fecha_desde, {})
-         .dFechaHasta = fecha_hasta
-         .nRangoDesde = IIF(!ISNULL(rango_desde), rango_desde, 0)
-         .nRangoHasta = IIF(!ISNULL(rango_hasta), rango_hasta, 0)
+         .SetProveedor(proveedor)
+         .SetTimbrado(timbrado)
+         .SetTipoDocuCompSet(tipodocucomp_set)
+         .SetEstablecimiento(establecimiento)
+         .SetPuntoExpedicion(punto_expedicion)
+         .SetFechaDesde(IIF(!ISNULL(fecha_desde), fecha_desde, {}))
+         .SetFechaHasta(fecha_hasta)
+         .SetRangoDesde(IIF(!ISNULL(rango_desde), rango_desde, 0))
+         .SetRangoHasta(IIF(!ISNULL(rango_hasta), rango_hasta, 0))
       ENDWITH
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Agregar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 1
 
       IF THIS.Validar() THEN
@@ -988,13 +1043,24 @@ DEFINE CLASS TimbradoComp AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Modificar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 2
 
       IF THIS.Validar() THEN
@@ -1020,6 +1086,12 @@ DEFINE CLASS TimbradoComp AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1030,9 +1102,13 @@ DEFINE CLASS TimbradoComp AS CUSTOM
       * inicio { integridad referencial }
       WAIT 'Comprobando integridad referencial, por favor espere...' WINDOW NOWAIT
 
-      LOCAL llRetorno, loModelo, llExiste, lcTablaRelacionada, lnCantidadRegistro
+      LOCAL llRetorno, loModelo, lnAreaTrabajo, lcOrden, llExiste, lcTablaRelacionada, lnCantidadRegistro
       llRetorno = .T.
       loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnProveedor, pnTimbrado, pnTipoDocuCompSet, pnEstablecimiento, pnPuntoExpedicion
       pnProveedor = IIF(!INLIST(VARTYPE(tnProveedor), 'L', 'X'), tnProveedor, THIS.nProveedor)
@@ -1073,9 +1149,15 @@ DEFINE CLASS TimbradoComp AS CUSTOM
 
       IF llRetorno THEN
          IF goCapaDatos.BorrarRegistro(THIS.cTabla, ;
-                                       proveedor = ?pnProveedor AND timbrado = ?pnTimbrado AND tipodocucomp_set = ?pnTipoDocuCompSet AND establecimiento = ?pnEstablecimiento AND punto_expedicion = ?pnPuntoExpedicion')
+                                       'proveedor = ?pnProveedor AND timbrado = ?pnTimbrado AND tipodocucomp_set = ?pnTipoDocuCompSet AND establecimiento = ?pnEstablecimiento AND punto_expedicion = ?pnPuntoExpedicion')
             WAIT 'Registro borrado exitosamente.' WINDOW NOWAIT
          ENDIF
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN llRetorno

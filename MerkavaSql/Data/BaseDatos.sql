@@ -876,6 +876,8 @@ ALTER TABLE deposito
          ON UPDATE NO ACTION,
    ADD CONSTRAINT unq_deposito_nombre
       UNIQUE (nombre),
+   ADD CONSTRAINT unq_deposito_sucursal
+      UNIQUE (sucursal, codigo),
    ADD CONSTRAINT chk_deposito_codigo
       CHECK (codigo > 0),
    ADD CONSTRAINT chk_deposito_nombre
@@ -1684,6 +1686,61 @@ ALTER TABLE sucursal
          ON UPDATE NO ACTION;
 
 /* -------------------------------------------------------------------------- */
+CREATE TABLE stock (
+   sucursal SMALLINT NOT NULL,
+   deposito SMALLINT NOT NULL,
+   articulo INTEGER NOT NULL,
+   cantidad NUMERIC(19,6) NOT NULL,
+   servicio NUMERIC(19,6) NOT NULL,
+   comprometido NUMERIC(19,6) NOT NULL,
+   solicitado NUMERIC(19,6) NOT NULL,
+   ubicacion VARCHAR(50),
+   minimo NUMERIC(19,6) NOT NULL,
+   maximo NUMERIC(19,6) NOT NULL
+);
+
+ALTER TABLE stock
+   ADD CONSTRAINT pk_stock_codigo
+      PRIMARY KEY (sucursal, deposito, articulo),
+   ADD CONSTRAINT fk_stock_sucursal
+      FOREIGN KEY (sucursal) REFERENCES sucursal (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_stock_deposito
+      FOREIGN KEY (deposito) REFERENCES deposito (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_stock_sucursal_deposito
+      FOREIGN KEY (sucursal, deposito) REFERENCES deposito (sucursal, codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_stock_articulo
+      FOREIGN KEY (articulo) REFERENCES articulo (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT chk_stock_cantidad
+      CHECK (cantidad >= 0),
+   ADD CONSTRAINT chk_stock_servicio
+      CHECK (servicio >= 0),
+   ADD CONSTRAINT chk_stock_comprometido
+      CHECK (comprometido >= 0),
+   ADD CONSTRAINT chk_stock_solicitado
+      CHECK (solicitado >= 0),
+   ADD CONSTRAINT chk_stock_ubicacion
+      CHECK (ubicacion IS NULL OR ubicacion <> ''),
+   ADD CONSTRAINT chk_stock_minimo
+      CHECK (minimo >= 0),
+   ADD CONSTRAINT chk_stock_maximo
+      CHECK (maximo >= 0),
+   ALTER COLUMN cantidad SET DEFAULT 0,
+   ALTER COLUMN servicio SET DEFAULT 0,
+   ALTER COLUMN comprometido SET DEFAULT 0,
+   ALTER COLUMN solicitado SET DEFAULT 0,
+   ALTER COLUMN ubicacion SET DEFAULT NULL,
+   ALTER COLUMN minimo SET DEFAULT 0,
+   ALTER COLUMN maximo SET DEFAULT 0;
+
+/* -------------------------------------------------------------------------- */
 CREATE TABLE tipodocucomp_set (
    codigo SMALLINT NOT NULL,
    nombre VARCHAR(50) NOT NULL,
@@ -1900,6 +1957,158 @@ ALTER TABLE cabecomp
    ADD CONSTRAINT chk_cabecomp_comentario
       CHECK (comentario IS NULL OR comentario <> '');
 
+/* -------------------------------------------------------------------------- */
+CREATE TABLE cabeentstk (
+   codigo INTEGER NOT NULL,
+   sucursal SMALLINT NOT NULL,
+   deposito SMALLINT NOT NULL,
+   fechadocu TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+   comentario VARCHAR(254),
+   concepto_diario VARCHAR(254)
+);
+
+ALTER TABLE cabeentstk
+   ADD CONSTRAINT pk_cabeentstk_codigo
+      PRIMARY KEY (codigo),
+   ADD CONSTRAINT fk_cabeentstk_sucursal
+      FOREIGN KEY (codigo) REFERENCES sucursal (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabeentstk_deposito
+      FOREIGN KEY (deposito) REFERENCES deposito (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_cabeentstk_sucursal_deposito
+      FOREIGN KEY (sucursal, deposito) REFERENCES deposito (sucursal, codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT chk_cabeentstk_codigo
+      CHECK (codigo > 0),
+   ADD CONSTRAINT chk_cabeentstk_fechadocu
+      CHECK (fechadocu <= CURRENT_TIMESTAMP),
+   ADD CONSTRAINT chk_cabeentstk_comentario
+      CHECK (comentario IS NULL OR comentario <> ''),
+   ADD CONSTRAINT chk_cabeentstk_concepto_diario
+      CHECK (concepto_diario IS NULL OR concepto_diario <> '');
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE detaentstk (
+   codigo INTEGER NOT NULL,
+   sucursal SMALLINT NOT NULL,
+   deposito SMALLINT NOT NULL,
+   articulo INTEGER NOT NULL,
+   cantidad NUMERIC(19,6) NOT NULL
+);
+
+ALTER TABLE detaentstk
+   ADD CONSTRAINT pk_detaentstk_codigo
+      PRIMARY KEY (codigo, sucursal, deposito, articulo),
+   ADD CONSTRAINT fk_detaentstk_cabeentstk
+      FOREIGN KEY (codigo) REFERENCES cabeentstk (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_detaentstk_sucursal
+      FOREIGN KEY (sucursal) REFERENCES sucursal (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_detaentstk_deposito
+      FOREIGN KEY (deposito) REFERENCES deposito (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_detaentstk_sucursal_deposito
+      FOREIGN KEY (sucursal, deposito) REFERENCES deposito (sucursal, codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_detaentstk_sucursal_deposito_articulo
+      FOREIGN KEY (sucursal, deposito, articulo) REFERENCES stock (sucursal, deposito, articulo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_detaentstk_articulo
+      FOREIGN KEY (articulo) REFERENCES articulo (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT chk_detaentstk_cantidad
+      CHECK (cantidad > 0);
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE tmp_cabeentstk (
+   transaccion VARCHAR(15) NOT NULL,
+   codigo INTEGER,
+   sucursal SMALLINT NOT NULL,
+   deposito SMALLINT NOT NULL,
+   fechadocu TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+   comentario VARCHAR(254),
+   concepto_diario VARCHAR(254)
+);
+
+ALTER TABLE tmp_cabeentstk
+   ADD CONSTRAINT pk_tmp_cabeentstk_codigo
+      PRIMARY KEY (transaccion),
+   ADD CONSTRAINT fk_tmp_cabeentstk_sucursal
+      FOREIGN KEY (codigo) REFERENCES sucursal (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tmp_cabeentstk_deposito
+      FOREIGN KEY (deposito) REFERENCES deposito (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tmp_cabeentstk_sucursal_deposito
+      FOREIGN KEY (sucursal, deposito) REFERENCES deposito (sucursal, codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT unq_tmp_cabeentstk_codigo
+      UNIQUE (codigo),
+   ADD CONSTRAINT chk_tmp_cabeentstk_codigo
+      CHECK (codigo IS NULL OR codigo > 0),
+   ADD CONSTRAINT chk_tmp_cabeentstk_fechadocu
+      CHECK (fechadocu <= CURRENT_TIMESTAMP),
+   ADD CONSTRAINT chk_tmp_cabeentstk_comentario
+      CHECK (comentario IS NULL OR comentario <> ''),
+   ADD CONSTRAINT chk_tmp_cabeentstk_concepto_diario
+      CHECK (concepto_diario IS NULL OR concepto_diario <> '');
+
+/* -------------------------------------------------------------------------- */
+CREATE TABLE tmp_detaentstk (
+   transaccion VARCHAR(15) NOT NULL,
+   codigo INTEGER,
+   sucursal SMALLINT NOT NULL,
+   deposito SMALLINT NOT NULL,
+   articulo INTEGER NOT NULL,
+   cantidad NUMERIC(19,6) NOT NULL
+);
+
+ALTER TABLE tmp_detaentstk
+   ADD CONSTRAINT pk_tmp_detaentstk_codigo
+      PRIMARY KEY (transaccion, codigo, sucursal, deposito, articulo),
+   ADD CONSTRAINT fk_tmp_detaentstk_tmp_cabeentstk
+      FOREIGN KEY (codigo) REFERENCES tmp_cabeentstk (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tmp_detaentstk_sucursal
+      FOREIGN KEY (sucursal) REFERENCES sucursal (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tmp_detaentstk_deposito
+      FOREIGN KEY (deposito) REFERENCES deposito (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tmp_detaentstk_sucursal_deposito
+      FOREIGN KEY (sucursal, deposito) REFERENCES deposito (sucursal, codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tmp_detaentstk_sucursal_deposito_articulo
+      FOREIGN KEY (sucursal, deposito, articulo) REFERENCES stock (sucursal, deposito, articulo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT fk_tmp_detaentstk_articulo
+      FOREIGN KEY (articulo) REFERENCES articulo (codigo)
+         ON DELETE NO ACTION
+         ON UPDATE NO ACTION,
+   ADD CONSTRAINT chk_tmp_cabeentstk_codigo
+      CHECK (codigo IS NULL OR codigo > 0),
+   ADD CONSTRAINT chk_tmp_detaentstk_cantidad
+      CHECK (cantidad > 0);
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
  *                                VISTA (VIEW)                                *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -1929,3 +2138,209 @@ CREATE VIEW vmodelo (
    ORDER BY
       3
 ;
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *                PROCEDIMIENTO ALMACENADO (STORED PROCEDURE)                 *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* -------------------------------------------------------------------------- */
+/* PA para agregar una entrada de mercancía.                                  */
+/* -------------------------------------------------------------------------- */
+CREATE OR REPLACE FUNCTION sp_agregar_entrada_mercancia (c_transaccion VARCHAR(15)) RETURNS VOID AS
+$$
+DECLARE
+   -- { maestro }
+   vcodigo INTEGER;
+   vsucursal SMALLINT;
+   vdeposito SMALLINT;
+   vfechadocu TIMESTAMP WITHOUT TIME ZONE;
+   vcomentario VARCHAR(254);
+   vconcepto_diario VARCHAR(254);
+   -- { detalle }
+   vdetalle tmp_detaentstk%ROWTYPE;
+BEGIN
+   -- inicio { validación de parámetro }
+   IF c_transaccion IS NULL THEN
+      RAISE EXCEPTION 'Número de transacción: No puede ser nulo.';
+   END IF;
+
+   IF c_transaccion = '' THEN
+      RAISE EXCEPTION 'Número de transacción: No puede quedar en blanco.';
+   END IF;
+
+   IF NOT EXISTS(SELECT * FROM tmp_cabeentstk WHERE transaccion = c_transaccion) THEN
+      RAISE EXCEPTION 'Número de transacción: No existe.';
+   END IF;
+
+   IF NOT EXISTS(SELECT * FROM tmp_detaentstk WHERE transaccion = c_transaccion) THEN
+      RAISE EXCEPTION 'Número de transacción: No posee detalle.';
+   END IF;
+   -- fin { validación de parámetro }
+
+   -- inicio { maestro }
+   SELECT
+      codigo,
+      sucursal,
+      deposito,
+      fechadocu,
+      comentario,
+      concepto_diario
+   FROM
+      tmp_cabeentstk
+   WHERE
+      transaccion = c_transaccion
+   INTO
+      vcodigo,
+      vsucursal,
+      vdeposito,
+      vfechadocu,
+      vcomentario,
+      vconcepto_diario;
+
+   IF vcodigo NOT BETWEEN 1 AND 2147483647 THEN
+      RAISE EXCEPTION 'Código: Debe ser un valor entre 1 y 2147483647.';
+   END IF;
+
+   IF vsucursal NOT BETWEEN 1 AND 32767 THEN
+      RAISE EXCEPTION 'Sucursal: Debe ser un valor entre 1 y 32767.';
+   END IF;
+
+   IF vdeposito NOT BETWEEN 1 AND 32767 THEN
+      RAISE EXCEPTION 'Depósito: Debe ser un valor entre 1 y 32767.';
+   END IF;
+
+   IF vcomentario IS NOT NULL THEN
+      IF vcomentario = '' THEN
+         RAISE EXCEPTION 'Comentario: No puede quedar en blanco.';
+      END IF;
+   END IF;
+
+   IF vconcepto_diario IS NOT NULL THEN
+      IF vconcepto_diario = '' THEN
+         RAISE EXCEPTION 'Entrada en el diario:: No puede quedar en blanco.';
+      END IF;
+   END IF;
+
+   vfechadocu = CURRENT_TIMESTAMP;
+
+   IF EXISTS(SELECT * FROM cabeentstk WHERE codigo = vcodigo) THEN
+      RAISE EXCEPTION 'Código: Ya existe.';
+   END IF;
+
+   IF NOT EXISTS(SELECT * FROM sucursal WHERE codigo = vsucursal) THEN
+      RAISE EXCEPTION 'Sucursal: No existe.';
+   END IF;
+
+   IF NOT EXISTS(SELECT * FROM sucursal WHERE codigo = vsucursal AND vigente) THEN
+      RAISE EXCEPTION 'Sucursal: No vigente';
+   END IF;
+
+   IF NOT EXISTS(SELECT * FROM deposito WHERE codigo = vdeposito) THEN
+      RAISE EXCEPTION 'Depósito: No existe.';
+   END IF;
+
+   IF NOT EXISTS(SELECT * FROM deposito WHERE codigo = vdeposito AND vigente) THEN
+      RAISE EXCEPTION 'Depósito: No vigente';
+   END IF;
+
+   INSERT INTO cabeentstk (codigo, sucursal, deposito, fechadocu, comentario, concepto_diario)
+      VALUES (vcodigo, vsucursal, vdeposito, vfechadocu, vcomentario, vconcepto_diario);
+   -- fin { maestro }
+
+   -- fin { inicio }
+   FOR vdetalle IN SELECT * FROM tmp_detaentstk LOOP
+      IF vdetalle.sucursal NOT BETWEEN 1 AND 32767 THEN
+         RAISE EXCEPTION 'Sucursal: Debe ser un valor entre 1 y 32767.';
+      END IF;
+
+      IF vdetalle.deposito NOT BETWEEN 1 AND 32767 THEN
+         RAISE EXCEPTION 'Depósito: Debe ser un valor entre 1 y 32767.';
+      END IF;
+
+      IF vdetalle.articulo NOT BETWEEN 1 AND 2147483647 THEN
+         RAISE EXCEPTION 'Artículo: Debe ser un valor entre 1 y 2147483647.';
+      END IF;
+
+      IF vdetalle.cantidad <= 0 THEN
+         RAISE EXCEPTION 'Cantidad: Debe ser mayor que cero.';
+      END IF;
+
+      IF vdetalle.cantidad > 999999.99 THEN
+         RAISE EXCEPTION 'Cantidad: Debe ser menor que 1 millón.';
+      END IF;
+
+      IF EXISTS(SELECT * FROM detaentstk WHERE codigo = vcodigo AND sucursal = vdetalle.sucursal AND deposito = vdetalle.deposito AND articulo = vdetalle.articulo) THEN
+         RAISE EXCEPTION 'Código + Sucursal + Depósito + Artículo: Ya existe.';
+      END IF;
+
+      IF NOT EXISTS(SELECT * FROM sucursal WHERE codigo = vdetalle.sucursal) THEN
+         RAISE EXCEPTION 'Sucursal: No existe.';
+      END IF;
+
+      IF NOT EXISTS(SELECT * FROM sucursal WHERE codigo = vdetalle.sucursal AND vigente) THEN
+         RAISE EXCEPTION 'Sucursal: No vigente';
+      END IF;
+
+      IF NOT EXISTS(SELECT * FROM deposito WHERE codigo = vdetalle.deposito) THEN
+         RAISE EXCEPTION 'Depósito: No existe.';
+      END IF;
+
+      IF NOT EXISTS(SELECT * FROM deposito WHERE codigo = vdetalle.deposito AND vigente) THEN
+         RAISE EXCEPTION 'Depósito: No vigente';
+      END IF;
+
+      IF NOT EXISTS(SELECT * FROM articulo WHERE codigo = vdetalle.articulo) THEN
+         RAISE EXCEPTION 'Artículo: No existe.';
+      END IF;
+
+      IF NOT EXISTS(SELECT * FROM articulo WHERE codigo = vdetalle.articulo AND vigente) THEN
+         RAISE EXCEPTION 'Artículo: No vigente';
+      END IF;
+
+      INSERT INTO detaentstk (codigo, sucursal, deposito, articulo, cantidad)
+         VALUES (vcodigo, vdetalle.sucursal, vdetalle.deposito, vdetalle.articulo, vdetalle.cantidad);
+   END LOOP;
+   -- fin { detalle }
+END;
+$$
+LANGUAGE plpgsql;
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *                            DISPARADOR (TRIGGER)                            *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* -------------------------------------------------------------------------- */
+/* Disparador para aumentar el stock de las mercancías.                       */
+/* -------------------------------------------------------------------------- */
+CREATE OR REPLACE FUNCTION sp_aumentar_stock() RETURNS TRIGGER AS
+$$
+BEGIN
+   IF EXISTS(SELECT * FROM stock WHERE sucursal = NEW.sucursal AND deposito = NEW.deposito AND articulo = NEW.articulo) THEN
+      UPDATE
+         stock
+      SET
+         cantidad = cantidad + NEW.cantidad
+      WHERE
+         sucursal = NEW.sucursal AND 
+         deposito = NEW.deposito AND 
+         articulo = NEW.articulo;
+   ELSE
+      INSERT INTO stock (sucursal, deposito, articulo, cantidad)
+         VALUES (NEW.sucursal, NEW.deposito, NEW.articulo, NEW.cantidad);
+   END IF;
+
+   UPDATE
+      articulo
+   SET
+      stock_actual = stock_actual + NEW.cantidad
+   WHERE
+      codigo = NEW.articulo;
+
+   RETURN NULL;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER tr_detaentstk_ai
+AFTER INSERT ON detaentstk
+   FOR EACH ROW EXECUTE PROCEDURE sp_aumentar_stock();

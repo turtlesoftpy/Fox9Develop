@@ -71,6 +71,10 @@ ren FrmDepar.sct FrmDepar.sct
 ren FrmDepar.scx FrmDepar.scx
 ren FrmDeposito.sct FrmDeposito.sct
 ren FrmDeposito.scx FrmDeposito.scx
+ren FrmDetalleEntradaMercancia.sct FrmDetalleEntradaMercancia.sct
+ren FrmDetalleEntradaMercancia.scx FrmDetalleEntradaMercancia.scx
+ren FrmEntradaMercancia.sct FrmEntradaMercancia.sct
+ren FrmEntradaMercancia.scx FrmEntradaMercancia.scx
 ren FrmEscritorio.sct FrmEscritorio.sct
 ren FrmEscritorio.scx FrmEscritorio.scx
 ren FrmFamilia.sct FrmFamilia.sct

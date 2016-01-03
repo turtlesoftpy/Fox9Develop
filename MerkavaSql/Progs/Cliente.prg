@@ -409,11 +409,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcTelefono' debe ser de tipo texto.], 0+16, THIS.Name + '.SetTelefono()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcTelefono) > 30 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcTelefono' debe ser como máximo de 30 caracteres.], 0+16, THIS.Name + '.SetTelefono()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cTelefono = tcTelefono
@@ -426,11 +421,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcFax) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcFax' debe ser de tipo texto.], 0+16, THIS.Name + '.SetFax()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcFax) > 30 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcFax' debe ser como máximo de 30 caracteres.], 0+16, THIS.Name + '.SetFax()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -447,11 +437,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcEMail' debe ser de tipo texto.], 0+16, THIS.Name + '.SetEMail()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcEMail) > 40 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcEMail' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.SetEMail()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cEMail = LOWER(tcEMail)
@@ -464,11 +449,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcContacto) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcContacto' debe ser de tipo texto.], 0+16, THIS.Name + '.SetContacto()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcContacto) > 30 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcContacto' debe ser como máximo de 30 caracteres.], 0+16, THIS.Name + '.SetContacto()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -660,11 +640,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcODatosClie' debe ser de tipo texto.], 0+16, THIS.Name + '.SetODatosClie()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcODatosClie) > 40 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcODatosClie' debe ser como máximo de 40 caracteres.], 0+16, THIS.Name + '.SetODatosClie()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cODatosClie = tcODatosClie
@@ -677,11 +652,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcObs1) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcObs1' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs1()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcObs1) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs1' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs1()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -698,11 +668,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcObs2' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs2()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcObs2) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs2' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs2()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cObs2 = tcObs2
@@ -715,11 +680,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcObs3) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcObs3' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs3()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcObs3) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs3' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs3()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -736,11 +696,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcObs4' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs4()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcObs4) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs4' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs4()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cObs4 = tcObs4
@@ -753,11 +708,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcObs5) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcObs5' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs5()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcObs5) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs5' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs5()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -774,11 +724,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcObs6' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs6()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcObs6) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs6' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs6()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cObs6 = tcObs6
@@ -791,11 +736,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcObs7) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcObs7' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs7()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcObs7) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs7' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs7()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -812,11 +752,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcObs8' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs8()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcObs8) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs8' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs8()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cObs8 = tcObs8
@@ -829,11 +764,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcObs9) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcObs9' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs9()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcObs9) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs9' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs9()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -850,11 +780,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcObs10' debe ser de tipo texto.], 0+16, THIS.Name + '.SetObs9()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcObs10) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcObs10' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetObs9()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cObs10 = tcObs10
@@ -867,11 +792,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcRef1) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcRef1' debe ser de tipo texto.], 0+16, THIS.Name + '.SetRef1()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcRef1) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcRef1' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetRef1()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -888,11 +808,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcRef2' debe ser de tipo texto.], 0+16, THIS.Name + '.SetRef2()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcRef2) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcRef2' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetRef2()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cRef2 = tcRef2
@@ -905,11 +820,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcRef3) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcRef3' debe ser de tipo texto.], 0+16, THIS.Name + '.SetRef3()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcRef3) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcRef3' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetRef3()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -926,11 +836,6 @@ DEFINE CLASS Cliente AS CUSTOM
          MESSAGEBOX([El parámetro 'tcRef4' debe ser de tipo texto.], 0+16, THIS.Name + '.SetRef4()')
          RETURN .F.
       ENDIF
-
-      IF LEN(tcRef4) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcRef4' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetRef4()')
-         RETURN .F.
-      ENDIF
       * fin { validación de parámetro }
 
       THIS.cRef4 = tcRef4
@@ -943,11 +848,6 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { validación de parámetro }
       IF VARTYPE(tcRef5) <> 'C' THEN
          MESSAGEBOX([El parámetro 'tcRef5' debe ser de tipo texto.], 0+16, THIS.Name + '.SetRef5()')
-         RETURN .F.
-      ENDIF
-
-      IF LEN(tcRef5) > 72 THEN
-         MESSAGEBOX([La longitud del parámetro 'tcRef5' debe ser como máximo de 72 caracteres.], 0+16, THIS.Name + '.SetRef5()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
@@ -1311,28 +1211,24 @@ DEFINE CLASS Cliente AS CUSTOM
       RETURN lcRetorno
    ENDFUNC
 
-*!*	   * ---------------------------------------------------------------------------- *
-*!*	   FUNCTION GetNuevoCodigo()
-*!*	      LOCAL lnCodigo, loModelo, llExiste
-*!*	      lnCodigo = 1
-*!*	      loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
-*!*	      llExiste = loModelo.BuscarPorCodigo(lnCodigo)
-
-*!*	      DO WHILE llExiste
-*!*	         lnCodigo = lnCodigo + 1
-*!*	         llExiste = loModelo.BuscarPorCodigo(lnCodigo)
-*!*	      ENDDO
-
-*!*	      RETURN lnCodigo
-*!*	   ENDFUNC
-
    * ---------------------------------------------------------------------------- *
    FUNCTION GetNuevoCodigo()
-      LOCAL lnRetorno
+      LOCAL lnAreaTrabajo, lcOrden, lnRetorno
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       lnRetorno = goCapaDatos.RecuperarValor(THIS.cTabla, 'COALESCE(MAX(codigo), 0) + 1 AS codigo')
 
       IF VARTYPE(lnRetorno) = 'C' THEN
          lnRetorno = VAL(lnRetorno)
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN lnRetorno
@@ -1362,9 +1258,13 @@ DEFINE CLASS Cliente AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       IF ISNULL(tcCondicionFiltrado) THEN
          goCapaDatos.LlamarConsulta('SELECT * FROM ' + THIS.cTabla + ' ORDER BY nombre', lcCursor)
@@ -1377,6 +1277,12 @@ DEFINE CLASS Cliente AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -1399,9 +1305,13 @@ DEFINE CLASS Cliente AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -1446,6 +1356,12 @@ DEFINE CLASS Cliente AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1467,9 +1383,13 @@ DEFINE CLASS Cliente AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcNombre
       pcNombre = UPPER(IIF(!INLIST(VARTYPE(tcNombre), 'L', 'X'), ALLTRIM(tcNombre), ALLTRIM(THIS.cNombre)))
@@ -1514,6 +1434,12 @@ DEFINE CLASS Cliente AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1535,9 +1461,13 @@ DEFINE CLASS Cliente AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcDocumento
       pcDocumento = UPPER(IIF(!INLIST(VARTYPE(tcDocumento), 'L', 'X'), ALLTRIM(tcDocumento), ALLTRIM(THIS.cDocumento)))
@@ -1582,6 +1512,12 @@ DEFINE CLASS Cliente AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1603,9 +1539,13 @@ DEFINE CLASS Cliente AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcRUC
       pcRUC = UPPER(IIF(!INLIST(VARTYPE(tcRUC), 'L', 'X'), ALLTRIM(tcRUC), ALLTRIM(THIS.cRUC)))
@@ -1650,6 +1590,12 @@ DEFINE CLASS Cliente AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1675,9 +1621,13 @@ DEFINE CLASS Cliente AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcRUC, pcDV
       pcRUC = UPPER(IIF(!INLIST(VARTYPE(tcRUC), 'L', 'X'), ALLTRIM(tcRUC), ALLTRIM(THIS.cRUC)))
@@ -1722,6 +1672,12 @@ DEFINE CLASS Cliente AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -2385,62 +2341,6 @@ DEFINE CLASS Cliente AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
-   PROTECTED FUNCTION CargarDatos
-      WITH THIS
-         .nCodigo = codigo
-         .cNombre = nombre
-         .cDirec1 = IIF(!ISNULL(direc1), direc1, '')
-         .cDirec2 = IIF(!ISNULL(direc2), direc2, '')
-         .cDirec3 = IIF(!ISNULL(direc3), direc3, '')
-         .cDirec4 = IIF(!ISNULL(direc4), direc4, '')
-         .cDirec5 = IIF(!ISNULL(direc5), direc5, '')
-         .cDirec6 = IIF(!ISNULL(direc6), direc6, '')
-         .cDirec7 = IIF(!ISNULL(direc7), direc7, '')
-         .cDirec8 = IIF(!ISNULL(direc8), direc8, '')
-         .cDirec9 = IIF(!ISNULL(direc9), direc9, '')
-         .nDepartamen = IIF(!ISNULL(departamen), departamen, 0)
-         .nCiudad = IIF(!ISNULL(ciudad), ciudad, 0)
-         .nBarrio = IIF(!ISNULL(barrio), barrio, 0)
-         .nRuta = ruta
-         .cTelefono = IIF(!ISNULL(telefono), telefono, '')
-         .cFax = IIF(!ISNULL(fax), fax, '')
-         .cEMail = IIF(!ISNULL(e_mail), e_mail, '')
-         .cContacto = IIF(!ISNULL(contacto), contacto, '')
-         .dFechaNac = IIF(!ISNULL(fechanac), fechanac, {})
-         .cDocumento = documento
-         .cRUC = IIF(!ISNULL(ruc), ruc, '')
-         .cDV = IIF(!ISNULL(dv), dv, '')
-         .nPlazo = IIF(!ISNULL(plazo), plazo, 0)
-         .nVendedor = IIF(!ISNULL(vendedor), vendedor, 0)
-         .nLista = lista
-         .nLimiteCre = limite_cre
-         .nSaldoActu = saldo_actu
-         .nSaldoUSD = saldo_usd
-         .lFacturar = IIF(facturar = '0', .F., .T.)
-         .dFecIOper = IIF(!ISNULL(fec_ioper), fec_ioper, {})
-         .nMotivoClie = motivoclie
-         .cODatosClie = IIF(!ISNULL(odatosclie), odatosclie, '')
-         .cObs1 = IIF(!ISNULL(obs1), obs1, '')
-         .cObs2 = IIF(!ISNULL(obs2), obs2, '')
-         .cObs3 = IIF(!ISNULL(obs3), obs3, '')
-         .cObs4 = IIF(!ISNULL(obs4), obs4, '')
-         .cObs5 = IIF(!ISNULL(obs5), obs5, '')
-         .cObs6 = IIF(!ISNULL(obs6), obs6, '')
-         .cObs7 = IIF(!ISNULL(obs7), obs7, '')
-         .cObs8 = IIF(!ISNULL(obs8), obs8, '')
-         .cObs9 = IIF(!ISNULL(obs9), obs9, '')
-         .cObs10 = IIF(!ISNULL(obs10), obs10, '')
-         .cRef1 = IIF(!ISNULL(ref1), ref1, '')
-         .cRef2 = IIF(!ISNULL(ref2), ref2, '')
-         .cRef3 = IIF(!ISNULL(ref3), ref3, '')
-         .cRef4 = IIF(!ISNULL(ref4), ref4, '')
-         .cRef5 = IIF(!ISNULL(ref5), ref5, '')
-         .cCuenta = IIF(!ISNULL(cuenta), cuenta, '')
-         .lVigente = IIF(vigente = '0', .F., .T.)
-      ENDWITH
-   ENDFUNC
-
-   * ---------------------------------------------------------------------------- *
    FUNCTION Validar
       IF !THIS.ValidarCodigo() THEN
          RETURN .F.
@@ -2624,9 +2524,70 @@ DEFINE CLASS Cliente AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
+   PROTECTED FUNCTION CargarDatos
+      WITH THIS
+         .SetCodigo(codigo)
+         .SetNombre(nombre)
+         .SetDirec1(IIF(!ISNULL(direc1), direc1, ''))
+         .SetDirec2(IIF(!ISNULL(direc2), direc2, ''))
+         .SetDirec3(IIF(!ISNULL(direc3), direc3, ''))
+         .SetDirec4(IIF(!ISNULL(direc4), direc4, ''))
+         .SetDirec5(IIF(!ISNULL(direc5), direc5, ''))
+         .SetDirec6(IIF(!ISNULL(direc6), direc6, ''))
+         .SetDirec7(IIF(!ISNULL(direc7), direc7, ''))
+         .SetDirec8(IIF(!ISNULL(direc8), direc8, ''))
+         .SetDirec9(IIF(!ISNULL(direc9), direc9, ''))
+         .SetDepartamen(IIF(!ISNULL(departamen), departamen, 0))
+         .SetCiudad(IIF(!ISNULL(ciudad), ciudad, 0))
+         .SetBarrio(IIF(!ISNULL(barrio), barrio, 0))
+         .SetRuta(ruta)
+         .SetTelefono(IIF(!ISNULL(telefono), telefono, ''))
+         .SetFax(IIF(!ISNULL(fax), fax, ''))
+         .SetEMail(IIF(!ISNULL(e_mail), e_mail, ''))
+         .SetContacto(IIF(!ISNULL(contacto), contacto, ''))
+         .SetFechaNac(IIF(!ISNULL(fechanac), fechanac, {}))
+         .SetDocumento(documento)
+         .SetRUC(IIF(!ISNULL(ruc), ruc, ''))
+         .SetDV(IIF(!ISNULL(dv), dv, ''))
+         .SetPlazo(IIF(!ISNULL(plazo), plazo, 0))
+         .SetVendedor(IIF(!ISNULL(vendedor), vendedor, 0))
+         .SetLista(lista)
+         .SetLimiteCre(limite_cre)
+         .SetSaldoActu(saldo_actu)
+         .SetSaldoUSD(saldo_usd)
+         .SetFacturar(IIF(facturar('0', .F., .T.))
+         .SetFecIOper(IIF(!ISNULL(fec_ioper), fec_ioper, {}))
+         .SetMotivoClie(motivoclie)
+         .SetODatosClie(IIF(!ISNULL(odatosclie), odatosclie, ''))
+         .SetObs1(IIF(!ISNULL(obs1), obs1, ''))
+         .SetObs2(IIF(!ISNULL(obs2), obs2, ''))
+         .SetObs3(IIF(!ISNULL(obs3), obs3, ''))
+         .SetObs4(IIF(!ISNULL(obs4), obs4, ''))
+         .SetObs5(IIF(!ISNULL(obs5), obs5, ''))
+         .SetObs6(IIF(!ISNULL(obs6), obs6, ''))
+         .SetObs7(IIF(!ISNULL(obs7), obs7, ''))
+         .SetObs8(IIF(!ISNULL(obs8), obs8, ''))
+         .SetObs9(IIF(!ISNULL(obs9), obs9, ''))
+         .SetObs10(IIF(!ISNULL(obs10), obs10, ''))
+         .SetRef1(IIF(!ISNULL(ref1), ref1, ''))
+         .SetRef2(IIF(!ISNULL(ref2), ref2, ''))
+         .SetRef3(IIF(!ISNULL(ref3), ref3, ''))
+         .SetRef4(IIF(!ISNULL(ref4), ref4, ''))
+         .SetRef5(IIF(!ISNULL(ref5), ref5, ''))
+         .SetCuenta(IIF(!ISNULL(cuenta), cuenta, ''))
+         .SetVigente(IIF(vigente('0', .F., .T.))
+      ENDWITH
+   ENDFUNC
+
+   * ---------------------------------------------------------------------------- *
    FUNCTION Agregar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 1
 
       IF THIS.Validar() THEN
@@ -2704,13 +2665,24 @@ DEFINE CLASS Cliente AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Modificar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 2
 
       IF THIS.Validar() THEN
@@ -2787,6 +2759,12 @@ DEFINE CLASS Cliente AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -2797,9 +2775,13 @@ DEFINE CLASS Cliente AS CUSTOM
       * inicio { integridad referencial }
       WAIT 'Comprobando integridad referencial, por favor espere...' WINDOW NOWAIT
 
-      LOCAL llRetorno, loModelo, llExiste, lcTablaRelacionada, lnCantidadRegistro
+      LOCAL llRetorno, loModelo, lnAreaTrabajo, lcOrden, llExiste, lcTablaRelacionada, lnCantidadRegistro
       llRetorno = .T.
       loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -2834,6 +2816,12 @@ DEFINE CLASS Cliente AS CUSTOM
                                        THIS.cClavePrimaria + ' = ?pnCodigo')
             WAIT 'Registro borrado exitosamente.' WINDOW NOWAIT
          ENDIF
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN llRetorno

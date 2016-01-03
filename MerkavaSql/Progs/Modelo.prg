@@ -251,9 +251,13 @@ DEFINE CLASS Modelo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor, lcSql
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden, lcSql
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       goCapaDatos.LlamarConsulta(THIS.cSql, lcCursor)
 
@@ -270,6 +274,12 @@ DEFINE CLASS Modelo AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -292,9 +302,13 @@ DEFINE CLASS Modelo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor, lcSql
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden, lcSql
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -314,14 +328,7 @@ DEFINE CLASS Modelo AS CUSTOM
       CASE RECCOUNT() = 0   && No hay registros.
          llRetorno = .F.
       CASE RECCOUNT() = 1   && Se ha encontrado un registro.
-         WITH THIS
-            .nCodigo = codigo
-            .cNombre = nombre
-            .cNombre2 = nombre2
-            .nMaquina = maquina
-            .nMarca = marca
-            .lVigente = IIF(vigente = '0', .F., .T.)
-         ENDWITH
+         THIS.CargarDatos()
 
          IF VARTYPE(tcCursor) = 'C' THEN
             IF EMPTY(tcCursor) THEN
@@ -350,6 +357,12 @@ DEFINE CLASS Modelo AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -371,9 +384,13 @@ DEFINE CLASS Modelo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor, lcSql
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden, lcSql
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcNombre
       pcNombre = UPPER(IIF(!INLIST(VARTYPE(tcNombre), 'L', 'X'), ALLTRIM(tcNombre), ALLTRIM(THIS.cNombre)))
@@ -393,14 +410,7 @@ DEFINE CLASS Modelo AS CUSTOM
       CASE RECCOUNT() = 0   && No hay registros.
          llRetorno = .F.
       CASE RECCOUNT() = 1   && Se ha encontrado un registro.
-         WITH THIS
-            .nCodigo = codigo
-            .cNombre = nombre
-            .cNombre2 = nombre2
-            .nMaquina = maquina
-            .nMarca = marca
-            .lVigente = IIF(vigente = '0', .F., .T.)
-         ENDWITH
+         THIS.CargarDatos()
 
          IF VARTYPE(tcCursor) = 'C' THEN
             IF EMPTY(tcCursor) THEN
@@ -429,6 +439,12 @@ DEFINE CLASS Modelo AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -450,9 +466,13 @@ DEFINE CLASS Modelo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor, lcSql
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden, lcSql
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcNombre2
       pcNombre2 = UPPER(IIF(!INLIST(VARTYPE(tcNombre2), 'L', 'X'), ALLTRIM(tcNombre2), ALLTRIM(THIS.cNombre2)))
@@ -472,14 +492,7 @@ DEFINE CLASS Modelo AS CUSTOM
       CASE RECCOUNT() = 0   && No hay registros.
          llRetorno = .F.
       CASE RECCOUNT() = 1   && Se ha encontrado un registro.
-         WITH THIS
-            .nCodigo = codigo
-            .cNombre = nombre
-            .cNombre2 = nombre2
-            .nMaquina = maquina
-            .nMarca = marca
-            .lVigente = IIF(vigente = '0', .F., .T.)
-         ENDWITH
+         THIS.CargarDatos()
 
          IF VARTYPE(tcCursor) = 'C' THEN
             IF EMPTY(tcCursor) THEN
@@ -507,6 +520,12 @@ DEFINE CLASS Modelo AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -668,9 +687,25 @@ DEFINE CLASS Modelo AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
+   PROTECTED FUNCTION CargarDatos
+      WITH THIS
+         .SetCodigo(codigo)
+         .SetNombre(nombre)
+         .SetMaquina(maquina)
+         .SetMarca(marca)
+         .SetVigente(IIF(vigente = '0', .F., .T.))
+      ENDWITH
+   ENDFUNC
+
+   * ---------------------------------------------------------------------------- *
    FUNCTION Agregar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 1
 
       IF THIS.Validar() THEN
@@ -690,13 +725,24 @@ DEFINE CLASS Modelo AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Modificar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 2
 
       IF THIS.Validar() THEN
@@ -716,6 +762,12 @@ DEFINE CLASS Modelo AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -726,9 +778,13 @@ DEFINE CLASS Modelo AS CUSTOM
       * inicio { integridad referencial }
       WAIT 'Comprobando integridad referencial, por favor espere...' WINDOW NOWAIT
 
-      LOCAL llRetorno, loModelo, llExiste, lcTablaRelacionada, lnCantidadRegistro
+      LOCAL llRetorno, loModelo, lnAreaTrabajo, lcOrden, llExiste, lcTablaRelacionada, lnCantidadRegistro
       llRetorno = .T.
       loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -763,6 +819,12 @@ DEFINE CLASS Modelo AS CUSTOM
                                        THIS.cClavePrimaria + ' = ?pnCodigo')
             WAIT 'Registro borrado exitosamente.' WINDOW NOWAIT
          ENDIF
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN llRetorno

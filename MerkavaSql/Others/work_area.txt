@@ -1,0 +1,32 @@
+https://www.youtube.com/watch?v=qQUjwnLlFeA&spfreload=10
+https://plus.google.com/+FernandoDBozzo
+http://fdbozzo.blogspot.com/2014/10/vfp-la-interfaz-las-reglas-de-negocio-y.html
+https://help.sap.com/saphelp_sbo882/helpdata/af/bc/fb81ffa21c46dcbc048c3788c2b4b0/content.htm
+
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
+
+, lnAreaTrabajo, lcOrden
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
+
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
+
+   * ---------------------------------------------------------------------------- *
+   PROTECTED FUNCTION CargarDatos
+      WITH THIS
+         .SetCodigo(codigo)
+         .SetNombre(nombre)
+         .SetVigente(IIF(vigente = '0', .F., .T.))
+      ENDWITH
+   ENDFUNC
+
+         THIS.CargarDatos()

@@ -7,6 +7,7 @@ del *.err
 ren _CDOW.prg _CDOW.prg
 ren _CMONTH.prg _CMONTH.prg
 ren _DATE.prg _DATE.prg
+ren _DATETIME.prg _DATETIME.prg
 ren Aplicacion.prg Aplicacion.prg
 ren Articulo.prg Articulo.prg
 ren Barrio.prg Barrio.prg
@@ -22,8 +23,10 @@ ren CrearBaseDatos.prg CrearBaseDatos.prg
 ren CreaTemp.prg CreaTemp.prg
 ren Depar.prg Depar.prg
 ren Deposito.prg Deposito.prg
+ren DetalleEntradaMercancia.prg DetalleEntradaMercancia.prg
 ren Ejercicio.prg Ejercicio.prg
 ren Empresa.prg Empresa.prg
+ren EntradaMercancia.prg EntradaMercancia.prg
 ren ExportarArticulo.prg ExportarArticulo.prg
 ren Familia.prg Familia.prg
 ren Fecha.prg Fecha.prg
@@ -45,6 +48,7 @@ ren Plazo.prg Plazo.prg
 ren Proveedor.prg Proveedor.prg
 ren Rubro.prg Rubro.prg
 ren Ruta.prg Ruta.prg
+ren Stock.prg Stock.prg
 ren SubRubro.prg SubRubro.prg
 ren Sucursal.prg Sucursal.prg
 ren TimbradoComp.prg TimbradoComp.prg

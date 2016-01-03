@@ -913,28 +913,24 @@ DEFINE CLASS Proveedor AS CUSTOM
       RETURN THIS.lVigente
    ENDFUNC
 
-*!*	   * ---------------------------------------------------------------------------- *
-*!*	   FUNCTION GetNuevoCodigo()
-*!*	      LOCAL lnCodigo, loModelo, llExiste
-*!*	      lnCodigo = 1
-*!*	      loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
-*!*	      llExiste = loModelo.BuscarPorCodigo(lnCodigo)
-
-*!*	      DO WHILE llExiste
-*!*	         lnCodigo = lnCodigo + 1
-*!*	         llExiste = loModelo.BuscarPorCodigo(lnCodigo)
-*!*	      ENDDO
-
-*!*	      RETURN lnCodigo
-*!*	   ENDFUNC
-
    * ---------------------------------------------------------------------------- *
    FUNCTION GetNuevoCodigo()
-      LOCAL lnRetorno
+      LOCAL lnRetorno, lnAreaTrabajo, lcOrden
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       lnRetorno = goCapaDatos.RecuperarValor(THIS.cTabla, 'COALESCE(MAX(codigo), 0) + 1 AS codigo')
 
       IF VARTYPE(lnRetorno) = 'C' THEN
          lnRetorno = VAL(lnRetorno)
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN lnRetorno
@@ -964,9 +960,13 @@ DEFINE CLASS Proveedor AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       IF ISNULL(tcCondicionFiltrado) THEN
          goCapaDatos.LlamarConsulta('SELECT * FROM ' + THIS.cTabla + ' ORDER BY nombre', lcCursor)
@@ -979,6 +979,12 @@ DEFINE CLASS Proveedor AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -1001,9 +1007,13 @@ DEFINE CLASS Proveedor AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -1048,6 +1058,12 @@ DEFINE CLASS Proveedor AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1069,9 +1085,13 @@ DEFINE CLASS Proveedor AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcNombre
       pcNombre = UPPER(IIF(!INLIST(VARTYPE(tcNombre), 'L', 'X'), ALLTRIM(tcNombre), ALLTRIM(THIS.cNombre)))
@@ -1116,6 +1136,12 @@ DEFINE CLASS Proveedor AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1137,9 +1163,13 @@ DEFINE CLASS Proveedor AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcRUC
       pcRUC = UPPER(IIF(!INLIST(VARTYPE(tcRUC), 'L', 'X'), ALLTRIM(tcRUC), ALLTRIM(THIS.cRUC)))
@@ -1184,6 +1214,12 @@ DEFINE CLASS Proveedor AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1209,9 +1245,13 @@ DEFINE CLASS Proveedor AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcRUC, pcDV
       pcRUC = UPPER(IIF(!INLIST(VARTYPE(tcRUC), 'L', 'X'), ALLTRIM(tcRUC), ALLTRIM(THIS.cRUC)))
@@ -1256,6 +1296,12 @@ DEFINE CLASS Proveedor AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -1721,54 +1767,6 @@ DEFINE CLASS Proveedor AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
-   PROTECTED FUNCTION CargarDatos
-      WITH THIS
-         .nCodigo = codigo
-         .cNombre = nombre
-         .cDirec1 = IIF(!ISNULL(direc1), direc1, '')
-         .cDirec2 = IIF(!ISNULL(direc2), direc2, '')
-         .cCiudad = IIF(!ISNULL(ciudad), ciudad, '')
-         .cTelefono = IIF(!ISNULL(telefono), telefono, '')
-         .cFax = IIF(!ISNULL(fax), fax, '')
-         .cEMail = IIF(!ISNULL(e_mail), e_mail, '')
-         .cRUC = IIF(!ISNULL(ruc), ruc, '')
-         .cDV = IIF(!ISNULL(dv), dv, '')
-         .nDiasPlazo = IIF(!ISNULL(dias_plazo), dias_plazo, 0)
-         .cDueno = IIF(!ISNULL(dueno), dueno, '')
-         .cTelDueno = IIF(!ISNULL(teldueno), teldueno, '')
-         .cGteGral = IIF(!ISNULL(gtegral), gtegral, '')
-         .cTelGG = IIF(!ISNULL(telgg), telgg, '')
-         .cGteVentas = IIF(!ISNULL(gteventas), gteventas, '')
-         .cTelGV = IIF(!ISNULL(telgv), telgv, '')
-         .cGteMkg = IIF(!ISNULL(gtemkg), gtemkg, '')
-         .cTelGM = IIF(!ISNULL(telgm), telgm, '')
-         .cSTecnico = IIF(!ISNULL(stecnico), stecnico, '')
-         .cSTDirec1 = IIF(!ISNULL(stdirec1), stdirec1, '')
-         .cSTDirec2 = IIF(!ISNULL(stdirec2), stdirec2, '')
-         .cSTTel = IIF(!ISNULL(sttel), sttel, '')
-         .cSTHablar1 = IIF(!ISNULL(sthablar1), sthablar1, '')
-         .cVendedor1 = IIF(!ISNULL(vendedor1), vendedor1, '')
-         .cLArti1 = IIF(!ISNULL(larti1), larti1, '')
-         .cTVend1 = IIF(!ISNULL(tvend1), tvend1, '')
-         .cVendedor2 = IIF(!ISNULL(vendedor2), vendedor2, '')
-         .cLArti2 = IIF(!ISNULL(larti2), larti2, '')
-         .cTVend2 = IIF(!ISNULL(tvend2), tvend2, '')
-         .cVendedor3 = IIF(!ISNULL(vendedor3), vendedor3, '')
-         .cLArti3 = IIF(!ISNULL(larti3), larti3, '')
-         .cTVend3 = IIF(!ISNULL(tvend3), tvend3, '')
-         .cVendedor4 = IIF(!ISNULL(vendedor4), vendedor4, '')
-         .cLArti4 = IIF(!ISNULL(larti4), larti4, '')
-         .cTVend4 = IIF(!ISNULL(tvend4), tvend4, '')
-         .cVendedor5 = IIF(!ISNULL(vendedor5), vendedor5, '')
-         .cLArti5 = IIF(!ISNULL(larti5), larti5, '')
-         .cTVend5 = IIF(!ISNULL(tvend5), tvend5, '')
-         .nSaldoActu = saldo_actu
-         .nSaldoUSD = saldo_usd
-         .lVigente = IIF(vigente = '0', .F., .T.)
-      ENDWITH
-   ENDFUNC
-
-   * ---------------------------------------------------------------------------- *
    FUNCTION Validar
       IF !THIS.ValidarCodigo() THEN
          RETURN .F.
@@ -1932,9 +1930,62 @@ DEFINE CLASS Proveedor AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
+   PROTECTED FUNCTION CargarDatos
+      WITH THIS
+         .SetCodigo(codigo)
+         .SetNombre(nombre)
+         .SetDirec1(IIF(!ISNULL(direc1), direc1, ''))
+         .SetDirec2(IIF(!ISNULL(direc2), direc2, ''))
+         .SetCiudad(IIF(!ISNULL(ciudad), ciudad, ''))
+         .SetTelefono(IIF(!ISNULL(telefono), telefono, ''))
+         .SetFax(IIF(!ISNULL(fax), fax, ''))
+         .SetEMail(IIF(!ISNULL(e_mail), e_mail, ''))
+         .SetRUC(IIF(!ISNULL(ruc), ruc, ''))
+         .SetDV(IIF(!ISNULL(dv), dv, ''))
+         .SetDiasPlazo(IIF(!ISNULL(dias_plazo), dias_plazo, 0))
+         .SetDueno(IIF(!ISNULL(dueno), dueno, ''))
+         .SetTelDueno(IIF(!ISNULL(teldueno), teldueno, ''))
+         .SetGteGral(IIF(!ISNULL(gtegral), gtegral, ''))
+         .SetTelGG(IIF(!ISNULL(telgg), telgg, ''))
+         .SetGteVentas(IIF(!ISNULL(gteventas), gteventas, ''))
+         .SetTelGV(IIF(!ISNULL(telgv), telgv, ''))
+         .SetGteMkg(IIF(!ISNULL(gtemkg), gtemkg, ''))
+         .SetTelGM(IIF(!ISNULL(telgm), telgm, ''))
+         .SetSTecnico(IIF(!ISNULL(stecnico), stecnico, ''))
+         .SetSTDirec1(IIF(!ISNULL(stdirec1), stdirec1, ''))
+         .SetSTDirec2(IIF(!ISNULL(stdirec2), stdirec2, ''))
+         .SetSTTel(IIF(!ISNULL(sttel), sttel, ''))
+         .SetSTHablar1(IIF(!ISNULL(sthablar1), sthablar1, ''))
+         .SetVendedor1(IIF(!ISNULL(vendedor1), vendedor1, ''))
+         .SetLArti1(IIF(!ISNULL(larti1), larti1, ''))
+         .SetTVend1(IIF(!ISNULL(tvend1), tvend1, ''))
+         .SetVendedor2(IIF(!ISNULL(vendedor2), vendedor2, ''))
+         .SetLArti2(IIF(!ISNULL(larti2), larti2, ''))
+         .SetTVend2(IIF(!ISNULL(tvend2), tvend2, ''))
+         .SetVendedor3(IIF(!ISNULL(vendedor3), vendedor3, ''))
+         .SetLArti3(IIF(!ISNULL(larti3), larti3, ''))
+         .SetTVend3(IIF(!ISNULL(tvend3), tvend3, ''))
+         .SetVendedor4(IIF(!ISNULL(vendedor4), vendedor4, ''))
+         .SetLArti4(IIF(!ISNULL(larti4), larti4, ''))
+         .SetTVend4(IIF(!ISNULL(tvend4), tvend4, ''))
+         .SetVendedor5(IIF(!ISNULL(vendedor5), vendedor5, ''))
+         .SetLArti5(IIF(!ISNULL(larti5), larti5, ''))
+         .SetTVend5(IIF(!ISNULL(tvend5), tvend5, ''))
+         .SetSaldoActu(saldo_actu)
+         .SetSaldoUSD(saldo_usd)
+         .SetVigente(IIF(vigente('0', .F., .T.))
+      ENDWITH
+   ENDFUNC
+
+   * ---------------------------------------------------------------------------- *
    FUNCTION Agregar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 1
 
       IF THIS.Validar() THEN
@@ -2004,13 +2055,24 @@ DEFINE CLASS Proveedor AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Modificar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 2
 
       IF THIS.Validar() THEN
@@ -2078,6 +2140,12 @@ DEFINE CLASS Proveedor AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -2088,9 +2156,13 @@ DEFINE CLASS Proveedor AS CUSTOM
       * inicio { integridad referencial }
       WAIT 'Comprobando integridad referencial, por favor espere...' WINDOW NOWAIT
 
-      LOCAL llRetorno, loModelo, llExiste, lcTablaRelacionada, lnCantidadRegistro
+      LOCAL llRetorno, loModelo, lnAreaTrabajo, lcOrden, llExiste, lcTablaRelacionada, lnCantidadRegistro
       llRetorno = .T.
       loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -2125,6 +2197,12 @@ DEFINE CLASS Proveedor AS CUSTOM
                                        THIS.cClavePrimaria + ' = ?pnCodigo')
             WAIT 'Registro borrado exitosamente.' WINDOW NOWAIT
          ENDIF
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN llRetorno

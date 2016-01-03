@@ -1141,9 +1141,13 @@ DEFINE CLASS Articulo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       IF ISNULL(tcCondicionFiltrado) THEN
          goCapaDatos.LlamarConsulta('SELECT * FROM ' + THIS.cTabla + ' ORDER BY nombre', lcCursor)
@@ -1156,6 +1160,12 @@ DEFINE CLASS Articulo AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -1178,9 +1188,13 @@ DEFINE CLASS Articulo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -1225,6 +1239,12 @@ DEFINE CLASS Articulo AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1246,9 +1266,13 @@ DEFINE CLASS Articulo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcNombre
       pcNombre = UPPER(IIF(!INLIST(VARTYPE(tcNombre), 'L', 'X'), ALLTRIM(tcNombre), ALLTRIM(THIS.cNombre)))
@@ -1293,6 +1317,12 @@ DEFINE CLASS Articulo AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1314,9 +1344,13 @@ DEFINE CLASS Articulo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcCodArticulo
       pcCodArticulo = UPPER(IIF(!INLIST(VARTYPE(tcCodArticulo), 'L', 'X'), ALLTRIM(tcCodArticulo), ALLTRIM(THIS.cCodArticulo)))
@@ -1361,6 +1395,12 @@ DEFINE CLASS Articulo AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1382,9 +1422,13 @@ DEFINE CLASS Articulo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcCodBarra
       pcCodBarra = UPPER(IIF(!INLIST(VARTYPE(tcCodBarra), 'L', 'X'), ALLTRIM(tcCodBarra), ALLTRIM(THIS.cCodBarra)))
@@ -1429,6 +1473,12 @@ DEFINE CLASS Articulo AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1450,9 +1500,13 @@ DEFINE CLASS Articulo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcCodOriginal
       pcCodOriginal = UPPER(IIF(!INLIST(VARTYPE(tcCodOriginal), 'L', 'X'), ALLTRIM(tcCodOriginal), ALLTRIM(THIS.cCodOriginal)))
@@ -1497,6 +1551,12 @@ DEFINE CLASS Articulo AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1518,9 +1578,13 @@ DEFINE CLASS Articulo AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pcCodAlternativo
       pcCodAlternativo = UPPER(IIF(!INLIST(VARTYPE(tcCodAlternativo), 'L', 'X'), ALLTRIM(tcCodAlternativo), ALLTRIM(THIS.cCodAlternativo)))
@@ -1565,13 +1629,19 @@ DEFINE CLASS Articulo AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION ValidarCodigo()
-      IF !BETWEEN(THIS.nCodigo, 1, 16777215) THEN
-         MESSAGEBOX([El código debe ser un valor entre 1 y 16777215.], 0+16, THIS.Name + '.ValidarCodigo()')
+      IF !BETWEEN(THIS.nCodigo, 1, 2147483647) THEN
+         MESSAGEBOX([El código debe ser un valor entre 1 y 2147483647.], 0+16, THIS.Name + '.ValidarCodigo()')
          RETURN .F.
       ENDIF
 
@@ -2291,59 +2361,64 @@ DEFINE CLASS Articulo AS CUSTOM
    * ---------------------------------------------------------------------------- *
    PROTECTED FUNCTION CargarDatos
       WITH THIS
-         .nCodigo = codigo
-         .cNombre = nombre
-         .cCodArticulo = cod_articulo
-         .cCodBarra = IIF(!ISNULL(cod_barra), cod_barra, '')
-         .cCodOriginal = IIF(!ISNULL(cod_original), cod_original, '')
-         .cCodAlternativo = IIF(!ISNULL(cod_alternativo), cod_alternativo, '')
-         .cAplicacion = IIF(!ISNULL(aplicacion), aplicacion, '')
-         .nFamilia = familia
-         .nRubro = rubro
-         .nSubRubro = subrubro
-         .nMarca = marca
-         .nUnidadMedida = unidad
-         .nProveedor = proveedor
-         .nPais = pais
-         .cUbicacion = IIF(!ISNULL(ubicacion), ubicacion, '')
-         .lVigente = IIF(vigente = '0', .F., .T.)
-         .lLPrecio = IIF(lprecio = '0', .F., .T.)
-         .lGravado = IIF(gravado = '0', .F., .T.)
-         .nPorcIVA = IIF(!ISNULL(porc_iva), porc_iva, 0)
-         .nPCostoG = IIF(!ISNULL(pcostog), pcostog, 0)
-         .nPCostoD = IIF(!ISNULL(pcostod), pcostod, 0)
-         .nPVentaG1 = IIF(!ISNULL(pventag1), pventag1, 0)
-         .nPVentaG2 = IIF(!ISNULL(pventag2), pventag2, 0)
-         .nPVentaG3 = IIF(!ISNULL(pventag3), pventag3, 0)
-         .nPVentaG4 = IIF(!ISNULL(pventag4), pventag4, 0)
-         .nPVentaG5 = IIF(!ISNULL(pventag5), pventag5, 0)
-         .nPVentaD1 = IIF(!ISNULL(pventad1), pventad1, 0)
-         .nPVentaD2 = IIF(!ISNULL(pventad2), pventad2, 0)
-         .nPVentaD3 = IIF(!ISNULL(pventad3), pventad3, 0)
-         .nPVentaD4 = IIF(!ISNULL(pventad4), pventad4, 0)
-         .nPVentaD5 = IIF(!ISNULL(pventad5), pventad5, 0)
-         .nStockMin = IIF(!ISNULL(stock_min), stock_min, 0)
-         .nStockMax = IIF(!ISNULL(stock_max), stock_max, 0)
-         .lPolInvSMin = IIF(polinvsmin = '0', .F., .T.)
-         .lPolInvSMax = IIF(polinvsmax = '0', .F., .T.)
-         .cCaracter1 = IIF(!ISNULL(caracter1), caracter1, '')
-         .cCaracter2 = IIF(!ISNULL(caracter2), caracter2, '')
-         .cCaracter3 = IIF(!ISNULL(caracter3), caracter3, '')
-         .cOtros1 = IIF(!ISNULL(otros1), otros1, '')
-         .cOtros2 = IIF(!ISNULL(otros2), otros2, '')
-         .dFecUCompra = IIF(!ISNULL(fecucompra), fecucompra, {})
-         .dFecUVenta = IIF(!ISNULL(fecuventa), fecuventa, {})
-         .nStockActual = stock_actual
-         .nStockOt = stock_ot
-         .nStockComprometido = stock_comprometido
-         .nStockSolicitado = stock_solicitado
+         .SetCodigo(codigo)
+         .SetNombre(nombre)
+         .SetCodArticulo(cod_articulo)
+         .SetCodBarra(IIF(!ISNULL(cod_barra), cod_barra, ''))
+         .SetCodOriginal(IIF(!ISNULL(cod_original), cod_original, ''))
+         .SetCodAlternativo(IIF(!ISNULL(cod_alternativo), cod_alternativo, ''))
+         .SetAplicacion(IIF(!ISNULL(aplicacion), aplicacion, ''))
+         .SetFamilia(familia)
+         .SetRubro(rubro)
+         .SetSubRubro(subrubro)
+         .SetMarca(marca)
+         .SetUnidadMedida(unidad)
+         .SetProveedor(proveedor)
+         .SetPais(pais)
+         .SetUbicacion(IIF(!ISNULL(ubicacion), ubicacion, ''))
+         .SetVigente(IIF(vigente('0', .F., .T.))
+         .SetLPrecio(IIF(lprecio('0', .F., .T.))
+         .SetGravado(IIF(gravado('0', .F., .T.))
+         .SetPorcIVA(IIF(!ISNULL(porc_iva), porc_iva, 0))
+         .SetPCostoG(IIF(!ISNULL(pcostog), pcostog, 0))
+         .SetPCostoD(IIF(!ISNULL(pcostod), pcostod, 0))
+         .SetPVentaG1(IIF(!ISNULL(pventag1), pventag1, 0))
+         .SetPVentaG2(IIF(!ISNULL(pventag2), pventag2, 0))
+         .SetPVentaG3(IIF(!ISNULL(pventag3), pventag3, 0))
+         .SetPVentaG4(IIF(!ISNULL(pventag4), pventag4, 0))
+         .SetPVentaG5(IIF(!ISNULL(pventag5), pventag5, 0))
+         .SetPVentaD1(IIF(!ISNULL(pventad1), pventad1, 0))
+         .SetPVentaD2(IIF(!ISNULL(pventad2), pventad2, 0))
+         .SetPVentaD3(IIF(!ISNULL(pventad3), pventad3, 0))
+         .SetPVentaD4(IIF(!ISNULL(pventad4), pventad4, 0))
+         .SetPVentaD5(IIF(!ISNULL(pventad5), pventad5, 0))
+         .SetStockMin(IIF(!ISNULL(stock_min), stock_min, 0))
+         .SetStockMax(IIF(!ISNULL(stock_max), stock_max, 0))
+         .SetPolInvSMin(IIF(polinvsmin('0', .F., .T.))
+         .SetPolInvSMax(IIF(polinvsmax('0', .F., .T.))
+         .SetCaracter1(IIF(!ISNULL(caracter1), caracter1, ''))
+         .SetCaracter2(IIF(!ISNULL(caracter2), caracter2, ''))
+         .SetCaracter3(IIF(!ISNULL(caracter3), caracter3, ''))
+         .SetOtros1(IIF(!ISNULL(otros1), otros1, ''))
+         .SetOtros2(IIF(!ISNULL(otros2), otros2, ''))
+         .SetFecUCompra(IIF(!ISNULL(fecucompra), fecucompra, {}))
+         .SetFecUVenta(IIF(!ISNULL(fecuventa), fecuventa, {}))
+         .SetStockActual(stock_actual)
+         .SetStockOt(stock_ot)
+         .SetStockComprometido(stock_comprometido)
+         .SetStockSolicitado(stock_solicitado)
       ENDWITH
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Agregar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 1
 
       IF THIS.Validar() THEN
@@ -2420,13 +2495,24 @@ DEFINE CLASS Articulo AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Modificar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 2
 
       IF THIS.Validar() THEN
@@ -2507,6 +2593,12 @@ DEFINE CLASS Articulo AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -2517,9 +2609,13 @@ DEFINE CLASS Articulo AS CUSTOM
       * inicio { integridad referencial }
       WAIT 'Comprobando integridad referencial, por favor espere...' WINDOW NOWAIT
 
-      LOCAL llRetorno, loModelo, llExiste, lcTablaRelacionada, lnCantidadRegistro
+      LOCAL llRetorno, loModelo, lnAreaTrabajo, lcOrden, llExiste, lcTablaRelacionada, lnCantidadRegistro
       llRetorno = .T.
       loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodigo
       pnCodigo = IIF(!INLIST(VARTYPE(tnCodigo), 'L', 'X'), tnCodigo, THIS.nCodigo)
@@ -2554,6 +2650,12 @@ DEFINE CLASS Articulo AS CUSTOM
                                        THIS.cClavePrimaria + ' = ?pnCodigo')
             WAIT 'Registro borrado exitosamente.' WINDOW NOWAIT
          ENDIF
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN llRetorno

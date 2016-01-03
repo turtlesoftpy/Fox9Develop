@@ -16,7 +16,7 @@ DEFINE CLASS Compra AS CUSTOM
    PROTECTED dFechaDocu
    PROTECTED nMoneda
    PROTECTED nTipoCambio
-   PROTECTED nTipoCambioSET
+   PROTECTED nTipoCambioSet
    PROTECTED nPlazo
    PROTECTED nCantidadCuota
    PROTECTED nSucursal
@@ -57,7 +57,7 @@ DEFINE CLASS Compra AS CUSTOM
          .dFechaDocu = {}
          .nMoneda = 0
          .nTipoCambio = 0
-         .nTipoCambioSET = 0
+         .nTipoCambioSet = 0
          .nPlazo = 0
          .nCantidadCuota = 0
          .nSucursal = 0
@@ -301,17 +301,17 @@ DEFINE CLASS Compra AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
-   FUNCTION SetTipoCambioSET
-      LPARAMETER tnTipoCambioSET
+   FUNCTION SetTipoCambioSet
+      LPARAMETER tnTipoCambioSet
 
       * inicio { validación de parámetro }
-      IF VARTYPE(tnTipoCambioSET) <> 'N' THEN
-         MESSAGEBOX([El parámetro 'tnTipoCambioSET' debe ser de tipo numérico.], 0+16, THIS.Name + '.SetTipoCambioSET()')
+      IF VARTYPE(tnTipoCambioSet) <> 'N' THEN
+         MESSAGEBOX([El parámetro 'tnTipoCambioSet' debe ser de tipo numérico.], 0+16, THIS.Name + '.SetTipoCambioSet()')
          RETURN .F.
       ENDIF
       * fin { validación de parámetro }
 
-      THIS.nTipoCambioSET = tnTipoCambioSET
+      THIS.nTipoCambioSet = tnTipoCambioSet
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
@@ -600,8 +600,8 @@ DEFINE CLASS Compra AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
-   FUNCTION GetTipoCambioSET
-      RETURN THIS.nTipoCambioSET
+   FUNCTION GetTipoCambioSet
+      RETURN THIS.nTipoCambioSet
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
@@ -704,28 +704,24 @@ DEFINE CLASS Compra AS CUSTOM
       RETURN THIS.cComentario
    ENDFUNC
 
-*!*	   * ---------------------------------------------------------------------------- *
-*!*	   FUNCTION GetNuevoCodigo()
-*!*	      LOCAL lnCodCompra, loModelo, llExiste
-*!*	      lnCodCompra = 1
-*!*	      loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
-*!*	      llExiste = loModelo.BuscarPorCodigo(lnCodCompra)
-
-*!*	      DO WHILE llExiste
-*!*	         lnCodCompra = lnCodCompra + 1
-*!*	         llExiste = loModelo.BuscarPorCodigo(lnCodCompra)
-*!*	      ENDDO
-
-*!*	      RETURN lnCodCompra
-*!*	   ENDFUNC
-
    * ---------------------------------------------------------------------------- *
    FUNCTION GetNuevoCodigo()
-      LOCAL lnRetorno
+      LOCAL lnRetorno, lnAreaTrabajo, lcOrden
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       lnRetorno = goCapaDatos.RecuperarValor(THIS.cTabla, 'COALESCE(MAX(codcompra), 0) + 1 AS codcompra')
 
       IF VARTYPE(lnRetorno) = 'C' THEN
          lnRetorno = VAL(lnRetorno)
+      ENDIF
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
       ENDIF
 
       RETURN lnRetorno
@@ -755,9 +751,13 @@ DEFINE CLASS Compra AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       IF ISNULL(tcCondicionFiltrado) THEN
          goCapaDatos.LlamarConsulta('SELECT * FROM ' + THIS.cTabla + ' ORDER BY nombre', lcCursor)
@@ -770,6 +770,12 @@ DEFINE CLASS Compra AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -792,9 +798,13 @@ DEFINE CLASS Compra AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodCompra
       pnCodCompra = IIF(!INLIST(VARTYPE(tnCodCompra), 'L', 'X'), tnCodCompra, THIS.nCodCompra)
@@ -839,6 +849,12 @@ DEFINE CLASS Compra AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -860,9 +876,13 @@ DEFINE CLASS Compra AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnNroDocu
       pnNroDocu = UPPER(IIF(!INLIST(VARTYPE(tnNroDocu), 'L', 'X'), ALLTRIM(tnNroDocu), ALLTRIM(THIS.nNroDocu)))
@@ -907,6 +927,12 @@ DEFINE CLASS Compra AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -928,9 +954,13 @@ DEFINE CLASS Compra AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnProveedor
       pnProveedor = UPPER(IIF(!INLIST(VARTYPE(tnProveedor), 'L', 'X'), ALLTRIM(tnProveedor), ALLTRIM(THIS.nProveedor)))
@@ -975,6 +1005,12 @@ DEFINE CLASS Compra AS CUSTOM
       SELECT (lcCursor)
       USE
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -996,9 +1032,13 @@ DEFINE CLASS Compra AS CUSTOM
       ENDIF
       * fin { validación de parámetro }
 
-      LOCAL llRetorno, lcCursor
+      LOCAL llRetorno, lcCursor, lnAreaTrabajo, lcOrden
       llRetorno = .T.
       lcCursor = CreaTemp()
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pdFechaDocu
       pdFechaDocu = UPPER(IIF(!INLIST(VARTYPE(tdFechaDocu), 'L', 'X'), ALLTRIM(tdFechaDocu), ALLTRIM(THIS.dFechaDocu)))
@@ -1042,6 +1082,12 @@ DEFINE CLASS Compra AS CUSTOM
 
       SELECT (lcCursor)
       USE
+
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
 
       RETURN llRetorno
    ENDFUNC
@@ -1218,14 +1264,14 @@ DEFINE CLASS Compra AS CUSTOM
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
-   FUNCTION ValidarTipoCambioSET()
-      IF THIS.nTipoCambioSET < 0 THEN
-         MESSAGEBOX('El tipo de cambio de la SET debe ser mayor o igual que cero.', 0+16, THIS.Name + '.ValidarTipoCambioSET()')
+   FUNCTION ValidarTipoCambioSet()
+      IF THIS.nTipoCambioSet < 0 THEN
+         MESSAGEBOX('El tipo de cambio de la SET debe ser mayor o igual que cero.', 0+16, THIS.Name + '.ValidarTipoCambioSet()')
          RETURN .F.
       ENDIF
 
-      IF THIS.nTipoCambioSET > 999999.9999 THEN
-         MESSAGEBOX('El tipo de cambio de la SET debe ser menor que 1 millón.', 0+16, THIS.Name + '.ValidarTipoCambioSET()')
+      IF THIS.nTipoCambioSet > 999999.9999 THEN
+         MESSAGEBOX('El tipo de cambio de la SET debe ser menor que 1 millón.', 0+16, THIS.Name + '.ValidarTipoCambioSet()')
          RETURN .F.
       ENDIF
    ENDFUNC
@@ -1359,7 +1405,7 @@ DEFINE CLASS Compra AS CUSTOM
          RETURN .F.
       ENDIF
 
-      IF !THIS.ValidarTipoCambioSET() THEN
+      IF !THIS.ValidarTipoCambioSet() THEN
          RETURN .F.
       ENDIF
 
@@ -1415,36 +1461,41 @@ DEFINE CLASS Compra AS CUSTOM
    * ---------------------------------------------------------------------------- *
    PROTECTED FUNCTION CargarDatos
       WITH THIS
-         .nCodCompra = codcompra
-         .nTipoDocu = tipodocu
-         .nEstablecimiento = IIF(!ISNULL(establecimiento), establecimiento, 0)
-         .nPuntoExpedicion = IIF(!ISNULL(punto_expedicion), punto_expedicion, 0)
-         .nNroDocu = nrodocu
-         .nProveedor = proveedor
-         .cCondicionCompra = condicion_compra
-         .dFechaDocu = fechadocu
-         .nMoneda = moneda
-         .nTipoCambio = tipocambio
-         .nTipoCambioSET = IIF(!ISNULL(tipocambio_set), tipocambio_set, 0)
-         .nPlazo = IIF(!ISNULL(plazo), plazo, 0)
-         .nCantidadCuota = IIF(!ISNULL(cantidad_cuota), cantidad_cuota, 0)
-         .nSucursal = sucursal
-         .nDeposito = deposito
-         .nTimbrado = IIF(!ISNULL(timbrado), timbrado, 0)
-         .nPorcDesc = porcdesc
-         .nImportDesc = importdesc
-         .nMontoDocu = monto_docu
-         .nMontoNDeb = monto_ndeb
-         .nMontoNCre = monto_ncre
-         .nMontoPago = monto_pago
-         .cComentario = IIF(!ISNULL(comentario), comentario, '')
+         .SetCodCompra(codcompra)
+         .SetTipoDocu(tipodocu)
+         .SetEstablecimiento(IIF(!ISNULL(establecimiento), establecimiento, 0))
+         .SetPuntoExpedicion(IIF(!ISNULL(punto_expedicion), punto_expedicion, 0))
+         .SetNroDocu(nrodocu)
+         .SetProveedor(proveedor)
+         .SetCondicionCompra(condicion_compra)
+         .SetFechaDocu(fechadocu)
+         .SetMoneda(moneda)
+         .SetTipoCambio(tipocambio)
+         .SetTipoCambioSet(IIF(!ISNULL(tipocambio_set), tipocambio_set, 0))
+         .SetPlazo(IIF(!ISNULL(plazo), plazo, 0))
+         .SetCantidadCuota(IIF(!ISNULL(cantidad_cuota), cantidad_cuota, 0))
+         .SetSucursal(sucursal)
+         .SetDeposito(deposito)
+         .SetTimbrado(IIF(!ISNULL(timbrado), timbrado, 0))
+         .SetPorcDesc(porcdesc)
+         .SetImportDesc(importdesc)
+         .SetMontoDocu(monto_docu)
+         .SetMontoNDeb(monto_ndeb)
+         .SetMontoNCre(monto_ncre)
+         .SetMontoPago(monto_pago)
+         .SetComentario(IIF(!ISNULL(comentario), comentario, ''))
       ENDWITH
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Agregar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+      
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 1
 
       IF THIS.Validar() THEN
@@ -1463,13 +1514,24 @@ DEFINE CLASS Compra AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
    * ---------------------------------------------------------------------------- *
    FUNCTION Modificar
-      LOCAL llRetorno
+      LOCAL llRetorno, lnAreaTrabajo, lcOrden
       llRetorno = .T.
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
+
       THIS.nBandera = 2
 
       IF THIS.Validar() THEN
@@ -1488,6 +1550,12 @@ DEFINE CLASS Compra AS CUSTOM
          llRetorno = .F.
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+
       RETURN llRetorno
    ENDFUNC
 
@@ -1498,9 +1566,13 @@ DEFINE CLASS Compra AS CUSTOM
       * inicio { integridad referencial }
       WAIT 'Comprobando integridad referencial, por favor espere...' WINDOW NOWAIT
 
-      LOCAL llRetorno, loModelo, llExiste, lcTablaRelacionada, lnCantidadRegistro
+      LOCAL llRetorno, loModelo, lnAreaTrabajo, lcOrden, llExiste, lcTablaRelacionada, lnCantidadRegistro
       llRetorno = .T.
       loModelo = NEWOBJECT(THIS.Name, THIS.Name + '.prg')
+
+      * Guarda el área de trabajo original.
+      lnAreaTrabajo = SELECT()
+      lcOrden = ORDER()
 
       PRIVATE pnCodCompra
       pnCodCompra = IIF(!INLIST(VARTYPE(tnCodCompra), 'L', 'X'), tnCodCompra, THIS.nCodCompra)
@@ -1554,6 +1626,12 @@ DEFINE CLASS Compra AS CUSTOM
          ENDIF
       ENDIF
 
+      * Restaura el área de trabajo original.
+      IF !EMPTY(ALIAS(lnAreaTrabajo)) THEN
+         SELECT (lnAreaTrabajo)
+         SET ORDER TO (lcOrden)
+      ENDIF
+      
       RETURN llRetorno
    ENDFUNC
 ENDDEFINE
